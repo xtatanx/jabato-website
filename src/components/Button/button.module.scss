@@ -1,0 +1,16 @@
+.button {
+  font-family: 'Inter';
+  font-weight: 900;
+  cursor: pointer;
+  background-color: $brand-red;
+  border-radius: 40px;
+  padding: 12px 32px;
+  border: none;
+  color: $white;
+  font-size: 16px;
+  transition: 0.2s ease-in-out background-color;
+
+  &:hover {
+    background-color: darken($brand-red, 10%);
+  }
+}

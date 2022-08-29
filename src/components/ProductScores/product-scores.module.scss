@@ -1,0 +1,86 @@
+@use 'sass:color';
+
+.wrapper {
+  display: grid;
+  gap: 24px;
+}
+
+.wrapper-offscreen {
+  composes: wrapper;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-family: 'Inter';
+  line-height: 18px;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.bar {
+  width: 100%;
+  display: grid;
+  align-items: center;
+}
+
+.rail {
+  grid-area: 1 / 1;
+  height: 1px;
+  display: block;
+  background-color: color.scale($white, $alpha: -20%);
+}
+
+.fill {
+  grid-area: 1 / 1;
+  height: 4px;
+  background-color: $white;
+  border-radius: 44px;
+  transition: 0.5s ease-in-out width;
+}
+
+.low {
+  composes: fill;
+  width: 5%;
+
+  .wrapper-offscreen & {
+    width: 0;
+  }
+}
+
+.medium-low {
+  composes: fill;
+  width: 25%;
+
+  .wrapper-offscreen & {
+    width: 0;
+  }
+}
+
+.medium {
+  composes: fill;
+  width: 50%;
+
+  .wrapper-offscreen & {
+    width: 0;
+  }
+}
+
+.medium-high {
+  composes: fill;
+  width: 75%;
+
+  .wrapper-offscreen & {
+    width: 0;
+  }
+}
+
+.high {
+  composes: fill;
+  width: 100%;
+
+  .wrapper-offscreen & {
+    width: 0;
+  }
+}
