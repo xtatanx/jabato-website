@@ -21,21 +21,12 @@ import {
 } from '../components/ProductScores/ProductScores';
 
 const IndexPage = () => {
-  const amberParallax = useParallax({
-    speed: 15,
-  });
-  const porterParallax = useParallax({
-    speed: 15,
-  });
-  const porterParallax2 = useParallax({
-    speed: 15,
-  });
-  const seltzerParallax = useParallax({
-    speed: 15,
+  const tangerineParallax = useParallax({
+    speed: 20,
   });
 
-  const tangerineParallax = useParallax({
-    speed: 18,
+  const amberParallax = useParallax({
+    speed: 15,
   });
 
   const caramelParallax = useParallax({
@@ -43,19 +34,39 @@ const IndexPage = () => {
   });
 
   const coffeeParallax = useParallax({
-    speed: 18,
+    speed: 20,
+  });
+
+  const porterParallax = useParallax({
+    speed: 15,
   });
 
   const caramelParallax2 = useParallax({
     speed: 10,
   });
 
-  const lemonParallax = useParallax({
+  const coffeeParallax2 = useParallax({
+    speed: 20,
+  });
+
+  const porterParallax2 = useParallax({
+    speed: 15,
+  });
+
+  const caramelParallax3 = useParallax({
     speed: 10,
   });
 
+  const lemonParallax = useParallax({
+    speed: 20,
+  });
+
+  const seltzerParallax = useParallax({
+    speed: 15,
+  });
+
   const watermelonParallax = useParallax({
-    speed: 18,
+    speed: 10,
   });
   return (
     <ParallaxProvider>
@@ -176,13 +187,13 @@ const IndexPage = () => {
               className={styles.coffee}
               src={coffee}
               alt=""
-              ref={coffeeParallax.ref}
+              ref={coffeeParallax2.ref}
             />
             <img
               className={styles.caramel2}
               src={caramel}
               alt=""
-              ref={caramelParallax2.ref}
+              ref={caramelParallax3.ref}
             />
           </div>
         </section>
