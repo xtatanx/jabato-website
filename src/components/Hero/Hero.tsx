@@ -13,7 +13,7 @@ const Hero = () => {
         loading="eager"
       ></StaticImage>
       <div className={styles.heroContainer}>
-        <Button>COMPRAR JABATO</Button>
+        <Button to="https://wa.me/573027366778">COMPRAR JABATO</Button>
       </div>
     </section>
   );
