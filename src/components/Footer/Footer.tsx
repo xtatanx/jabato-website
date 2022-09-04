@@ -12,8 +12,6 @@ const Footer = () => {
           className={styles.image}
           src="../../images/footer-image.png"
           alt=""
-          width={390}
-          height={356}
         ></StaticImage>
         <div className={styles.stamp}>
           <StaticImage

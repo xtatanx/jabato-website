@@ -1,7 +1,24 @@
 .container {
   width: 100%;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.beer-container {
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+
+  @include devices(md) {
+    margin: 0 auto;
+    max-width: 1280px;
+    grid-area: 1/1;
+    display: flex;
+    align-items: center;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
 }
 
 .block {
@@ -14,6 +31,11 @@
   composes: block;
   padding-top: 72px;
   padding-bottom: 172px;
+
+  @include devices(md) {
+    padding-top: 112px;
+    padding-bottom: 112px;
+  }
 }
 
 .secondary-block {
@@ -48,58 +70,116 @@
   line-height: 64px;
   text-transform: uppercase;
   margin: 0;
+
+  @include devices(md) {
+    max-width: 1062px;
+    margin: 0 auto;
+  }
+
+  @include devices(xl) {
+    font-size: 102px;
+    line-height: 110px;
+  }
 }
 
 .can {
+  display: block;
   width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+
+  @include devices(sm) {
+    width: 66%;
+  }
+
+  @include devices(md) {
+    width: 50%;
+  }
+
+  @include devices(lg) {
+    margin-left: auto;
+    width: 40%;
+  }
+
+  @include devices(xxl) {
+    width: 40%;
+  }
 }
 
 .amber-block {
-  background-image: url('../images/amber-pattern.png');
-  background-repeat: repeat no-repeat;
-  background-size: contain;
-  background-position: 0 -160px;
+  position: relative;
   background-color: $brand-red;
   color: $white;
   padding-bottom: 155px;
+
+  @include devices(md) {
+    display: grid;
+    padding: 0;
+  }
 }
 
 .amber-can {
   composes: can;
-  margin-top: -118px;
   margin-bottom: 10px;
+
+  @include devices(md) {
+    margin-bottom: 0;
+  }
 }
 
 .porter-can {
   composes: can;
-  margin-top: -108px;
   margin-bottom: 40px;
+
+  @include devices(md) {
+    margin-bottom: 0;
+  }
 }
 
 .seltzer-can {
   composes: can;
-  margin-top: -100px;
   margin-bottom: 20px;
+
+  @include devices(md) {
+    margin-bottom: 0;
+  }
 }
 
 .porter-block {
-  background-image: url('../images/porter-pattern.png');
-  background-repeat: repeat no-repeat;
-  background-size: contain;
-  background-position: 0 -80px;
+  position: relative;
   background-color: $brand-green;
   color: $white;
   padding-bottom: 8rem;
+
+  @include devices(md) {
+    display: none;
+  }
+}
+
+.porter-block2 {
+  composes: porter-block;
+  display: none;
+
+  @include devices(md) {
+    background-image: none;
+    display: grid;
+    padding: 0;
+  }
 }
 
 .seltzer-block {
-  background-image: url('../images/seltzer-pattern.png');
-  background-repeat: repeat no-repeat;
-  background-size: contain;
-  background-position: 0 -30px;
+  position: relative;
   background-color: $brand-pink;
   color: $white;
   padding-bottom: 8rem;
+
+  @include devices(md) {
+    background-image: none;
+    display: grid;
+    padding: 0;
+  }
 }
 
 .beer-title {
@@ -110,6 +190,11 @@
   margin: 0;
   color: $white;
   text-transform: uppercase;
+
+  @include devices(lg) {
+    font-size: 96px;
+    line-height: 145px;
+  }
 }
 
 .beer-description {
@@ -120,8 +205,281 @@
   color: $white;
   margin-top: 0;
   margin-bottom: 24px;
+
+  @include devices(lg) {
+    font-size: 16px;
+    line-height: 19px;
+  }
 }
 
 .hop-icon {
   margin-bottom: 34px;
+}
+
+.amber-bg {
+  background-image: url('../images/amber-pattern.png');
+  background-repeat: repeat;
+  background-size: contain;
+  background-position: 0 -50px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 52%;
+
+  @include devices(md) {
+    background-image: none;
+    position: initial;
+    display: flex;
+    grid-area: 1/1;
+  }
+
+  &-left {
+    display: none;
+    background-image: url('../images/amber-pattern.png');
+    background-position: 0 -80px;
+    background-repeat: repeat;
+    width: 50%;
+
+    @include devices(md) {
+      display: block;
+    }
+  }
+
+  &-right {
+    display: none;
+    width: 50%;
+
+    @include devices(md) {
+      display: block;
+    }
+  }
+}
+
+.porter-bg {
+  background-image: url('../images/porter-pattern.png');
+  background-repeat: repeat;
+  background-size: contain;
+  background-position: 0 -18px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 50%;
+
+  @include devices(md) {
+    position: initial;
+    background-image: none;
+    display: flex;
+    grid-area: 1/1;
+  }
+
+  &-left {
+    display: none;
+    background-image: url('../images/porter-pattern.png');
+    background-position: 0 -80px;
+    background-repeat: repeat;
+    width: 50%;
+
+    @include devices(md) {
+      display: block;
+    }
+  }
+
+  &-right {
+    display: none;
+    width: 50%;
+
+    @include devices(md) {
+      display: block;
+    }
+  }
+}
+
+.seltzer-bg {
+  background-image: url('../images/seltzer-pattern.png');
+  background-repeat: repeat;
+  background-size: contain;
+  background-position: 0 -109px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 44%;
+
+  @include devices(md) {
+    position: initial;
+    background-image: none;
+    display: flex;
+    grid-area: 1/1;
+  }
+
+  &-left {
+    display: none;
+    background-image: url('../images/seltzer-pattern.png');
+    background-position: 0 -80px;
+    background-repeat: repeat;
+    width: 50%;
+
+    @include devices(md) {
+      display: block;
+    }
+  }
+
+  &-right {
+    display: none;
+    width: 50%;
+
+    @include devices(md) {
+      display: block;
+    }
+  }
+}
+
+.beer-content {
+  @include devices(md) {
+    margin-left: auto;
+    width: 50%;
+    padding-left: 32px;
+    padding-right: 16px;
+  }
+
+  @include devices(xxl) {
+    padding-left: 160px;
+    padding-right: 64px;
+  }
+}
+
+.beer-content2 {
+  @include devices(md) {
+    margin-right: auto;
+    width: 50%;
+    padding-right: 32px;
+    padding-left: 16px;
+  }
+
+  @include devices(xxl) {
+    padding-right: 160px;
+    padding-left: 64px;
+  }
+}
+
+.secondary-content {
+  @include devices(lg) {
+    max-width: 855px;
+    margin: 0 auto;
+  }
+}
+
+.caramel {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 80px;
+  z-index: 100;
+
+  @include devices(md) {
+    left: -20px;
+  }
+
+  @include devices(xl) {
+    width: 130px;
+  }
+
+  @include devices(xxl) {
+    top: 76%;
+    left: 10px;
+  }
+}
+
+.tangerine {
+  position: absolute;
+  width: 150px;
+  top: 0;
+  left: 50%;
+  z-index: 100;
+
+  @include devices(md) {
+    left: calc(50% - 80px);
+  }
+
+  @include devices(xl) {
+    left: calc(50% - 100px);
+    width: 200px;
+  }
+}
+
+.coffee {
+  position: absolute;
+  width: 150px;
+  top: 0;
+  left: -40px;
+  width: 120px;
+  z-index: 100;
+
+  @include devices(md) {
+    left: calc(50% - 90px);
+  }
+
+  @include devices(xl) {
+    width: 200px;
+    left: calc(50% - 100px);
+  }
+}
+
+.caramel2 {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  width: 100px;
+  z-index: 100;
+
+  @include devices(md) {
+    top: 80%;
+    right: -2%;
+  }
+
+  @include devices(xl) {
+    width: 140px;
+  }
+}
+
+.lemon {
+  position: absolute;
+  width: 130px;
+  top: 10%;
+  right: -25px;
+  z-index: 100;
+
+  @include devices(md) {
+    top: 15%;
+    right: auto;
+    left: calc(50% - 70px);
+  }
+
+  @include devices(xl) {
+    left: calc(50% - 100px);
+    width: 200px;
+  }
+
+  @include devices(xxl) {
+    top: 0;
+  }
+}
+
+.watermelon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 128px;
+  z-index: 100;
+
+  @include devices(xl) {
+    width: 180px;
+  }
+
+  @include devices(xxl) {
+    top: 60%;
+    left: -80px;
+  }
 }

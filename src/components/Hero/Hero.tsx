@@ -11,8 +11,6 @@ const Hero = () => {
         src="../../images/hero-image.jpg"
         alt=""
         loading="eager"
-        width={390}
-        height={644}
       ></StaticImage>
       <div className={styles.heroContainer}>
         <Button>COMPRAR JABATO</Button>

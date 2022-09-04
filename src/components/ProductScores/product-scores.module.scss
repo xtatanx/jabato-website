@@ -17,6 +17,11 @@
   line-height: 18px;
   margin-bottom: 8px;
   font-weight: 700;
+
+  @include devices(lg) {
+    font-size: 16px;
+    line-height: 20px;
+  }
 }
 
 .bar {

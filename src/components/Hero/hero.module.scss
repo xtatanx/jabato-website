@@ -4,6 +4,18 @@
   color: $white;
   height: calc(100vh - 200px);
 
+  @include devices(md) {
+    height: calc(474px);
+  }
+
+  @include devices(md) {
+    height: calc(100vh - 550px);
+  }
+
+  @include devices(lg) {
+    height: 520px;
+  }
+
   &-image {
     grid-area: 1/1;
     width: 100%;

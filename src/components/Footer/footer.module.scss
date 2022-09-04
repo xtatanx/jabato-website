@@ -32,6 +32,10 @@
   font-weight: 400;
   font-family: 'Inter';
   text-align: center;
+
+  @include devices(md) {
+    font-size: 16px;
+  }
 }
 
 .rights {
@@ -41,16 +45,24 @@
   line-height: 15px;
   font-family: 'Inter';
   text-align: center;
+
+  @include devices(md) {
+    font-size: 16px;
+  }
 }
 
 .branding {
   position: relative;
+  display: grid;
+  height: 480px;
 }
 
 .stamp {
   position: absolute;
-  bottom: top;
-  transform: translateY(-50%);
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 280px;
 }
 
 .icons {
@@ -60,4 +72,8 @@
   * {
     display: block;
   }
+}
+
+.image {
+  width: 100%;
 }
