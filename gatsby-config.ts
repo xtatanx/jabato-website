@@ -1,7 +1,6 @@
 import type { GatsbyConfig } from 'gatsby';
 
 const config: GatsbyConfig = {
-  pathPrefix: '/jabato-website',
   siteMetadata: {
     title: `Jabato`,
     siteUrl: `https://www.jabato.beer`,
