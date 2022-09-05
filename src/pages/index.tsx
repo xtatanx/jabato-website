@@ -1,16 +1,9 @@
 import * as React from 'react';
+import * as styles from './index.module.scss';
 import type { HeadFC } from 'gatsby';
+import { StaticImage } from 'gatsby-plugin-image';
 import Layout from '../components/Layout';
 import Hero from '../components/Hero';
-import amberCan from '../images/lata-amber.png';
-import porterCan from '../images/lata-porter.png';
-import seltzerCan from '../images/lata-seltzer.png';
-import caramel from '../images/i-caramel.png';
-import tangerine from '../images/i-tangerine.png';
-import coffee from '../images/i-coffee.png';
-import lemon from '../images/i-lemon.png';
-import watermelon from '../images/i-watermelon.png';
-import * as styles from './index.module.scss';
 import { useParallax } from 'react-scroll-parallax';
 import { ParallaxProvider } from 'react-scroll-parallax';
 import ProductScores from '../components/ProductScores';
@@ -83,12 +76,15 @@ const IndexPage = () => {
             <div className={styles.amberBgRight}></div>
           </div>
           <div className={styles.beerContainer}>
-            <img
-              className={styles.amberCan}
-              src={amberCan}
-              alt=""
-              ref={amberParallax.ref}
-            />
+            <div ref={amberParallax.ref} className={styles.amberCan}>
+              <StaticImage
+                src="../images/lata-amber.png"
+                alt="Lata de cerveza Amber Ale"
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
             <div className={styles.beerContent}>
               <h2 className={styles.beerTitle}>Amber Ale</h2>
               <p className={styles.beerDescription}>
@@ -103,18 +99,24 @@ const IndexPage = () => {
                 alcohol={5.5}
               ></ProductScores>
             </div>
-            <img
-              className={styles.caramel}
-              src={caramel}
-              alt=""
-              ref={caramelParallax.ref}
-            />
-            <img
-              className={styles.tangerine}
-              src={tangerine}
-              alt=""
-              ref={tangerineParallax.ref}
-            />
+            <div ref={caramelParallax.ref} className={styles.caramel}>
+              <StaticImage
+                src="../images/i-caramel.png"
+                alt=""
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
+            <div ref={tangerineParallax.ref} className={styles.tangerine}>
+              <StaticImage
+                src="../images/i-tangerine.png"
+                alt=""
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
           </div>
         </section>
         <section className={styles.porterBlock}>
@@ -123,12 +125,15 @@ const IndexPage = () => {
             <div className={styles.porterBgRight}></div>
           </div>
           <div className={styles.beerContainer}>
-            <img
-              className={styles.porterCan}
-              src={porterCan}
-              alt=""
-              ref={porterParallax.ref}
-            />
+            <div ref={porterParallax.ref} className={styles.porterCan}>
+              <StaticImage
+                src="../images/lata-porter.png"
+                alt="Lata de cerveza Porter"
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
             <div className={styles.beerContent}>
               <h2 className={styles.beerTitle}>Porter</h2>
               <p className={styles.beerDescription}>
@@ -143,18 +148,24 @@ const IndexPage = () => {
                 alcohol={5.5}
               ></ProductScores>
             </div>
-            <img
-              className={styles.coffee}
-              src={coffee}
-              alt=""
-              ref={coffeeParallax.ref}
-            />
-            <img
-              className={styles.caramel2}
-              src={caramel}
-              alt=""
-              ref={caramelParallax2.ref}
-            />
+            <div ref={coffeeParallax.ref} className={styles.coffee}>
+              <StaticImage
+                src="../images/i-coffee.png"
+                alt=""
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
+            <div ref={caramelParallax2.ref} className={styles.caramel2}>
+              <StaticImage
+                src="../images/i-caramel.png"
+                alt=""
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
           </div>
         </section>
         <section className={styles.porterBlock2}>
@@ -177,24 +188,33 @@ const IndexPage = () => {
                 alcohol={5.5}
               ></ProductScores>
             </div>
-            <img
-              className={styles.porterCan}
-              src={porterCan}
-              alt=""
-              ref={porterParallax2.ref}
-            />
-            <img
-              className={styles.coffee}
-              src={coffee}
-              alt=""
-              ref={coffeeParallax2.ref}
-            />
-            <img
-              className={styles.caramel2}
-              src={caramel}
-              alt=""
-              ref={caramelParallax3.ref}
-            />
+            <div ref={porterParallax2.ref} className={styles.porterCan}>
+              <StaticImage
+                src="../images/lata-porter.png"
+                alt="Lata de cerveza Porter"
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
+            <div ref={coffeeParallax2.ref} className={styles.coffee}>
+              <StaticImage
+                src="../images/i-coffee.png"
+                alt=""
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
+            <div ref={caramelParallax3.ref} className={styles.caramel2}>
+              <StaticImage
+                src="../images/i-caramel.png"
+                alt=""
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
           </div>
         </section>
         <section className={styles.seltzerBlock}>
@@ -203,12 +223,15 @@ const IndexPage = () => {
             <div className={styles.seltzerBgRight}></div>
           </div>
           <div className={styles.beerContainer}>
-            <img
-              className={styles.seltzerCan}
-              src={seltzerCan}
-              alt=""
-              ref={seltzerParallax.ref}
-            />
+            <div ref={seltzerParallax.ref} className={styles.seltzerCan}>
+              <StaticImage
+                src="../images/lata-seltzer.png"
+                alt="Lata de Hardseltzer de limon y sandia"
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
             <div className={styles.beerContent}>
               <h2 className={styles.beerTitle}>Seltzer</h2>
               <p className={styles.beerDescription}>
@@ -219,18 +242,24 @@ const IndexPage = () => {
               </p>
               <ProductScores alcohol={5.5}></ProductScores>
             </div>
-            <img
-              className={styles.lemon}
-              src={lemon}
-              alt=""
-              ref={lemonParallax.ref}
-            />
-            <img
-              className={styles.watermelon}
-              src={watermelon}
-              alt=""
-              ref={watermelonParallax.ref}
-            />
+            <div ref={lemonParallax.ref} className={styles.lemon}>
+              <StaticImage
+                src="../images/i-lemon.png"
+                alt=""
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
+            <div ref={watermelonParallax.ref} className={styles.watermelon}>
+              <StaticImage
+                src="../images/i-watermelon.png"
+                alt=""
+                layout="fullWidth"
+                placeholder="blurred"
+                quality={100}
+              />
+            </div>
           </div>
         </section>
         <section className={styles.secondaryBlock}>

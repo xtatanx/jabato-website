@@ -11,14 +11,18 @@ const Footer = () => {
         <StaticImage
           className={styles.image}
           src="../../images/footer-image.png"
-          alt=""
+          alt="Cervezas Jabato en linea"
+          layout="fullWidth"
+          placeholder="blurred"
+          quality={100}
         ></StaticImage>
         <div className={styles.stamp}>
           <StaticImage
             src="../../images/jabato-stamp.png"
             alt=""
-            width={390}
-            height={390}
+            layout="fullWidth"
+            placeholder="blurred"
+            quality={100}
           ></StaticImage>
         </div>
       </div>
