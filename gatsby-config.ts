@@ -17,9 +17,11 @@ const config: GatsbyConfig = {
       },
     },
     {
-      resolve: 'gatsby-plugin-google-analytics',
+      resolve: 'gatsby-plugin-google-tagmanager',
       options: {
-        trackingId: 'G-GPH1ZKEVB0',
+        id: 'G-GPH1ZKEVB0',
+        includeInDevelopment: false,
+        enableWebVitalsTracking: true,
       },
     },
     'gatsby-plugin-image',
