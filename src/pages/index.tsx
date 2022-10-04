@@ -12,6 +12,7 @@ import {
   Bitterness,
   Carbonation,
 } from '../components/ProductScores/ProductScores';
+import Button from '../components/Button';
 
 const IndexPage = () => {
   const tangerineParallax = useParallax({
@@ -61,6 +62,19 @@ const IndexPage = () => {
   const watermelonParallax = useParallax({
     speed: 10,
   });
+
+  const getWhatsAppLink = (type: string) => {
+    const beers = ['Porter', 'Amber'];
+    let text = '';
+    if (beers.includes(type)) {
+      text = encodeURI(`Hola Jabato, me gustaría comprar cerveza ${type}`);
+    } else {
+      text = encodeURI(`Hola Jabato, me gustaría comprar ${type}`);
+    }
+
+    return `https://wa.me/573027366778?text=${text}`;
+  };
+
   return (
     <ParallaxProvider>
       <Layout>
@@ -93,11 +107,16 @@ const IndexPage = () => {
                 el dulce de la malta y el amargo de los lúpulos, es muy
                 refrescante y con sabroso cuerpo.
               </p>
-              <ProductScores
-                bitterness={Bitterness.M}
-                carbonation={Carbonation.ML}
-                alcohol={5.5}
-              ></ProductScores>
+              <div className={styles.productScores}>
+                <ProductScores
+                  bitterness={Bitterness.M}
+                  carbonation={Carbonation.ML}
+                  alcohol={5.5}
+                ></ProductScores>
+              </div>
+              <Button variant="ghost" to={getWhatsAppLink('Amber')}>
+                Comprar
+              </Button>
             </div>
             <div ref={caramelParallax.ref} className={styles.caramel}>
               <StaticImage
@@ -142,11 +161,16 @@ const IndexPage = () => {
                 emprendimiento, como nosotros) justo antes de empacarla, que le
                 da mucha más fuerza a su sabor.
               </p>
-              <ProductScores
-                bitterness={Bitterness.M}
-                carbonation={Carbonation.ML}
-                alcohol={5.5}
-              ></ProductScores>
+              <div className={styles.productScores}>
+                <ProductScores
+                  bitterness={Bitterness.M}
+                  carbonation={Carbonation.ML}
+                  alcohol={5.5}
+                ></ProductScores>
+              </div>
+              <Button variant="ghost" to={getWhatsAppLink('Porter')}>
+                Comprar
+              </Button>
             </div>
             <div ref={coffeeParallax.ref} className={styles.coffee}>
               <StaticImage
@@ -182,11 +206,16 @@ const IndexPage = () => {
                 emprendimiento, como nosotros) justo antes de empacarla, que le
                 da mucha más fuerza a su sabor.
               </p>
-              <ProductScores
-                bitterness={Bitterness.M}
-                carbonation={Carbonation.ML}
-                alcohol={5.5}
-              ></ProductScores>
+              <div className={styles.productScores}>
+                <ProductScores
+                  bitterness={Bitterness.M}
+                  carbonation={Carbonation.ML}
+                  alcohol={5.5}
+                ></ProductScores>
+              </div>
+              <Button variant="ghost" to={getWhatsAppLink('Porter')}>
+                Comprar
+              </Button>
             </div>
             <div ref={porterParallax2.ref} className={styles.porterCan}>
               <StaticImage
@@ -240,7 +269,12 @@ const IndexPage = () => {
                 consideran una opción saludable, nosotros solo creemos que es un
                 hit!
               </p>
-              <ProductScores alcohol={5.5}></ProductScores>
+              <div className={styles.productScores}>
+                <ProductScores alcohol={5.5}></ProductScores>
+              </div>
+              <Button variant="ghost" to={getWhatsAppLink('Seltzer')}>
+                Comprar
+              </Button>
             </div>
             <div ref={lemonParallax.ref} className={styles.lemon}>
               <StaticImage

@@ -1,17 +1,35 @@
-.button {
+.baseButton {
+  display: inline-block;
   font-family: 'Inter';
   font-weight: 900;
   cursor: pointer;
-  background-color: $brand-red;
   border-radius: 40px;
   padding: 12px 32px;
-  border: none;
-  color: $white;
+  border: 1px solid transparent;
   font-size: 16px;
-  transition: 0.2s ease-in-out background-color;
+  transition: 0.2s ease-in-out all;
   text-decoration: none;
+}
+
+.primary {
+  composes: baseButton;
+  background-color: $brand-red;
+  border-color: $brand-red;
+  color: $white;
 
   &:hover {
     background-color: darken($brand-red, 10%);
+  }
+}
+
+.ghost {
+  composes: baseButton;
+  background-color: transparent;
+  border-color: $white;
+  color: $white;
+
+  &:hover {
+    color: darken($white, 15%);
+    border-color: darken($white, 15%);
   }
 }

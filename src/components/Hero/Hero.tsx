@@ -4,6 +4,9 @@ import { StaticImage } from 'gatsby-plugin-image';
 import Button from '../Button';
 
 const Hero = () => {
+  const text = encodeURI(`Hola Jabato, me gustaría comprar cerveza`);
+  const whatsAppText = `https://wa.me/573027366778?text=${text}`;
+
   return (
     <section className={styles.hero}>
       <StaticImage
@@ -16,7 +19,7 @@ const Hero = () => {
         quality={100}
       ></StaticImage>
       <div className={styles.heroContainer}>
-        <Button to="https://wa.me/573027366778">COMPRAR JABATO</Button>
+        <Button to={whatsAppText}>COMPRAR JABATO</Button>
       </div>
     </section>
   );
