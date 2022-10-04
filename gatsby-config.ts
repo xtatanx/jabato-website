@@ -24,6 +24,16 @@ const config: GatsbyConfig = {
         enableWebVitalsTracking: true,
       },
     },
+    {
+      resolve: `gatsby-plugin-google-gtag`,
+      options: {
+        trackingIds: ['G-GPH1ZKEVB0'],
+        pluginConfig: {
+          head: false,
+          respectDNT: true,
+        },
+      },
+    },
     'gatsby-plugin-image',
     'gatsby-plugin-sitemap',
     {
