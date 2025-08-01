@@ -1,44 +1,28 @@
 {
   "name": "jabato",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
-  "description": "jabato",
-  "author": "Jhonnatan Gonzalez Rodriguez",
-  "keywords": [
-    "gatsby"
-  ],
   "scripts": {
-    "develop": "gatsby develop",
-    "start": "gatsby develop",
-    "build": "gatsby build",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "typecheck": "tsc --noEmit"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "gatsby": "^4.20.0",
-    "gatsby-plugin-google-fonts": "github:didierfranc/gatsby-plugin-google-fonts",
-    "gatsby-plugin-google-gtag": "^4.24.0",
-    "gatsby-plugin-google-tagmanager": "^4.22.0",
-    "gatsby-plugin-image": "^2.20.0",
-    "gatsby-plugin-manifest": "^4.20.0",
-    "gatsby-plugin-react-svg": "^3.1.0",
-    "gatsby-plugin-sass": "^5.20.0",
-    "gatsby-plugin-sharp": "^4.20.0",
-    "gatsby-plugin-sitemap": "^5.20.0",
-    "gatsby-source-filesystem": "^4.20.0",
-    "gatsby-transformer-remark": "^5.20.0",
-    "gatsby-transformer-sharp": "^4.20.0",
-    "normalize.css": "^8.0.1",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-scroll-parallax": "^3.3.1",
-    "sass": "^1.54.3"
+    "clsx": "^2.1.1",
+    "json-server": "1.0.0-beta.3",
+    "motion": "^12.5.0",
+    "next": "15.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-scroll-parallax": "^3.4.5"
   },
   "devDependencies": {
-    "@types/node": "^17.0.45",
-    "@types/react": "^18.0.16",
-    "@types/react-dom": "^18.0.6",
-    "typescript": "^4.7.4"
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
