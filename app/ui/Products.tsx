@@ -92,7 +92,7 @@ export default function Products({
               src={thumb}
               width={639}
               height={1039}
-              alt={`Imágen Lata ${name}`}
+              alt={`Cerveza Jabato en lata tipo ${name}`}
             />
           </Parallax>
           <div

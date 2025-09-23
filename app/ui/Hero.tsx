@@ -13,7 +13,7 @@ export default function Hero() {
         src={HeroImage}
         fill
         priority
-        alt="Hero Image"
+        alt="Cervezas Jabato tipo Amber Ale y Porter"
       />
       <div className="absolute flex justify-center bottom-15 w-[65%] md:w-[20%] max-w-[250px] h-auto">
         <Button
