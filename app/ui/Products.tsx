@@ -38,7 +38,11 @@ export default function Products({
   const customWidth = useMemo(() => (alcohol / maxAlcohol) * 100, [alcohol]);
 
   const whatsAppText = useMemo(() => {
-    const text = encodeURI(`Hola Jabato, me gustaría comprar cerveza ${name}`);
+    const text = encodeURI(
+      `Hola Jabato, me gustaría comprar ${
+        variant === 'seltzer' ? name : `cerveza ${name}`
+      }`
+    );
     return `https://wa.me/573337058517?text=${text}`;
   }, [name]);
 
