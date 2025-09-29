@@ -64,12 +64,21 @@ export default function Home() {
     <>
       <MainLayer />
       <Hero />
-      <section className="flex justify-center items-center w-full h-80 bg-[url(/pattern.png)] bg-black">
+      <section className="flex flex-col justify-center items-center w-full py-18 bg-[url(/pattern.png)] bg-black">
         <h1
-          className={`${anton.className} w-50 md:w-200 text-left md:text-center text-[3rem] md:text-[5rem] text-brandred`}
+          className={`${anton.className} md:w-200 text-left md:text-center text-[3rem] md:text-[5rem] text-brandred`}
         >
           CERVEZAS CON CARÁCTER
         </h1>
+        <p
+          className={`${inter.className} w-[90%] md:w-[50%] h-auto text-[1.2rem] md:text-[1.5rem] text-white text-center`}
+        >
+          Somos la cervecería que nació grande desde pequeña, en Jabato
+          cervecería creamos cervezas con carácter en lotes pequeños, con pasión
+          y la máxima calidad. Explora el sabor audaz de nuestra Amber Ale,
+          Porter y el refrescante Hard Seltzer. ¡Bienvenido al hogar de las
+          cervezas con alma!
+        </p>
       </section>
       <section className="flex flex-col w-full">
         {products.map((product) => (
