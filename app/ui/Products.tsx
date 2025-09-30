@@ -135,11 +135,11 @@ export default function Products({
           )}
         >
           <div className="products_container--wrap relative flex flex-col gap-4 w-[95%] md:w-[95%] max-w-[600px] h-[100%] md:h-[80%]">
-            <h1
+            <h2
               className={`${anton.className} w-[100%] h-auto text-[4rem] md:text-[6rem] text-white`}
             >
               {name}
-            </h1>
+            </h2>
             <p
               className={`${inter.className}  w-[100%] md:w-[95%] h-[76px] text-white mb-15 text-[1rem] md:text-[1.2rem]`}
             >

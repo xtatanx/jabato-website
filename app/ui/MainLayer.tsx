@@ -49,11 +49,11 @@ export default function Layer() {
           height={234}
           alt="Logo Jabato"
         />
-        <h1
+        <p
           className={`${inter.className} text-white font-extrabold text-[1.8rem] md:text-[2rem] w-[90%] text-center`}
         >
           ¿Tienes 18 años o más?
-        </h1>
+        </p>
         <div className="flex flex-row justify-evenly items-center w-[70%] h-[20%]">
           <Button
             width={'35'}
