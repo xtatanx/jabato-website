@@ -1,15 +1,13 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import {
-  Instagram,
-  Facebook,
-  MessageCircle,
-  MapPin,
-  Mail,
-  Phone,
-  Music,
   Beer,
-} from 'lucide-react';
+  Facebook,
+  Instagram,
+  Mail,
+  MessageCircle,
+  Music,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
