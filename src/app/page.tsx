@@ -1,8 +1,7 @@
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
-import { Metadata } from 'next';
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -32,7 +31,7 @@ export default function Home() {
       <section className="pb-12 lg:pb-20">
         <div className="container mx-auto">
           <h2 className="text-center text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold text-secondary-foreground uppercase">
-            La Máxima Calidad en Lotes Pequeños. Cervezas Artesanales Hechas{' '}
+            La Máxima Calidad en Lotes Pequeños. Cervezas Artesanales Hechas{" "}
             <span className="text-brand">#APulsoYFrentera</span>
           </h2>
         </div>
@@ -106,7 +105,7 @@ export default function Home() {
       <section className="bg-primary py-12 lg:py-20">
         <div className="container mx-auto flex flex-col gap-6 lg:gap-8 items-center px-4">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold text-primary-foreground text-center uppercase">
-            Historias, Catas y Experiencias{' '}
+            Historias, Catas y Experiencias{" "}
             <span className="text-brand">Jabato</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 lg:gap-12 w-full">
