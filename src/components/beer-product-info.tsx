@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Beer, Flame, Droplet, Award } from 'lucide-react';
+import { Beer, Flame, Droplet, Award, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { BeerData } from '@/lib/beers-data';
@@ -89,8 +89,10 @@ export function BeerProductInfo({ beer }: BeerProductInfoProps) {
       {/* Age Restriction */}
       {beer.available && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span className="text-amber-500">▲</span>
-          <span>La venta está restringida a personas mayores de 18 años</span>
+          <AlertTriangle className="w-4 h-4 text-amber-500" />
+          <span>
+            prohíbase el expendio de bebidas embriagantes a menores de edad
+          </span>
         </div>
       )}
 

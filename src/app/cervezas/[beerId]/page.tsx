@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { BeerProductInfo } from '@/components/beer-product-info';
+import { BeerProductGallery } from '@/components/beer-product-gallery';
 import { BusinessCtaSection } from '@/components/business-cta-section';
 import { TestimonialsSection } from '@/components/testimonials-section';
 import { Badge } from '@/components/ui/badge';
@@ -14,13 +14,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
 import { getBeerBySlug } from '@/lib/beers-data';
 
 interface BeerDetailPageProps {
@@ -82,40 +75,11 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
           {/* Product Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-8 lg:gap-16">
             {/* Product Gallery */}
-            <div className="space-y-4">
-              <div className="relative aspect-square overflow-hidden rounded-lg">
-                <Image
-                  src={beer.images.main}
-                  alt={beer.name}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-
-              {/* Thumbnails */}
-              <Carousel className="w-full">
-                <CarouselContent className="-ml-2 md:-ml-4">
-                  {beer.images.thumbnails.map((thumbnail) => (
-                    <CarouselItem
-                      key={thumbnail}
-                      className="pl-2 md:pl-4 basis-1/4"
-                    >
-                      <div className="relative aspect-square overflow-hidden rounded-lg">
-                        <Image
-                          src={thumbnail}
-                          alt={`${beer.name} - Vista`}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-2" />
-                <CarouselNext className="right-2" />
-              </Carousel>
-            </div>
+            <BeerProductGallery
+              mainImage={beer.images.main}
+              thumbnails={beer.images.thumbnails}
+              beerName={beer.name}
+            />
 
             {/* Product Information */}
             <BeerProductInfo beer={beer} />
