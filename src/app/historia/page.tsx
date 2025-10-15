@@ -75,7 +75,7 @@ export default function HistoriaPage() {
 
       <div>
         {/* Hero Section */}
-        <section className="bg-primary relative grid items-center gap-8 pb-12 min-h-[400px] lg:aspect-video lg:gap-12 lg:bb-20 lg:max-h-[400px] lg:w-full">
+        <section className="bg-primary relative grid items-center gap-8 mb-12 min-h-[400px] lg:aspect-video lg:gap-12 lg:mb-20 lg:max-h-[400px] lg:w-full">
           <Image
             src="/equipo-homebrewer-de-jabato-en-sus-inicios.jpg"
             className="object-cover z-0"
@@ -89,6 +89,22 @@ export default function HistoriaPage() {
             <h1 className="text-4xl font-extrabold uppercase text-shadow-xs text-primary-foreground sm:text-5xl md:text-6xl lg:text-7xl">
               Nuestra <span className="text-brand">Historia</span>
             </h1>
+          </div>
+        </section>
+
+        {/* SEO Text Section */}
+        <section className="pb-12 lg:pb-20">
+          <div className="container mx-auto">
+            <p className="text-center text-lg mb-6 sm:text-xl lg:mb-8 sm:max-w-1/2 mx-auto">
+              Desde un balde plástico en casa hasta una cervecería artesanal
+              reconocida, la historia de Jabato es la historia de la pasión por
+              la cerveza artesanal en Colombia. Cada botella que producimos
+              lleva consigo años de experimentación, aprendizaje y dedicación
+              inquebrantable. Nuestro camino #APulsoYFrentera nos ha llevado
+              desde los primeros experimentos caseros hasta crear cervezas que
+              representan la calidad y el sabor que buscamos en cada sorbo.
+              Descubre cómo una pasión se convirtió en nuestra razón de ser.
+            </p>
           </div>
         </section>
 
