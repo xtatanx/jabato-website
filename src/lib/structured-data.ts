@@ -1,4 +1,9 @@
-import type { WithContext, AboutPage, Organization } from 'schema-dts';
+import type {
+  WithContext,
+  AboutPage,
+  Organization,
+  ContactPage,
+} from 'schema-dts';
 
 export function getOrganizationSchema(): WithContext<Organization> {
   return {
@@ -65,6 +70,40 @@ export function getHistoriaPageSchema(): WithContext<AboutPage> {
           item: 'https://jabato.com.co/historia',
         },
       ],
+    },
+  };
+}
+
+export function getContactPageSchema(): WithContext<ContactPage> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: 'Contacto - Jabato Cervecería',
+    description:
+      'Ponte en contacto con Jabato Cervecería. Consultas sobre distribución, colaboraciones y más.',
+    url: 'https://jabato.com.co/contacto',
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Inicio',
+          item: 'https://jabato.com.co',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Contacto',
+          item: 'https://jabato.com.co/contacto',
+        },
+      ],
+    },
+    mainEntity: {
+      '@type': 'Organization',
+      name: 'Jabato Cervecería',
+      email: 'jabatocerveceria@gmail.com',
+      url: 'https://jabato.com.co',
     },
   };
 }
