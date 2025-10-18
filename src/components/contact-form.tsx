@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { submitContactForm } from '@/app/actions/contact';
+import { submitContactForm } from '@/app/(app)/actions/contact';
 import type { ContactFormState } from '@/lib/validations/contact';
 
 function SubmitButton({ isPending }: { isPending: boolean }) {
