@@ -16,6 +16,7 @@ import lemonIcon from '@/public/i-lemon.png';
 import amberPatern from '@/public/amber-pattern.png';
 import porterPattern from '@/public/porter-pattern.png';
 import seltzserPattern from '@/public/seltzer-pattern.png';
+import Script from 'next/script';
 
 export default function Home() {
   const products = [
@@ -122,6 +123,26 @@ export default function Home() {
           alt="Cervezas Jabato tipo Porter y Amber Ale junto a la Hard Seltzer de Sandia y Limón"
         />
       </section>
+      <Script id="voiceflow-widget" strategy="afterInteractive">
+  {`
+    (function(d, t) {
+        var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+        v.onload = function() {
+          window.voiceflow.chat.load({
+            verify: { projectID: '68f2df3247a816f5d35d0494' },
+            url: 'https://general-runtime.voiceflow.com',
+            versionID: 'production',
+            voice: {
+              url: "https://runtime-api.voiceflow.com"
+            }
+          });
+        };
+        v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+        v.type = "text/javascript";
+        s.parentNode.insertBefore(v, s);
+    })(document, 'script');
+  `}
+</Script>
     </>
   );
 }
