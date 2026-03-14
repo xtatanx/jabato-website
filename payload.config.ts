@@ -10,6 +10,7 @@ import { Beers } from '@/collections/beers';
 import { Posts } from '@/collections/posts';
 import { BusinessCta } from '@/globals/business-cta';
 import { BeersCta } from '@/globals/beers-cta';
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here
@@ -39,6 +40,16 @@ export default buildConfig({
       uploadsCollection: 'media',
       // generateTitle: ({ doc }) => `Website.com — ${doc.title}`,
       // generateDescription: ({ doc }) => doc.excerpt,
+    }),
+    vercelBlobStorage({
+      enabled: true, // Optional, defaults to true
+      // Specify which collections should use Vercel Blob
+      collections: {
+        media: true,
+      },
+      // Token provided by Vercel once Blob storage is added to your Vercel project
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      clientUploads: true,
     }),
   ],
 });
