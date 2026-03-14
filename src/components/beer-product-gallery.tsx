@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
+import { useState } from 'react';
+import { ImageGalleryDialog } from '@/components/image-gallery-dialog';
 import {
   Carousel,
   CarouselContent,
@@ -9,16 +10,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { ImageGalleryDialog } from '@/components/image-gallery-dialog';
 
 interface BeerProductGalleryProps {
-  mainImage: string;
   thumbnails: string[];
   beerName: string;
 }
 
 export function BeerProductGallery({
-  mainImage,
   thumbnails,
   beerName,
 }: BeerProductGalleryProps) {

@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Carousel,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  type CarouselApi,
-} from '@/components/ui/carousel';
+} from "@/components/ui/carousel";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 interface ImageGalleryDialogProps {
   images: string[];
@@ -56,9 +56,9 @@ export function ImageGalleryDialog({
       onIndexChange(index);
     };
 
-    carouselApi.on('select', handleSelect);
+    carouselApi.on("select", handleSelect);
     return () => {
-      carouselApi.off('select', handleSelect);
+      carouselApi.off("select", handleSelect);
     };
   }, [carouselApi, onIndexChange]);
 
@@ -139,10 +139,10 @@ export function ImageGalleryDialog({
                       type="button"
                       onClick={() => handleThumbnailClick(index)}
                       className={cn(
-                        'relative w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 flex-shrink-0',
+                        "relative w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 flex-shrink-0",
                         index === currentSlide
-                          ? 'border-primary ring-2 ring-primary/20'
-                          : 'border-transparent hover:border-primary/50'
+                          ? "border-primary ring-2 ring-primary/20"
+                          : "border-transparent hover:border-primary/50",
                       )}
                       aria-label={`Ver imagen ${index + 1}`}
                     >

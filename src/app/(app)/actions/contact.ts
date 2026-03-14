@@ -1,32 +1,32 @@
-'use server';
+"use server";
 
-import { Resend } from 'resend';
+import { Resend } from "resend";
 import {
-  contactFormSchema,
-  type ContactFormState,
   type ContactFormData,
-} from '@/lib/validations/contact';
+  type ContactFormState,
+  contactFormSchema,
+} from "@/lib/validations/contact";
 
-const resend = new Resend(process.env.RESEND_API_KEY || 'dummy-key-for-build');
+const resend = new Resend(process.env.RESEND_API_KEY || "dummy-key-for-build");
 
 async function verifyRecaptcha(token: string): Promise<boolean> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
 
   if (!secretKey) {
-    console.error('RECAPTCHA_SECRET_KEY not found');
+    console.error("RECAPTCHA_SECRET_KEY not found");
     return false;
   }
 
   try {
     const response = await fetch(
-      'https://www.google.com/recaptcha/api/siteverify',
+      "https://www.google.com/recaptcha/api/siteverify",
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         body: `secret=${secretKey}&response=${token}`,
-      }
+      },
     );
 
     const data = await response.json();
@@ -34,36 +34,36 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
     // Score threshold: 0.5 (higher is more likely human)
     return data.success && data.score >= 0.5;
   } catch (error) {
-    console.error('reCAPTCHA verification failed:', error);
+    console.error("reCAPTCHA verification failed:", error);
     return false;
   }
 }
 
 function getSubjectLabel(subject: string): string {
   const subjectMap: Record<string, string> = {
-    'consulta-general': 'Consulta general',
-    distribucion: 'Distribución',
-    colaboraciones: 'Colaboraciones',
-    otro: 'Otro',
+    "consulta-general": "Consulta general",
+    distribucion: "Distribución",
+    colaboraciones: "Colaboraciones",
+    otro: "Otro",
   };
   return subjectMap[subject] || subject;
 }
 
 export async function submitContactForm(
   prevState: ContactFormState | null,
-  formData: FormData
+  formData: FormData,
 ): Promise<ContactFormState> {
   try {
     // Extract form data
     const rawData = {
-      firstName: formData.get('firstName') as string,
-      lastName: formData.get('lastName') as string,
-      email: formData.get('email') as string,
-      phone: formData.get('phone') as string,
-      company: formData.get('company') as string,
-      subject: formData.get('subject') as string,
-      message: formData.get('message') as string,
-      recaptchaToken: formData.get('recaptchaToken') as string,
+      firstName: formData.get("firstName") as string,
+      lastName: formData.get("lastName") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      company: formData.get("company") as string,
+      subject: formData.get("subject") as string,
+      message: formData.get("message") as string,
+      recaptchaToken: formData.get("recaptchaToken") as string,
     };
 
     // Validate with Zod
@@ -82,7 +82,7 @@ export async function submitContactForm(
 
       return {
         success: false,
-        message: 'Por favor corrige los errores en el formulario',
+        message: "Por favor corrige los errores en el formulario",
         errors,
         data: rawData,
       };
@@ -91,14 +91,14 @@ export async function submitContactForm(
     const data = validationResult.data;
 
     // Verify reCAPTCHA (skip in development)
-    const isDevelopment = process.env.NODE_ENV === 'development';
-    console.log('isDevelopment', isDevelopment);
+    const isDevelopment = process.env.NODE_ENV === "development";
+    console.log("isDevelopment", isDevelopment);
 
     if (!isDevelopment) {
       if (!data.recaptchaToken) {
         return {
           success: false,
-          message: 'Token de reCAPTCHA es requerido.',
+          message: "Token de reCAPTCHA es requerido.",
           data: rawData,
         };
       }
@@ -108,14 +108,14 @@ export async function submitContactForm(
         return {
           success: false,
           message:
-            'Verificación de reCAPTCHA falló. Por favor, inténtalo de nuevo.',
+            "Verificación de reCAPTCHA falló. Por favor, inténtalo de nuevo.",
           data: rawData,
         };
       }
     }
 
     // Get contact email from environment or use default
-    const contactEmail = process.env.CONTACT_EMAIL || 'jhonnatanhxc@gmail.com';
+    const contactEmail = process.env.CONTACT_EMAIL || "jhonnatanhxc@gmail.com";
 
     // Create email content
     const emailHtml = `
@@ -147,7 +147,7 @@ export async function submitContactForm(
               <td style="padding: 8px 0; color: #333;">${data.phone}</td>
             </tr>
             `
-                : ''
+                : ""
             }
             ${
               data.company
@@ -157,7 +157,7 @@ export async function submitContactForm(
               <td style="padding: 8px 0; color: #333;">${data.company}</td>
             </tr>
             `
-                : ''
+                : ""
             }
             <tr>
               <td style="padding: 8px 0; font-weight: bold; color: #555;">Asunto:</td>
@@ -182,7 +182,7 @@ export async function submitContactForm(
 
     // Send email using Resend
     const emailData = await resend.emails.send({
-      from: 'Jabato Contacto <noreply@jabato.com.co>',
+      from: "Jabato Contacto <noreply@jabato.com.co>",
       to: [contactEmail],
       subject: `Nuevo mensaje de contacto: ${getSubjectLabel(data.subject)} - ${data.firstName} ${data.lastName}`,
       html: emailHtml,
@@ -190,32 +190,32 @@ export async function submitContactForm(
     });
 
     if (emailData.error) {
-      console.error('Error sending email:', emailData.error);
+      console.error("Error sending email:", emailData.error);
       return {
         success: false,
-        message: 'Error al enviar el email. Por favor, inténtalo de nuevo.',
+        message: "Error al enviar el email. Por favor, inténtalo de nuevo.",
         data: data,
       };
     }
 
     return {
       success: true,
-      message: '¡Mensaje enviado con éxito! Te responderemos pronto.',
+      message: "¡Mensaje enviado con éxito! Te responderemos pronto.",
     };
   } catch (error) {
-    console.error('Error processing contact form:', error);
+    console.error("Error processing contact form:", error);
 
     // Extract form data from the error context if available
     let extractedData: Partial<ContactFormData> = {};
     try {
       extractedData = {
-        firstName: formData.get('firstName') as string,
-        lastName: formData.get('lastName') as string,
-        email: formData.get('email') as string,
-        phone: formData.get('phone') as string,
-        company: formData.get('company') as string,
-        subject: formData.get('subject') as string,
-        message: formData.get('message') as string,
+        firstName: formData.get("firstName") as string,
+        lastName: formData.get("lastName") as string,
+        email: formData.get("email") as string,
+        phone: formData.get("phone") as string,
+        company: formData.get("company") as string,
+        subject: formData.get("subject") as string,
+        message: formData.get("message") as string,
       };
     } catch {
       // If we can't extract form data, just return empty object
@@ -223,7 +223,7 @@ export async function submitContactForm(
 
     return {
       success: false,
-      message: 'Error interno del servidor. Por favor, inténtalo de nuevo.',
+      message: "Error interno del servidor. Por favor, inténtalo de nuevo.",
       data: extractedData,
     };
   }

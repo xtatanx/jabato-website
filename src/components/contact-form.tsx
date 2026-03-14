@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import {
   GoogleReCaptchaProvider,
   useGoogleReCaptcha,
-} from 'react-google-recaptcha-v3';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+} from "react-google-recaptcha-v3";
+import { submitContactForm } from "@/app/(app)/actions/contact";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { submitContactForm } from '@/app/(app)/actions/contact';
-import type { ContactFormState } from '@/lib/validations/contact';
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import type { ContactFormState } from "@/lib/validations/contact";
 
 function SubmitButton({ isPending }: { isPending: boolean }) {
   const { pending } = useFormStatus();
@@ -29,7 +29,7 @@ function SubmitButton({ isPending }: { isPending: boolean }) {
       className="w-full bg-brand hover:bg-brand/90"
       disabled={pending || isPending}
     >
-      {pending || isPending ? 'Enviando...' : 'Enviar mensaje'}
+      {pending || isPending ? "Enviando..." : "Enviar mensaje"}
     </Button>
   );
 }
@@ -41,31 +41,31 @@ function ContactFormInner() {
     FormData
   >(async (prevState: ContactFormState | null, formData: FormData) => {
     // Skip reCAPTCHA in development mode
-    const isDevelopment = process.env.NODE_ENV === 'development';
+    const isDevelopment = process.env.NODE_ENV === "development";
 
     if (!isDevelopment) {
       if (!executeRecaptcha) {
         return {
           success: false,
           message:
-            'reCAPTCHA no está disponible. Por favor, recarga la página.',
+            "reCAPTCHA no está disponible. Por favor, recarga la página.",
         };
       }
 
       try {
-        const recaptchaToken = await executeRecaptcha('contact_form');
-        formData.set('recaptchaToken', recaptchaToken);
+        const recaptchaToken = await executeRecaptcha("contact_form");
+        formData.set("recaptchaToken", recaptchaToken);
       } catch (error) {
-        console.error('reCAPTCHA execution failed:', error);
+        console.error("reCAPTCHA execution failed:", error);
         return {
           success: false,
           message:
-            'Error al ejecutar reCAPTCHA. Por favor, inténtalo de nuevo.',
+            "Error al ejecutar reCAPTCHA. Por favor, inténtalo de nuevo.",
         };
       }
     } else {
       // In development, set a dummy token
-      formData.set('recaptchaToken', 'dev-skip-recaptcha');
+      formData.set("recaptchaToken", "dev-skip-recaptcha");
     }
 
     return await submitContactForm(prevState, formData);
@@ -79,8 +79,8 @@ function ContactFormInner() {
           <div
             className={`p-4 rounded-lg ${
               state.success
-                ? 'bg-green-50 text-green-800 border border-green-200'
-                : 'bg-red-50 text-red-800 border border-red-200'
+                ? "bg-green-50 text-green-800 border border-green-200"
+                : "bg-red-50 text-red-800 border border-red-200"
             }`}
           >
             {state.message}
@@ -95,8 +95,8 @@ function ContactFormInner() {
               id="firstName"
               name="firstName"
               type="text"
-              defaultValue={state?.data?.firstName ?? ''}
-              className={state?.errors?.firstName ? 'border-red-500' : ''}
+              defaultValue={state?.data?.firstName ?? ""}
+              className={state?.errors?.firstName ? "border-red-500" : ""}
               disabled={isPending}
             />
             {state?.errors?.firstName && (
@@ -112,8 +112,8 @@ function ContactFormInner() {
               id="lastName"
               name="lastName"
               type="text"
-              defaultValue={state?.data?.lastName ?? ''}
-              className={state?.errors?.lastName ? 'border-red-500' : ''}
+              defaultValue={state?.data?.lastName ?? ""}
+              className={state?.errors?.lastName ? "border-red-500" : ""}
               disabled={isPending}
             />
             {state?.errors?.lastName && (
@@ -129,8 +129,8 @@ function ContactFormInner() {
             id="email"
             name="email"
             type="email"
-            defaultValue={state?.data?.email ?? ''}
-            className={state?.errors?.email ? 'border-red-500' : ''}
+            defaultValue={state?.data?.email ?? ""}
+            className={state?.errors?.email ? "border-red-500" : ""}
             disabled={isPending}
           />
           {state?.errors?.email && (
@@ -146,7 +146,7 @@ function ContactFormInner() {
               id="phone"
               name="phone"
               type="tel"
-              defaultValue={state?.data?.phone ?? ''}
+              defaultValue={state?.data?.phone ?? ""}
               disabled={isPending}
             />
           </div>
@@ -157,7 +157,7 @@ function ContactFormInner() {
               id="company"
               name="company"
               type="text"
-              defaultValue={state?.data?.company ?? ''}
+              defaultValue={state?.data?.company ?? ""}
               disabled={isPending}
             />
           </div>
@@ -172,7 +172,7 @@ function ContactFormInner() {
             defaultValue={state?.data?.subject}
           >
             <SelectTrigger
-              className={state?.errors?.subject ? 'border-red-500' : ''}
+              className={state?.errors?.subject ? "border-red-500" : ""}
             >
               <SelectValue placeholder="Selecciona un asunto" />
             </SelectTrigger>
@@ -195,8 +195,8 @@ function ContactFormInner() {
             id="message"
             name="message"
             rows={6}
-            defaultValue={state?.data?.message ?? ''}
-            className={state?.errors?.message ? 'border-red-500' : ''}
+            defaultValue={state?.data?.message ?? ""}
+            className={state?.errors?.message ? "border-red-500" : ""}
             disabled={isPending}
             placeholder="Cuéntanos cómo podemos ayudarte..."
           />
@@ -218,11 +218,11 @@ function ContactFormInner() {
 export default function ContactForm() {
   return (
     <GoogleReCaptchaProvider
-      reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+      reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
       scriptProps={{
         async: false,
         defer: false,
-        appendTo: 'head',
+        appendTo: "head",
         nonce: undefined,
       }}
     >

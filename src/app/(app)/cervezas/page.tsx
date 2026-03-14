@@ -2,74 +2,155 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BusinessCtaSection } from '@/components/business-cta-section';
-import { TestimonialsSection } from '@/components/testimonials-section';
-import { getAllBeers } from '@/lib/beers-data';
+import {
+  TestimonialsSection,
+  type Testimonial,
+} from '@/components/testimonials-section';
+import LexicalRenderer from '@/components/lexical-renderer';
+import { getAllBeers } from '@/lib/payload';
+import { getBeersPage, getPageData } from '@/lib/pages-data';
+import { getMediaUrl, isMediaPopulated } from '@/lib/media';
+import { extractTextFromLexical } from '@/lib/lexical-utils';
+import { unstable_cache } from 'next/cache';
 
-export const metadata: Metadata = {
-  title: 'Descubre nuestras cervezas',
-  description:
-    'Descubre el auténtico sabor artesanal de Jabato y lo que nos hace únicos.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPageData('Cervezas');
 
-export default function Cervezas() {
-  const beers = getAllBeers();
+  if (!page || !page.meta) {
+    return {
+      title: 'Descubre nuestras cervezas',
+      description:
+        'Descubre el auténtico sabor artesanal de Jabato y lo que nos hace únicos.',
+    };
+  }
 
-  // General testimonials for the cervezas page
-  const generalTestimonials = [
-    {
-      quote:
-        'La American Amber Ale de Jabato es simplemente excepcional. El equilibrio perfecto entre sabor y calidad artesanal.',
-      author: 'Carlos Rodríguez',
-      position: 'Gerente General, Bar El Refugio',
-      avatar: '/placeholder-avatar.jpg',
-    },
-    {
-      quote:
-        'Nuestros clientes no paran de pedir las cervezas Jabato. La calidad y el sabor son incomparables.',
-      author: 'María González',
-      position: 'Propietaria, Restaurante La Cervecería',
-      avatar: '/placeholder-avatar.jpg',
-    },
-    {
-      quote:
-        'Jabato ha transformado nuestra carta de cervezas. Productos artesanales de primera calidad.',
-      author: 'Javier Martínez',
-      position: 'Sommelier, Hotel Boutique Plaza',
-      avatar: '/placeholder-avatar.jpg',
-    },
-  ];
+  return {
+    title: page.meta.title || page.title,
+    description: page.meta.description || undefined,
+    openGraph: (() => {
+      const metaImage = page.meta.image;
+      if (
+        metaImage &&
+        isMediaPopulated(metaImage) &&
+        typeof metaImage === 'object' &&
+        'alt' in metaImage
+      ) {
+        return {
+          images: [
+            {
+              url: getMediaUrl(metaImage) || '',
+              alt: metaImage.alt,
+            },
+          ],
+        };
+      }
+      return undefined;
+    })(),
+  };
+}
+
+const getCachedBeers = unstable_cache(async () => getAllBeers(), ['beers'], {
+  tags: ['beers'],
+});
+
+export default async function Cervezas() {
+  const beers = await getCachedBeers();
+  const beersPageData = await getBeersPage();
+
+  if (!beersPageData) {
+    throw new Error('Cervezas page data is required but not found in CMS');
+  }
+
+  // Hero image
+  const heroImage = beersPageData.hero?.heroImage;
+  const heroImageUrl =
+    heroImage && isMediaPopulated(heroImage) ? getMediaUrl(heroImage) : null;
+  let heroImageAlt = '';
+  if (
+    heroImage &&
+    isMediaPopulated(heroImage) &&
+    typeof heroImage === 'object' &&
+    'alt' in heroImage
+  ) {
+    heroImageAlt = heroImage.alt;
+  }
+
+  // Process testimonials from CMS
+  const testimonials: Testimonial[] = beersPageData.quotesSection?.quotes
+    ? beersPageData.quotesSection.quotes
+        .filter(
+          (quoteRef) =>
+            quoteRef && typeof quoteRef === 'object' && 'value' in quoteRef,
+        )
+        .map((quoteRef) => {
+          const quote = quoteRef.value;
+          if (typeof quote !== 'object' || !quote) {
+            return null;
+          }
+
+          const testimonial: Testimonial = {
+            quote: quote.quote ? extractTextFromLexical(quote.quote) : '',
+            author: quote.author?.name || '',
+            position: quote.author?.position || '',
+          };
+
+          if (
+            quote.author?.image &&
+            typeof quote.author.image === 'object' &&
+            'url' in quote.author.image
+          ) {
+            const avatarUrl = getMediaUrl(quote.author.image);
+            if (avatarUrl) {
+              testimonial.avatar = avatarUrl;
+            }
+          }
+
+          return testimonial;
+        })
+        .filter(
+          (testimonial): testimonial is Testimonial => testimonial !== null,
+        )
+    : [];
 
   return (
     <>
       <section className="relative grid items-center gap-8 mb-12 min-h-[400px] lg:aspect-video lg:gap-12 lg:mb-20 lg:h- lg:max-h-[400px] lg:w-full">
-        <Image
-          src="/personas-tomando-jabato-amber-ale.png"
-          className="object-cover z-0"
-          alt="4 pack de Jabato enlatado"
-          fill
-          priority
-        />
-        <div className="absolute inset-0 bg-black/30 z-0"></div>
+        {heroImageUrl && (
+          <>
+            <Image
+              src={heroImageUrl}
+              className="object-cover z-0"
+              alt={heroImageAlt}
+              fill
+              priority
+            />
+            <div className="absolute inset-0 bg-black/30 z-0"></div>
+          </>
+        )}
 
         <div className="container mx-auto grid-area-1 relative z-10 px-4 text-center">
-          <h1 className="text-4xl font-extrabold uppercase text-shadow-xs text-primary-foreground sm:text-5xl md:text-6xl lg:text-7xl">
-            Nuestras <span className="text-brand">cervezas</span>
-          </h1>
+          {beersPageData.hero?.title && (
+            <LexicalRenderer
+              data={beersPageData.hero.title}
+              className="text-shadow-xs text-primary-foreground"
+              enableGutter={false}
+              enableProse={false}
+            />
+          )}
         </div>
       </section>
-      <section className="pb-12 lg:pb-20">
-        <div className="container mx-auto">
-          <p className="text-center text-lg mb-6 sm:text-xl lg:mb-8 sm:max-w-1/2 mx-auto">
-            Cada cerveza Jabato cuenta una historia de malta, lúpulo y pasión
-            inquebrantable. Esta es nuestra colección viva y en constante
-            expansión, el resultado de la experimentación con los mejores
-            ingredientes. Sumérgete en el sabor de nuestros clásicos
-            inconfundibles y mantente atento a las nuevas cervezas que nuestro
-            maestro cervecero está perfeccionando en el barril y que pronto se
-            unirán a nuestro catálogo. ¿Listo para tu próxima gran cerveza?
-          </p>
-        </div>
-      </section>
+      {beersPageData.contentSection?.title && (
+        <section className="pb-12 lg:pb-20">
+          <div className="container mx-auto">
+            <LexicalRenderer
+              data={beersPageData.contentSection.title}
+              className="text-center text-lg sm:text-xl mb-6 sm:max-w-1/2 mx-auto lg:mb-8"
+              enableGutter={false}
+              enableProse={false}
+            />
+          </div>
+        </section>
+      )}
       <section className="pb-12 lg:pb-20">
         <div className="container mx-auto px-4">
           <div className="sm:max-w-8/12 mx-auto">
@@ -103,7 +184,10 @@ export default function Cervezas() {
       </section>
 
       {/* Testimonials Section */}
-      <TestimonialsSection testimonials={generalTestimonials} />
+      <TestimonialsSection
+        title={beersPageData.quotesSection?.title ?? undefined}
+        testimonials={testimonials}
+      />
 
       {/* Business CTA Section */}
       <BusinessCtaSection />

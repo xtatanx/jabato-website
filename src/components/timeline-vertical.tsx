@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import Image from "next/image";
+import { useRef } from "react";
 
 interface TimelineMilestone {
   year: string;
@@ -23,7 +23,7 @@ export default function TimelineVertical({
   // Track scroll progress relative to the timeline container
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ['start center', 'end center'],
+    offset: ["start center", "end center"],
   });
 
   // Apply spring physics for ultra-smooth animation
@@ -34,7 +34,7 @@ export default function TimelineVertical({
   });
 
   // Transform scroll progress to height percentage
-  const heightPercentage = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
+  const heightPercentage = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
 
   return (
     <div ref={timelineRef} className="relative">
@@ -46,7 +46,7 @@ export default function TimelineVertical({
         className="absolute left-1/2 -translate-x-1/2 top-0 w-1 bg-brand origin-top"
         style={{
           height: heightPercentage,
-          willChange: 'transform',
+          willChange: "transform",
         }}
       />
 
@@ -59,14 +59,14 @@ export default function TimelineVertical({
               key={milestone.year}
               className={`relative flex ${
                 isLeft
-                  ? 'md:flex-row md:pr-[50%] md:pl-0'
-                  : 'md:flex-row-reverse md:pl-[50%] md:pr-0'
+                  ? "md:flex-row md:pr-[50%] md:pl-0"
+                  : "md:flex-row-reverse md:pl-[50%] md:pr-0"
               } pl-16 md:pl-0 md:pr-0`}
               itemScope
               itemType="https://schema.org/Event"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{
                 duration: 0.6,
                 ease: [0.22, 1, 0.36, 1],
@@ -76,16 +76,16 @@ export default function TimelineVertical({
               <motion.div
                 className={`absolute top-0 w-7 h-7 md:w-10 md:h-10 bg-brand rounded-full border-4 md:border-[5px] border-primary z-10 ${
                   isLeft
-                    ? 'left-8 md:left-1/2 md:-translate-x-1/2'
-                    : 'left-8 md:left-1/2 md:-translate-x-1/2'
+                    ? "left-8 md:left-1/2 md:-translate-x-1/2"
+                    : "left-8 md:left-1/2 md:-translate-x-1/2"
                 }`}
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
-                viewport={{ once: true, margin: '-100px' }}
+                viewport={{ once: true, margin: "-100px" }}
                 transition={{
                   duration: 0.5,
                   delay: 0.2,
-                  type: 'spring',
+                  type: "spring",
                   stiffness: 200,
                   damping: 15,
                 }}
@@ -94,8 +94,8 @@ export default function TimelineVertical({
               <div
                 className={`flex flex-col gap-3 md:gap-4 ${
                   isLeft
-                    ? 'md:pr-10 lg:pr-12 md:items-end md:text-right'
-                    : 'md:pl-10 lg:pl-12 md:items-start md:text-left'
+                    ? "md:pr-10 lg:pr-12 md:items-end md:text-right"
+                    : "md:pl-10 lg:pl-12 md:items-start md:text-left"
                 }`}
               >
                 <time

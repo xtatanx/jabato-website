@@ -1,35 +1,35 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Beer, Flame, Droplet, Award, AlertTriangle } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import type { BeerData } from '@/lib/beers-data';
+import { AlertTriangle, Award, Beer, Droplet, Flame } from "lucide-react";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import type { BeerData } from "@/lib/beers-data";
 
 interface BeerProductInfoProps {
   beer: BeerData;
 }
 
-type PackSize = '6-bottles' | '12-bottles' | '24-bottles';
+type PackSize = "6-bottles" | "12-bottles" | "24-bottles";
 
 export function BeerProductInfo({ beer }: BeerProductInfoProps) {
-  const [selectedPack, setSelectedPack] = useState<PackSize>('6-bottles');
+  const [selectedPack, setSelectedPack] = useState<PackSize>("6-bottles");
 
   const whatsappMessage = encodeURIComponent(
     `¡Hola! Me interesa comprar ${beer.name} (${
-      selectedPack === '6-bottles'
-        ? '6 botellas'
-        : selectedPack === '12-bottles'
-        ? '12 botellas'
-        : '24 botellas'
-    }). ¿Podrían darme más información sobre disponibilidad y precios?`
+      selectedPack === "6-bottles"
+        ? "6 botellas"
+        : selectedPack === "12-bottles"
+          ? "12 botellas"
+          : "24 botellas"
+    }). ¿Podrían darme más información sobre disponibilidad y precios?`,
   );
   const whatsappUrl = `https://wa.me/573337058517?text=${whatsappMessage}`;
 
   const packOptions: { key: PackSize; label: string }[] = [
-    { key: '6-bottles', label: '6 botellas' },
-    { key: '12-bottles', label: '12 botellas' },
-    { key: '24-bottles', label: '24 botellas' },
+    { key: "6-bottles", label: "6 botellas" },
+    { key: "12-bottles", label: "12 botellas" },
+    { key: "24-bottles", label: "24 botellas" },
   ];
 
   return (
@@ -60,13 +60,13 @@ export function BeerProductInfo({ beer }: BeerProductInfoProps) {
           {packOptions.map((pack) => (
             <Button
               key={pack.key}
-              variant={selectedPack === pack.key ? 'default' : 'outline'}
+              variant={selectedPack === pack.key ? "default" : "outline"}
               size="lg"
               onClick={() => setSelectedPack(pack.key)}
               className={
                 selectedPack === pack.key
-                  ? 'bg-primary text-primary-foreground'
-                  : ''
+                  ? "bg-primary text-primary-foreground"
+                  : ""
               }
             >
               {pack.label}
@@ -78,11 +78,11 @@ export function BeerProductInfo({ beer }: BeerProductInfoProps) {
       {/* Price */}
       <div className="space-y-2">
         <p className="text-sm text-muted-foreground">
-          COP ${beer.packs[selectedPack].unitPrice.toLocaleString('es-CO')} por
+          COP ${beer.packs[selectedPack].unitPrice.toLocaleString("es-CO")} por
           botella de {beer.volume}
         </p>
         <p className="text-3xl font-bold">
-          COP ${beer.packs[selectedPack].price.toLocaleString('es-CO')}
+          COP ${beer.packs[selectedPack].price.toLocaleString("es-CO")}
         </p>
       </div>
 
