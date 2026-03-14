@@ -14,10 +14,15 @@ export function getMediaUrl(media: Media | number | null | undefined): string | 
     return null;
   }
 
-  // Media object should have url property
   if (media.url) {
-    // Return relative path (already includes /media/ prefix from Payload)
-    return media.url;
+    const url = media.url;
+    if (url.startsWith('http')) {
+      return url;
+    }
+    const base =
+      process.env.NEXT_PUBLIC_SITE_URL ??
+      (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '');
+    return base ? `${base.replace(/\/$/, '')}${url.startsWith('/') ? url : `/${url}`}` : url;
   }
 
   return null;
