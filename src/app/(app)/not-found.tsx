@@ -1,6 +1,7 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   Empty,
   EmptyContent,
@@ -8,13 +9,12 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from '@/components/ui/empty';
-import type { Metadata } from 'next';
+} from "@/components/ui/empty";
 
 export const metadata: Metadata = {
-  title: '404 - Página No Encontrada',
+  title: "404 - Página No Encontrada",
   description:
-    'La página que buscas no existe. Vuelve al inicio para explorar nuestras cervezas artesanales.',
+    "La página que buscas no existe. Vuelve al inicio para explorar nuestras cervezas artesanales.",
 };
 
 export default function NotFound() {
@@ -48,7 +48,7 @@ export default function NotFound() {
             </Button>
           </div>
           <p className="text-sm text-muted-foreground mt-6">
-            ¿Necesitas ayuda?{' '}
+            ¿Necesitas ayuda?{" "}
             <Link
               href="/contacto"
               className="underline hover:text-primary transition-colors"

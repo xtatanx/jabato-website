@@ -6,6 +6,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import LexicalRenderer from './lexical-renderer';
+import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical';
 
 export interface Testimonial {
   quote: string;
@@ -15,23 +17,26 @@ export interface Testimonial {
 }
 
 interface TestimonialsSectionProps {
-  title?: React.ReactNode;
+  title?: DefaultTypedEditorState | null;
   testimonials: Testimonial[];
 }
 
 export function TestimonialsSection({
-  title = (
-    <>
-      Lo que dicen nuestros <span className="text-brand">clientes</span>
-    </>
-  ),
+  title,
   testimonials,
 }: TestimonialsSectionProps) {
   return (
     <section className="pb-12 lg:pb-20 bg-primary text-primary-foreground">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-extrabold text-center mb-8 sm:text-4xl lg:text-5xl pt-12 lg:pt-20 uppercase">
-          {title}
+          {title ? (
+            <LexicalRenderer
+              data={title}
+              className="text-shadow-xs text-primary-foreground"
+              enableGutter={false}
+              enableProse={false}
+            />
+          ) : null}
         </h2>
 
         <div className="relative">
@@ -39,33 +44,35 @@ export function TestimonialsSection({
             <CarouselContent>
               {testimonials.map((testimonial) => (
                 <CarouselItem key={testimonial.author}>
-                  <div className="flex flex-col gap-6 p-6 text-center">
-                    <p className="text-4xl md:text-5xl lg:text-6xl italic font-extrabold leading-none">
-                      "{testimonial.quote}"
-                    </p>
-                    <div className="flex items-center justify-center gap-4 mt-4">
-                      <div className="w-16 h-16 flex-shrink-0">
-                        <div className="relative w-full h-full rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              testimonial.avatar || '/placeholder-avatar.jpg'
-                            }
-                            alt={testimonial.author}
-                            fill
-                            className="object-cover"
-                          />
+                  <article className="flex flex-col gap-6 p-6 text-center">
+                    <blockquote>
+                      <p className="text-2xl md:text-3xl lg:text-4xl italic font-extrabold leading-none">
+                        "{testimonial.quote}"
+                      </p>
+                      <footer className="flex items-center justify-center gap-4 mt-4">
+                        <div className="w-16 h-16 flex-shrink-0">
+                          <div className="relative w-full h-full rounded-full overflow-hidden">
+                            <Image
+                              src={
+                                testimonial.avatar || '/placeholder-avatar.jpg'
+                              }
+                              alt={testimonial.author}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-left">
-                        <p className="font-bold text-lg">
-                          {testimonial.author}
-                        </p>
-                        <p className="text-primary-foreground/70 text-sm">
-                          {testimonial.position}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                        <cite className="not-italic text-left">
+                          <span className="block font-bold text-lg">
+                            {testimonial.author}
+                          </span>
+                          <span className="block text-primary-foreground/70 text-sm">
+                            {testimonial.position}
+                          </span>
+                        </cite>
+                      </footer>
+                    </blockquote>
+                  </article>
                 </CarouselItem>
               ))}
             </CarouselContent>

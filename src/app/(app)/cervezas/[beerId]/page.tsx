@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { BeerProductInfo } from '@/components/beer-product-info';
 import { BeerProductGallery } from '@/components/beer-product-gallery';
+import { BeerProductInfo } from '@/components/beer-product-info';
 import { BusinessCtaSection } from '@/components/business-cta-section';
 import { TestimonialsSection } from '@/components/testimonials-section';
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +14,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { getBeerBySlug } from '@/lib/beers-data';
+import { getBeerBySlug } from '@/lib/payload';
 
 interface BeerDetailPageProps {
   params: Promise<{ beerId: string }>;
@@ -24,7 +24,7 @@ export async function generateMetadata({
   params,
 }: BeerDetailPageProps): Promise<Metadata> {
   const { beerId } = await params;
-  const beer = getBeerBySlug(beerId);
+  const beer = await getBeerBySlug(beerId);
 
   if (!beer) {
     return {
@@ -40,7 +40,7 @@ export async function generateMetadata({
 
 export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
   const { beerId } = await params;
-  const beer = getBeerBySlug(beerId);
+  const beer = await getBeerBySlug(beerId);
 
   if (!beer) {
     notFound();
@@ -76,7 +76,6 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
           <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-8 lg:gap-16">
             {/* Product Gallery */}
             <BeerProductGallery
-              mainImage={beer.images.main}
               thumbnails={beer.images.thumbnails}
               beerName={beer.name}
             />
@@ -121,36 +120,25 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
                 </h2>
               </div>
 
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold">
-                  ¿Por qué elegir {beer.name}?
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Esta cerveza tipo {beer.style} se elabora con{' '}
-                  {beer.ingredients.malts[0]} y lúpulos{' '}
-                  {beer.ingredients.hops[0]}, creando un perfil único de sabor.
-                  Con {beer.abv}% de alcohol y {beer.ibu} IBUs, es perfecta para
-                  quienes buscan una cerveza artesanal de calidad excepcional.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold">Servir y Conservar</h3>
-                <div className="text-sm space-y-2 text-muted-foreground">
-                  <p>
-                    <strong>Temperatura ideal:</strong> Servir entre 6-8°C para
-                    disfrutar todos sus aromas y sabores.
-                  </p>
-                  <p>
-                    <strong>Conservación:</strong> Mantener en lugar fresco y
-                    oscuro. Una vez abierta, consumir inmediatamente.
-                  </p>
-                  <p>
-                    <strong>Mejor momento:</strong> Perfecta para compartir en
-                    buena compañía y celebrar momentos especiales.
+              {beer.whyChoose && (
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold">
+                    ¿Por qué elegir {beer.name}?
+                  </h3>
+                  <p className="text-sm text-muted-foreground whitespace-pre-line">
+                    {beer.whyChoose}
                   </p>
                 </div>
-              </div>
+              )}
+
+              {beer.servingAndStorage && (
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold">Servir y Conservar</h3>
+                  <div className="text-sm space-y-2 text-muted-foreground whitespace-pre-line">
+                    {beer.servingAndStorage}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Right Column - Tasting Notes */}
@@ -201,7 +189,10 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
       </section>
 
       {/* Testimonials Section */}
-      <TestimonialsSection testimonials={beer.testimonials} />
+      <TestimonialsSection
+        title={beer.testimonialsSectionTitle ?? undefined}
+        testimonials={beer.testimonials}
+      />
 
       {/* Business CTA Section */}
       <BusinessCtaSection />
