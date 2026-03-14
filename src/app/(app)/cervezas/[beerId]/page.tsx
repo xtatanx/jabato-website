@@ -1,11 +1,12 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { BeerProductGallery } from '@/components/beer-product-gallery';
-import { BeerProductInfo } from '@/components/beer-product-info';
-import { BusinessCtaSection } from '@/components/business-cta-section';
-import { TestimonialsSection } from '@/components/testimonials-section';
-import { Badge } from '@/components/ui/badge';
+import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { BeerProductGallery } from "@/components/beer-product-gallery";
+import { BeerProductInfo } from "@/components/beer-product-info";
+import { BusinessCtaSection } from "@/components/business-cta-section";
+import { TestimonialsSection } from "@/components/testimonials-section";
+import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,8 +14,14 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { getBeerBySlug } from '@/lib/payload';
+} from "@/components/ui/breadcrumb";
+import { getBeerBySlug } from "@/lib/payload";
+
+function getCachedBeerBySlug(beerId: string) {
+  return unstable_cache(() => getBeerBySlug(beerId), ["beer", beerId], {
+    tags: ["beers", `beer-${beerId}`],
+  })();
+}
 
 interface BeerDetailPageProps {
   params: Promise<{ beerId: string }>;
@@ -24,11 +31,11 @@ export async function generateMetadata({
   params,
 }: BeerDetailPageProps): Promise<Metadata> {
   const { beerId } = await params;
-  const beer = await getBeerBySlug(beerId);
+  const beer = await getCachedBeerBySlug(beerId);
 
   if (!beer) {
     return {
-      title: 'Cerveza no encontrada',
+      title: "Cerveza no encontrada",
     };
   }
 
@@ -40,7 +47,7 @@ export async function generateMetadata({
 
 export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
   const { beerId } = await params;
-  const beer = await getBeerBySlug(beerId);
+  const beer = await getCachedBeerBySlug(beerId);
 
   if (!beer) {
     notFound();
@@ -148,20 +155,20 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
                 <h3 className="text-lg font-semibold mb-3">Ingredientes</h3>
                 <div className="space-y-2 text-sm">
                   <p>
-                    <strong>Maltas:</strong>{' '}
+                    <strong>Maltas:</strong>{" "}
                     <span className="text-muted-foreground">
-                      {beer.ingredients.malts.join(', ')}
+                      {beer.ingredients.malts.join(", ")}
                     </span>
                   </p>
                   <p>
-                    <strong>Lúpulos:</strong>{' '}
+                    <strong>Lúpulos:</strong>{" "}
                     <span className="text-muted-foreground">
-                      {beer.ingredients.hops.join(', ')}
+                      {beer.ingredients.hops.join(", ")}
                     </span>
                   </p>
                   {beer.ingredients.yeast && (
                     <p>
-                      <strong>Levadura:</strong>{' '}
+                      <strong>Levadura:</strong>{" "}
                       <span className="text-muted-foreground">
                         {beer.ingredients.yeast}
                       </span>
