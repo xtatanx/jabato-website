@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useState } from 'react';
-import { ImageGalleryDialog } from '@/components/image-gallery-dialog';
+import Image from "next/image";
+import { useState } from "react";
+import { ImageGalleryDialog } from "@/components/image-gallery-dialog";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/ui/carousel';
+} from "@/components/ui/carousel";
 
 interface BeerProductGalleryProps {
   thumbnails: string[];
@@ -75,8 +75,8 @@ export function BeerProductGallery({
                   onClick={() => handleThumbnailClick(index)}
                   className={`relative aspect-square overflow-hidden rounded-lg cursor-pointer transition-all duration-200 border-2 w-full ${
                     isActive
-                      ? 'border-primary ring-2 ring-primary/20'
-                      : 'border-transparent hover:border-primary/50'
+                      ? "border-primary ring-2 ring-primary/20"
+                      : "border-transparent hover:border-primary/50"
                   }`}
                   aria-label={`Ver imagen ${index + 1} de ${beerName}`}
                 >

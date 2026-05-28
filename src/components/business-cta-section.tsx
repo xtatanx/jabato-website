@@ -1,3 +1,4 @@
+import { site } from "@content/site";
 import { Button } from "@/components/ui/button";
 
 interface BusinessCtaSectionProps {
@@ -12,7 +13,7 @@ export function BusinessCtaSection({
   whatsappMessage = "Hola, soy dueño de un negocio y estoy interesado en vender Jabato en mi establecimiento. Me gustaría conocer más información.",
 }: BusinessCtaSectionProps) {
   const encodedMessage = encodeURIComponent(whatsappMessage);
-  const whatsappUrl = `https://wa.me/573337058517?text=${encodedMessage}`;
+  const whatsappUrl = `https://wa.me/${site.contact.whatsapp}?text=${encodedMessage}`;
 
   return (
     <section className="py-12 lg:py-20">

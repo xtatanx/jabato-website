@@ -1,10 +1,10 @@
-import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { ArrowRight } from 'lucide-react';
-import { BusinessCtaSection } from '@/components/business-cta-section';
-import { Badge } from '@/components/ui/badge';
+import { ArrowRight } from "lucide-react";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { BusinessCtaSection } from "@/components/business-cta-section";
+import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,78 +12,48 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { getPostBySlug, getPostsByCategory } from '@/lib/blog-data';
-import LexicalRenderer from '@/components/lexical-renderer';
+} from "@/components/ui/breadcrumb";
+import { getPostBySlug, getPostSlugs, getRelatedPosts } from "@/lib/content";
+import { formatPostDate, getCategoryLabel } from "@/lib/post-format";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
 }
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  const months = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
-
-  return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-}
-
-function getCategoryLabel(category: string): string {
-  const labels: Record<string, string> = {
-    historias: 'Historias',
-    catas: 'Catas',
-    experiencias: 'Experiencias',
-  };
-  return labels[category] || category;
+export function generateStaticParams() {
+  return getPostSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
-
-  if (!post) {
-    return {
-      title: 'Post no encontrado',
-    };
-  }
-
+  const result = await getPostBySlug(slug);
+  if (!result) return { title: "Post no encontrado" };
+  const { post } = result;
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: post.seo.title ?? post.title,
+    description: post.seo.description ?? post.excerpt,
+    openGraph: post.seo.ogImage
+      ? { images: [{ url: post.seo.ogImage }] }
+      : {
+          images: [
+            { url: post.featuredImage.src, alt: post.featuredImage.alt },
+          ],
+        },
   };
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const result = await getPostBySlug(slug);
+  if (!result) notFound();
 
-  if (!post) {
-    notFound();
-  }
-
-  // Get related posts (same category, excluding current post, limit 3)
-  const allRelatedPosts = await getPostsByCategory(post.category, 1, 100);
-  const relatedPosts = allRelatedPosts
-    .filter((p) => p.slug !== post.slug)
-    .slice(0, 3);
+  const { Component, post } = result;
+  const relatedPosts = await getRelatedPosts(post.category, post.slug, 3);
 
   return (
     <>
-      {/* Breadcrumbs */}
       <section className="pt-8 lg:pt-12 pb-6">
         <div className="container mx-auto px-4">
           <Breadcrumb>
@@ -108,20 +78,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
       </section>
 
-      {/* Hero Image Section */}
       <section className="pb-8 lg:pb-12">
         <div className="container mx-auto px-4">
           <div className="relative aspect-video lg:aspect-[21/9] rounded-lg overflow-hidden mb-8 lg:mb-12">
             <Image
-              src={post.featuredImage}
-              alt={post.title}
+              src={post.featuredImage.src}
+              alt={post.featuredImage.alt}
               fill
               className="object-cover"
               priority
             />
           </div>
 
-          {/* Post Header */}
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-3 mb-6">
               <Badge
@@ -134,7 +102,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 dateTime={post.publishedDate}
                 className="text-sm sm:text-base lg:text-lg text-secondary-foreground/80"
               >
-                {formatDate(post.publishedDate)}
+                {formatPostDate(post.publishedDate)}
               </time>
             </div>
 
@@ -149,22 +117,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
       </section>
 
-      {/* Post Content Section */}
       <section className="pb-12 lg:pb-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <article className="prose prose-lg sm:prose-xl lg:prose-2xl prose-headings:font-extrabold prose-headings:text-secondary-foreground prose-p:text-secondary-foreground/80 prose-p:leading-relaxed prose-a:text-brand prose-a:no-underline hover:prose-a:underline prose-strong:text-secondary-foreground prose-ul:text-secondary-foreground/80 prose-ol:text-secondary-foreground/80">
-              <LexicalRenderer
-                data={post.content}
-                enableProse={true}
-                enableGutter={false}
-              />
-            </article>
-          </div>
+          <article className="prose prose-lg sm:prose-xl lg:prose-2xl mx-auto prose-headings:font-extrabold prose-headings:text-secondary-foreground prose-p:text-secondary-foreground/80 prose-p:leading-relaxed prose-a:text-brand prose-a:no-underline hover:prose-a:underline prose-strong:text-secondary-foreground prose-ul:text-secondary-foreground/80 prose-ol:text-secondary-foreground/80">
+            <Component />
+          </article>
         </div>
       </section>
 
-      {/* Related Posts Section */}
       {relatedPosts.length > 0 && (
         <section className="bg-primary py-12 lg:py-20">
           <div className="container mx-auto px-4">
@@ -178,14 +138,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 {relatedPosts.map((relatedPost) => (
                   <Link
-                    key={relatedPost.id}
+                    key={relatedPost.slug}
                     href={`/blog/${relatedPost.slug}`}
                     className="group flex flex-col gap-3"
                   >
                     <div className="aspect-square relative rounded overflow-hidden">
                       <Image
-                        src={relatedPost.featuredImage}
-                        alt={relatedPost.title}
+                        src={relatedPost.featuredImage.src}
+                        alt={relatedPost.featuredImage.alt}
                         fill
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                         loading="lazy"
@@ -202,7 +162,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         dateTime={relatedPost.publishedDate}
                         className="text-sm sm:text-md text-brand"
                       >
-                        {formatDate(relatedPost.publishedDate)}
+                        {formatPostDate(relatedPost.publishedDate)}
                       </time>
                     </div>
                     <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-primary-foreground group-hover:text-brand transition-colors duration-200">
@@ -229,7 +189,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </section>
       )}
 
-      {/* Business CTA Section */}
       <BusinessCtaSection />
     </>
   );

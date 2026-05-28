@@ -1,0 +1,51 @@
+---
+title: "Cerveza Artesanal | Jabato Cervecería"
+seo:
+  description: "Cervezas artesanales hechas en Colombia. ¡Somos la cervecería que nació grande desde pequeña!"
+---
+
+<Hero
+  image="/images/heroes/home.jpg"
+  imageAlt="Botellas de Jabato sobre una barra"
+  size="tall"
+  align="left"
+  cta={{ href: "/cervezas", label: "Conoce nuestras cervezas" }}
+>
+  Craft Your <span className="text-brand">Life</span>
+</Hero>
+
+<Lede>
+  Cerveza con alma, hecha a pulso y a frentera. Lotes pequeños, sabor grande.
+</Lede>
+
+<FeatureRow
+  image="/images/heroes/historia-teaser.jpg"
+  imageAlt="Equipo Jabato en el cuarto de cocción"
+  title="Nuestra historia"
+  highlight="historia"
+  description="Empezamos como dos homebrewers obsesionados con la calidad. Hoy Jabato es una cervecería con alma, hecha por gente que ama lo que hace."
+  cta={{ href: "/historia", label: "Conoce nuestra historia" }}
+  imagePosition="left"
+  tone="light"
+/>
+
+<FeatureRow
+  image="/images/heroes/beers-teaser.jpg"
+  imageAlt="Variedad de cervezas Jabato"
+  title="Nuestras cervezas"
+  highlight="cervezas"
+  description="American Amber Ale, West Coast IPA, Belgian Blond Ale y más. Cada estilo es resultado de pasión y obsesión por el detalle."
+  cta={{ href: "/cervezas", label: "Ver el catálogo" }}
+  imagePosition="right"
+  tone="dark"
+/>
+
+<section className="bg-primary py-12 lg:py-20">
+  <div className="container mx-auto flex flex-col gap-6 lg:gap-8 items-center px-4">
+    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground text-center uppercase">
+      Lo último del <span className="text-brand">blog</span>
+    </h2>
+
+    <PostGrid limit={4} tone="light" />
+  </div>
+</section>

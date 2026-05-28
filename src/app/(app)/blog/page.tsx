@@ -1,84 +1,63 @@
-import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
-import { createLoader, parseAsInteger, parseAsString } from 'nuqs/server';
-import { BlogCategoryFilter } from '@/components/blog-category-filter';
-import { BusinessCtaSection } from '@/components/business-cta-section';
-import LexicalRenderer from '@/components/lexical-renderer';
-import { Badge } from '@/components/ui/badge';
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { createLoader, parseAsInteger, parseAsString } from "nuqs/server";
+import { BlogCategoryFilter } from "@/components/blog-category-filter";
+import { BusinessCtaSection } from "@/components/business-cta-section";
+import { Badge } from "@/components/ui/badge";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
+} from "@/components/ui/pagination";
 import {
   getFeaturedPost,
+  getPage,
   getPostsByCategory,
   getTotalPages,
-} from '@/lib/blog-data';
-import { getBlogPage } from '@/lib/pages-data';
-import { getMediaUrl, isMediaPopulated } from '@/lib/media';
+} from "@/lib/content";
+import { PostCategorySchema } from "@/lib/content/schemas";
+import { formatPostDate, getCategoryLabel } from "@/lib/post-format";
 
-export const metadata: Metadata = {
-  title: 'Nuestro Blog',
-  description:
-    'Descubre historias, catas y experiencias sobre cerveza artesanal Jabato.',
-};
-
-const BLOG_PAGE_TITLE = 'Nuestro Blog';
-const DEFAULT_HERO_IMAGE = '/personas-tomando-jabato-amber-ale.png';
-const DEFAULT_HERO_ALT = 'Personas tomando Jabato Amber Ale';
-const DEFAULT_POSTS_PER_PAGE = 6;
+const POSTS_PER_PAGE = 6;
 
 const loadBlogSearchParams = createLoader({
-  category: parseAsString.withDefault('todas'),
+  category: parseAsString.withDefault("todas"),
   page: parseAsInteger.withDefault(1),
 });
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  const months = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
-
-  return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-}
-
-function getCategoryLabel(category: string): string {
-  const labels: Record<string, string> = {
-    historias: 'Historias',
-    catas: 'Catas',
-    experiencias: 'Experiencias',
-  };
-  return labels[category] || category;
+function parseCategory(value: string) {
+  if (value === "todas") return null;
+  const parsed = PostCategorySchema.safeParse(value);
+  return parsed.success ? parsed.data : null;
 }
 
 function buildPaginationHref(
   category: string,
   page: number,
   totalPages: number,
-  direction: 'prev' | 'next'
+  direction: "prev" | "next",
 ): string {
-  if (direction === 'prev' && page <= 1) return '#';
-  if (direction === 'next' && page >= totalPages) return '#';
-  const targetPage = direction === 'prev' ? page - 1 : page + 1;
+  if (direction === "prev" && page <= 1) return "#";
+  if (direction === "next" && page >= totalPages) return "#";
+  const targetPage = direction === "prev" ? page - 1 : page + 1;
   const params = new URLSearchParams();
-  if (category !== 'todas') params.set('category', category);
-  params.set('page', String(targetPage));
+  if (category !== "todas") params.set("category", category);
+  params.set("page", String(targetPage));
   return `/blog?${params.toString()}`;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { frontmatter } = await getPage("blog");
+  return {
+    title: frontmatter.seo.title ?? frontmatter.title,
+    description: frontmatter.seo.description,
+    openGraph: frontmatter.seo.ogImage
+      ? { images: [{ url: frontmatter.seo.ogImage }] }
+      : undefined,
+  };
 }
 
 interface BlogPageProps {
@@ -89,86 +68,20 @@ interface BlogPageProps {
 }
 
 export default async function BlogPage({ searchParams }: BlogPageProps) {
-  const { category, page } = await loadBlogSearchParams(searchParams);
+  const { category: categoryParam, page } =
+    await loadBlogSearchParams(searchParams);
+  const category = parseCategory(categoryParam);
 
-  const block = await getBlogPage(BLOG_PAGE_TITLE);
-  const postsPerPage =
-    block?.postsPerPage ?? DEFAULT_POSTS_PER_PAGE;
-  const showFeaturedPost = block?.showFeaturedPost ?? true;
-  const showCategoryFilter = block?.showCategoryFilter ?? true;
-  const showBusinessCta = block?.showBusinessCta ?? true;
-
-  const featuredPost = showFeaturedPost ? await getFeaturedPost() : null;
-  const posts = await getPostsByCategory(
-    category === 'todas' ? null : category,
-    page,
-    postsPerPage
-  );
-  const totalPages = await getTotalPages(
-    category === 'todas' ? null : category,
-    postsPerPage
-  );
-
-  const heroImage = block?.hero?.heroImage;
-  const populatedHeroImage =
-    heroImage && isMediaPopulated(heroImage) ? heroImage : null;
-  const heroImageUrl = populatedHeroImage ? getMediaUrl(populatedHeroImage) : null;
-  const heroImageSrc = heroImageUrl ?? DEFAULT_HERO_IMAGE;
-  const heroImageAlt =
-    (populatedHeroImage && typeof populatedHeroImage === 'object' && 'alt' in populatedHeroImage
-      ? (populatedHeroImage as { alt?: string }).alt
-      : null) ?? DEFAULT_HERO_ALT;
+  const { Component } = await getPage("blog");
+  const featuredPost = await getFeaturedPost();
+  const posts = await getPostsByCategory(category, page, POSTS_PER_PAGE);
+  const totalPages = await getTotalPages(category, POSTS_PER_PAGE);
 
   return (
     <>
-      <section className="relative grid items-center gap-8 mb-12 min-h-[400px] lg:aspect-video lg:gap-12 lg:mb-20 lg:max-h-[400px] lg:w-full">
-        <Image
-          src={heroImageSrc}
-          className="object-cover z-0"
-          alt={heroImageAlt}
-          fill
-          priority
-        />
-        <div className="absolute inset-0 bg-black/30 z-0" />
+      <Component />
 
-        <div className="container mx-auto grid-area-1 relative z-10 px-4 text-center">
-          {block?.hero?.title ? (
-            <LexicalRenderer
-              data={block.hero.title}
-              className="text-4xl font-extrabold uppercase text-shadow-xs text-primary-foreground sm:text-5xl md:text-6xl lg:text-7xl"
-              enableGutter={false}
-              enableProse={false}
-            />
-          ) : (
-            <h1 className="text-4xl font-extrabold uppercase text-shadow-xs text-primary-foreground sm:text-5xl md:text-6xl lg:text-7xl">
-              Nuestro <span className="text-brand">Blog</span>
-            </h1>
-          )}
-        </div>
-      </section>
-
-      {(block?.introSection?.text ?? true) && (
-        <section className="pb-12 lg:pb-20">
-          <div className="container mx-auto">
-            {block?.introSection?.text ? (
-              <LexicalRenderer
-                data={block.introSection.text}
-                className="text-center text-lg mb-6 sm:text-xl lg:mb-8 sm:max-w-1/2 mx-auto text-secondary-foreground"
-                enableGutter={false}
-                enableProse={false}
-              />
-            ) : (
-              <p className="text-center text-lg mb-6 sm:text-xl lg:mb-8 sm:max-w-1/2 mx-auto">
-                Explora nuestras historias, catas y experiencias sobre cerveza
-                artesanal. Descubre consejos, guías y relatos de nuestra pasión
-                por la cerveza #APulsoYFrentera.
-              </p>
-            )}
-          </div>
-        </section>
-      )}
-
-      {showFeaturedPost && featuredPost && (
+      {featuredPost && (
         <section className="bg-primary py-12 lg:py-20">
           <div className="container mx-auto px-4">
             <Link
@@ -178,8 +91,8 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               <div className="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-8 lg:gap-16">
                 <div className="relative aspect-video lg:aspect-[4/3] rounded-lg overflow-hidden">
                   <Image
-                    src={featuredPost.featuredImage}
-                    alt={featuredPost.title}
+                    src={featuredPost.featuredImage.src}
+                    alt={featuredPost.featuredImage.alt}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     priority
@@ -197,7 +110,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                       dateTime={featuredPost.publishedDate}
                       className="text-sm sm:text-base lg:text-lg text-primary-foreground/90"
                     >
-                      {formatDate(featuredPost.publishedDate)}
+                      {formatPostDate(featuredPost.publishedDate)}
                     </time>
                   </div>
                   <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground group-hover:text-brand transition-colors duration-200 leading-tight">
@@ -215,6 +128,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                       viewBox="0 0 24 24"
                       aria-hidden="true"
                     >
+                      <title>Leer más</title>
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -230,27 +144,16 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </section>
       )}
 
-      {showCategoryFilter && (
-        <section className="py-12 lg:py-20">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col gap-8 items-center">
-              {block?.categorySection?.title ? (
-                <LexicalRenderer
-                  data={block.categorySection.title}
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-secondary-foreground text-center uppercase"
-                  enableGutter={false}
-                  enableProse={false}
-                />
-              ) : (
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-secondary-foreground text-center uppercase">
-                  Explora por <span className="text-brand">Categoría</span>
-                </h2>
-              )}
-              <BlogCategoryFilter />
-            </div>
+      <section className="py-12 lg:py-20">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col gap-8 items-center">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-secondary-foreground text-center uppercase">
+              Explora por <span className="text-brand">Categoría</span>
+            </h2>
+            <BlogCategoryFilter />
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       <section className="pb-12 lg:pb-20">
         <div className="container mx-auto px-4">
@@ -259,14 +162,14 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12">
                 {posts.map((post) => (
                   <Link
-                    key={post.id}
+                    key={post.slug}
                     href={`/blog/${post.slug}`}
                     className="group flex flex-col gap-3"
                   >
                     <div className="aspect-square relative rounded overflow-hidden">
                       <Image
-                        src={post.featuredImage}
-                        alt={post.title}
+                        src={post.featuredImage.src}
+                        alt={post.featuredImage.alt}
                         fill
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                         loading="lazy"
@@ -283,15 +186,12 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                         dateTime={post.publishedDate}
                         className="text-sm sm:text-md text-brand"
                       >
-                        {formatDate(post.publishedDate)}
+                        {formatPostDate(post.publishedDate)}
                       </time>
                     </div>
                     <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-secondary-foreground group-hover:text-brand transition-colors duration-200">
                       {post.title}
                     </h3>
-                    <span className="sr-only">
-                      {post.title} - {getCategoryLabel(post.category)}
-                    </span>
                     <p className="text-base sm:text-lg text-secondary-foreground/80 line-clamp-2">
                       {post.excerpt}
                     </p>
@@ -305,11 +205,16 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                     <PaginationContent>
                       <PaginationItem>
                         <PaginationPrevious
-                          href={buildPaginationHref(category, page, totalPages, 'prev')}
+                          href={buildPaginationHref(
+                            categoryParam,
+                            page,
+                            totalPages,
+                            "prev",
+                          )}
                           aria-disabled={page === 1}
                           tabIndex={page === 1 ? -1 : undefined}
                           className={
-                            page === 1 ? 'pointer-events-none opacity-50' : ''
+                            page === 1 ? "pointer-events-none opacity-50" : ""
                           }
                         />
                       </PaginationItem>
@@ -320,13 +225,18 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                       </PaginationItem>
                       <PaginationItem>
                         <PaginationNext
-                          href={buildPaginationHref(category, page, totalPages, 'next')}
+                          href={buildPaginationHref(
+                            categoryParam,
+                            page,
+                            totalPages,
+                            "next",
+                          )}
                           aria-disabled={page === totalPages}
                           tabIndex={page === totalPages ? -1 : undefined}
                           className={
                             page === totalPages
-                              ? 'pointer-events-none opacity-50'
-                              : ''
+                              ? "pointer-events-none opacity-50"
+                              : ""
                           }
                         />
                       </PaginationItem>
@@ -345,7 +255,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </div>
       </section>
 
-      {showBusinessCta && <BusinessCtaSection />}
+      <BusinessCtaSection />
     </>
   );
 }

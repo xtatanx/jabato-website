@@ -1,36 +1,45 @@
 "use client";
 
+import { site } from "@content/site";
 import { AlertTriangle, Award, Beer, Droplet, Flame } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { BeerData } from "@/lib/beers-data";
 
-interface BeerProductInfoProps {
-  beer: BeerData;
-}
+export type BeerProductInfoData = {
+  name: string;
+  description: string;
+  available: boolean;
+  volume: string;
+  abv: number;
+  ibu: number;
+  style: string;
+  packs: Record<PackSize, { price: number; unitPrice: number }>;
+};
 
 type PackSize = "6-bottles" | "12-bottles" | "24-bottles";
+
+const PACK_LABELS: Record<PackSize, string> = {
+  "6-bottles": "6 botellas",
+  "12-bottles": "12 botellas",
+  "24-bottles": "24 botellas",
+};
+
+interface BeerProductInfoProps {
+  beer: BeerProductInfoData;
+}
 
 export function BeerProductInfo({ beer }: BeerProductInfoProps) {
   const [selectedPack, setSelectedPack] = useState<PackSize>("6-bottles");
 
   const whatsappMessage = encodeURIComponent(
-    `¡Hola! Me interesa comprar ${beer.name} (${
-      selectedPack === "6-bottles"
-        ? "6 botellas"
-        : selectedPack === "12-bottles"
-          ? "12 botellas"
-          : "24 botellas"
-    }). ¿Podrían darme más información sobre disponibilidad y precios?`,
+    `¡Hola! Me interesa comprar ${beer.name} (${PACK_LABELS[selectedPack]}). ¿Podrían darme más información sobre disponibilidad y precios?`,
   );
-  const whatsappUrl = `https://wa.me/573337058517?text=${whatsappMessage}`;
+  const whatsappUrl = `https://wa.me/${site.contact.whatsapp}?text=${whatsappMessage}`;
 
-  const packOptions: { key: PackSize; label: string }[] = [
-    { key: "6-bottles", label: "6 botellas" },
-    { key: "12-bottles", label: "12 botellas" },
-    { key: "24-bottles", label: "24 botellas" },
-  ];
+  const packOptions: { key: PackSize; label: string }[] = (
+    Object.keys(PACK_LABELS) as PackSize[]
+  ).map((key) => ({ key, label: PACK_LABELS[key] }));
 
   return (
     <div className="space-y-6">
@@ -53,7 +62,6 @@ export function BeerProductInfo({ beer }: BeerProductInfoProps) {
         </p>
       </div>
 
-      {/* Pack Options */}
       <div className="space-y-3">
         <h3 className="text-lg font-semibold">Pack:</h3>
         <div className="flex gap-3">
@@ -75,7 +83,6 @@ export function BeerProductInfo({ beer }: BeerProductInfoProps) {
         </div>
       </div>
 
-      {/* Price */}
       <div className="space-y-2">
         <p className="text-sm text-muted-foreground">
           COP ${beer.packs[selectedPack].unitPrice.toLocaleString("es-CO")} por
@@ -86,7 +93,6 @@ export function BeerProductInfo({ beer }: BeerProductInfoProps) {
         </p>
       </div>
 
-      {/* Age Restriction */}
       {beer.available && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <AlertTriangle className="w-4 h-4 text-amber-500" />
@@ -96,7 +102,6 @@ export function BeerProductInfo({ beer }: BeerProductInfoProps) {
         </div>
       )}
 
-      {/* Purchase Button */}
       {beer.available ? (
         <Button asChild className="w-full bg-brand hover:bg-brand/90">
           <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
@@ -109,7 +114,6 @@ export function BeerProductInfo({ beer }: BeerProductInfoProps) {
         </Button>
       )}
 
-      {/* Specifications */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-5">
         <div className="flex items-center gap-2.5 px-3 sm:px-4 lg:px-5 py-2.5 rounded-lg bg-secondary/20 min-w-0">
           <div className="flex-shrink-0">

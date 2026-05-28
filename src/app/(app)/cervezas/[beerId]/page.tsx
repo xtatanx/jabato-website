@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BeerProductGallery } from "@/components/beer-product-gallery";
-import { BeerProductInfo } from "@/components/beer-product-info";
+import {
+  BeerProductInfo,
+  type BeerProductInfoData,
+} from "@/components/beer-product-info";
 import { BusinessCtaSection } from "@/components/business-cta-section";
-import { TestimonialsSection } from "@/components/testimonials-section";
+import { Testimonials } from "@/components/content/testimonials";
 import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
@@ -15,50 +17,59 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { getBeerBySlug } from "@/lib/payload";
-
-function getCachedBeerBySlug(beerId: string) {
-  return unstable_cache(() => getBeerBySlug(beerId), ["beer", beerId], {
-    tags: ["beers", `beer-${beerId}`],
-  })();
-}
+import { type BeerData, getBeerBySlug, getBeerSlugs } from "@/lib/content";
 
 interface BeerDetailPageProps {
   params: Promise<{ beerId: string }>;
+}
+
+export function generateStaticParams() {
+  return getBeerSlugs().map((beerId) => ({ beerId }));
 }
 
 export async function generateMetadata({
   params,
 }: BeerDetailPageProps): Promise<Metadata> {
   const { beerId } = await params;
-  const beer = await getCachedBeerBySlug(beerId);
-
-  if (!beer) {
-    return {
-      title: "Cerveza no encontrada",
-    };
+  const result = await getBeerBySlug(beerId);
+  if (!result) {
+    return { title: "Cerveza no encontrada" };
   }
-
+  const { beer } = result;
   return {
-    title: `${beer.name}`,
-    description: beer.shortDescription,
+    title: beer.seo.title ?? beer.title,
+    description: beer.seo.description,
+    openGraph: beer.seo.ogImage
+      ? { images: [{ url: beer.seo.ogImage }] }
+      : undefined,
+  };
+}
+
+function toProductInfoData(beer: BeerData): BeerProductInfoData {
+  return {
+    name: beer.title,
+    description: beer.description,
+    available: beer.available,
+    volume: beer.volume,
+    abv: beer.abv,
+    ibu: beer.ibu,
+    style: beer.style,
+    packs: beer.packsByKey,
   };
 }
 
 export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
   const { beerId } = await params;
-  const beer = await getCachedBeerBySlug(beerId);
+  const result = await getBeerBySlug(beerId);
+  if (!result) notFound();
 
-  if (!beer) {
-    notFound();
-  }
+  const { Component, beer } = result;
+  const galleryThumbnails = beer.images.map((img) => img.src);
 
   return (
     <>
-      {/* Hero Section */}
       <section className="py-8 lg:py-12">
         <div className="container mx-auto px-4">
-          {/* Breadcrumbs */}
           <Breadcrumb className="mb-6">
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -74,26 +85,21 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>{beer.name}</BreadcrumbPage>
+                <BreadcrumbPage>{beer.title}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
-          {/* Product Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-8 lg:gap-16">
-            {/* Product Gallery */}
             <BeerProductGallery
-              thumbnails={beer.images.thumbnails}
-              beerName={beer.name}
+              thumbnails={galleryThumbnails}
+              beerName={beer.title}
             />
-
-            {/* Product Information */}
-            <BeerProductInfo beer={beer} />
+            <BeerProductInfo beer={toProductInfoData(beer)} />
           </div>
         </div>
       </section>
 
-      {/* Marquee */}
       <section className="py-8 bg-primary text-primary-foreground overflow-hidden">
         <div className="animate-marquee">
           <div className="flex shrink-0">
@@ -115,69 +121,47 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
         </div>
       </section>
 
-      {/* Detailed Information */}
-      <section className="py-12 lg:py-20">
+      <article className="py-12 lg:py-20">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Left Column - Description */}
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-3xl font-bold mb-6">
-                  Experiencia {beer.name}
-                </h2>
-              </div>
+          <div className="prose prose-lg max-w-3xl mx-auto dark:prose-invert">
+            <h2 className="text-3xl font-bold mb-6">
+              Experiencia {beer.title}
+            </h2>
+            <Component />
+          </div>
+        </div>
+      </article>
 
-              {beer.whyChoose && (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold">
-                    ¿Por qué elegir {beer.name}?
-                  </h3>
-                  <p className="text-sm text-muted-foreground whitespace-pre-line">
-                    {beer.whyChoose}
+      <section className="pb-12 lg:pb-20">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+            <div>
+              <h3 className="text-lg font-semibold mb-3">Ingredientes</h3>
+              <div className="space-y-2 text-sm">
+                <p>
+                  <strong>Maltas:</strong>{" "}
+                  <span className="text-muted-foreground">
+                    {beer.ingredients.malts.join(", ")}
+                  </span>
+                </p>
+                <p>
+                  <strong>Lúpulos:</strong>{" "}
+                  <span className="text-muted-foreground">
+                    {beer.ingredients.hops.join(", ")}
+                  </span>
+                </p>
+                {beer.ingredients.yeast && (
+                  <p>
+                    <strong>Levadura:</strong>{" "}
+                    <span className="text-muted-foreground">
+                      {beer.ingredients.yeast}
+                    </span>
                   </p>
-                </div>
-              )}
-
-              {beer.servingAndStorage && (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold">Servir y Conservar</h3>
-                  <div className="text-sm space-y-2 text-muted-foreground whitespace-pre-line">
-                    {beer.servingAndStorage}
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
-            {/* Right Column - Tasting Notes */}
-            <div className="space-y-8">
-              {/* Ingredients */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3">Ingredientes</h3>
-                <div className="space-y-2 text-sm">
-                  <p>
-                    <strong>Maltas:</strong>{" "}
-                    <span className="text-muted-foreground">
-                      {beer.ingredients.malts.join(", ")}
-                    </span>
-                  </p>
-                  <p>
-                    <strong>Lúpulos:</strong>{" "}
-                    <span className="text-muted-foreground">
-                      {beer.ingredients.hops.join(", ")}
-                    </span>
-                  </p>
-                  {beer.ingredients.yeast && (
-                    <p>
-                      <strong>Levadura:</strong>{" "}
-                      <span className="text-muted-foreground">
-                        {beer.ingredients.yeast}
-                      </span>
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              {/* Pairing */}
+            {beer.pairing.length > 0 && (
               <div>
                 <h3 className="text-lg font-semibold mb-3">
                   Maridaje Recomendado
@@ -190,18 +174,19 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
                   ))}
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <TestimonialsSection
-        title={beer.testimonialsSectionTitle ?? undefined}
-        testimonials={beer.testimonials}
-      />
+      {beer.testimonialIds.length > 0 && (
+        <Testimonials
+          ids={beer.testimonialIds}
+          title="Lo que dicen nuestros bebedores"
+          highlight="bebedores"
+        />
+      )}
 
-      {/* Business CTA Section */}
       <BusinessCtaSection />
     </>
   );
