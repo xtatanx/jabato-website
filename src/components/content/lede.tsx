@@ -7,21 +7,25 @@ export type LedeProps = {
   variant?: "display" | "body";
 };
 
-export function Lede({ children, tone = "dark", variant = "display" }: LedeProps) {
+export function Lede({
+  children,
+  tone = "dark",
+  variant = "display",
+}: LedeProps) {
   if (variant === "body") {
     return (
       <section className="pb-12 lg:pb-20">
         <div className="container mx-auto px-4">
-          <p
+          <div
             className={cn(
-              "mx-auto mb-6 max-w-2xl text-center text-lg sm:text-xl lg:mb-8",
+              "mx-auto mb-6 max-w-2xl space-y-4 text-center text-lg sm:text-xl lg:mb-8 [&_p]:m-0",
               tone === "light"
                 ? "text-primary-foreground"
                 : "text-secondary-foreground",
             )}
           >
             {children}
-          </p>
+          </div>
         </div>
       </section>
     );
