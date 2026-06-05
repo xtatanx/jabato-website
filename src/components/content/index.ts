@@ -1,5 +1,6 @@
 export { BusinessCtaSection as BusinessCta } from "@/components/business-cta-section";
 export { BeerGrid } from "./beer-grid";
+export { ContactSection } from "./contact-section";
 export { Cta } from "./cta";
 export { FeatureRow } from "./feature-row";
 export { Hero } from "./hero";

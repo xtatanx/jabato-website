@@ -5,13 +5,31 @@ seo:
 ---
 
 <Hero
-  image="/images/heroes/contacto.jpg"
-  imageAlt="Cervecero sirviendo una Jabato"
-  title="Contáctanos"
-  highlight="Contáctanos"
+  image="/personas-tomando-jabato-amber-ale.png"
+  imageAlt="Personas disfrutando cerveza Jabato"
+  title="Pongámonos en Contacto"
+  highlight="Contacto"
+  className="mb-0 lg:mb-0"
 />
 
-<Lede variant="body">
-  ¿Tienes una pregunta, una idea o quieres que tu negocio venda Jabato?
-  Escríbenos por aquí o por WhatsApp y te respondemos lo antes posible.
-</Lede>
+<ContactSection
+  title="Hablemos de Cerveza"
+  highlight="Cerveza"
+  sections={[
+    {
+      heading: "¿Qué podemos hacer por ti?",
+      content:
+        "Estamos abiertos a todo tipo de consultas, desde preguntas sobre nuestros productos hasta oportunidades de distribución, colaboraciones o ideas nuevas.",
+    },
+    {
+      heading: "Tiempo de respuesta",
+      content:
+        "Nuestro compromiso es responder todos los mensajes en un plazo máximo de 24 horas hábiles.",
+    },
+    {
+      heading: "Información adicional",
+      content:
+        "Si tienes preguntas específicas sobre nuestros procesos, ingredientes o disponibilidad, no dudes en mencionarlo en tu mensaje.",
+    },
+  ]}
+/>

@@ -2,6 +2,7 @@ import type { MDXComponents } from "mdx/types";
 import {
   BeerGrid,
   BusinessCta,
+  ContactSection,
   Cta,
   FeatureRow,
   Hero,
@@ -18,6 +19,7 @@ const contentComponents = {
   FeatureRow,
   Cta,
   BusinessCta,
+  ContactSection,
   Testimonials,
   Quote,
   BeerGrid,

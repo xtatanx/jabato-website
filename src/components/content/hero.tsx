@@ -18,6 +18,7 @@ export type HeroProps = {
   priority?: boolean;
   /** Optional size override; defaults to standard hero. */
   size?: "default" | "tall";
+  className?: string;
 };
 
 export function Hero({
@@ -32,6 +33,7 @@ export function Hero({
   tone = "light",
   priority = true,
   size = "default",
+  className,
 }: HeroProps) {
   const isTall = size === "tall";
 
@@ -42,6 +44,7 @@ export function Hero({
         isTall
           ? "lg:h-[calc(100dvh-250px)] lg:min-h-[500px]"
           : "lg:max-h-[400px]",
+        className,
       )}
     >
       <Image

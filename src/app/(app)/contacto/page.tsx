@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import ContactForm from "@/components/contact-form";
 import { getPage } from "@/lib/content";
 import {
   getContactPageSchema,
@@ -38,14 +37,6 @@ export default async function ContactoPage() {
       />
 
       <Component />
-
-      <section className="bg-primary py-12 lg:py-20">
-        <div className="container mx-auto px-4 max-w-xl">
-          <div className="bg-card p-10 rounded-lg">
-            <ContactForm />
-          </div>
-        </div>
-      </section>
     </>
   );
 }

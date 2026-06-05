@@ -73,7 +73,7 @@ function ContactFormInner() {
 
   return (
     <div className="w-full">
-      <form action={formAction} className="space-y-8">
+      <form action={formAction} className="space-y-6">
         {/* Success/Error Messages */}
         {state?.message && (
           <div
