@@ -1,10 +1,11 @@
 "use client";
 
 import { site } from "@content/site";
-import { AlertTriangle, Award, Beer, Droplet, Flame } from "lucide-react";
+import { AlertTriangle, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export type BeerProductInfoData = {
   name: string;
@@ -25,6 +26,10 @@ const PACK_LABELS: Record<PackSize, string> = {
   "24-bottles": "24 botellas",
 };
 
+function buildWhatsAppUrl(message: string) {
+  return `https://wa.me/${site.contact.whatsapp}?text=${encodeURIComponent(message)}`;
+}
+
 interface BeerProductInfoProps {
   beer: BeerProductInfoData;
 }
@@ -32,126 +37,105 @@ interface BeerProductInfoProps {
 export function BeerProductInfo({ beer }: BeerProductInfoProps) {
   const [selectedPack, setSelectedPack] = useState<PackSize>("6-bottles");
 
-  const whatsappMessage = encodeURIComponent(
-    `¡Hola! Me interesa comprar ${beer.name} (${PACK_LABELS[selectedPack]}). ¿Podrían darme más información sobre disponibilidad y precios?`,
-  );
-  const whatsappUrl = `https://wa.me/${site.contact.whatsapp}?text=${whatsappMessage}`;
-
-  const packOptions: { key: PackSize; label: string }[] = (
-    Object.keys(PACK_LABELS) as PackSize[]
-  ).map((key) => ({ key, label: PACK_LABELS[key] }));
+  const buyMessage = `¡Hola! Me interesa comprar ${beer.name} (${PACK_LABELS[selectedPack]}). ¿Podrían darme más información sobre disponibilidad y precios?`;
 
   return (
     <div className="space-y-6">
       <div>
-        <div className="flex items-start gap-3 mb-4 flex-wrap">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase">
+        <p className="text-sm text-brand font-semibold uppercase tracking-wide mb-1">
+          {beer.style}
+        </p>
+        <div className="flex items-start gap-3 flex-wrap">
+          <h1 className="text-3xl sm:text-4xl font-extrabold uppercase">
             {beer.name}
           </h1>
           {!beer.available && (
-            <Badge
-              variant="default"
-              className="bg-brand text-primary-foreground uppercase tracking-wide mt-2 sm:mt-3 lg:mt-4"
-            >
+            <Badge className="bg-brand text-primary-foreground mt-1">
               Próximamente
             </Badge>
           )}
         </div>
-        <p className="text-base text-muted-foreground leading-relaxed mb-6">
+
+        <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-3 border-b border-border/60 pb-4">
+          <div>
+            <dt className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+              Volumen
+            </dt>
+            <dd className="mt-0.5 text-sm font-semibold">{beer.volume}</dd>
+          </div>
+          <div>
+            <dt className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+              ABV
+            </dt>
+            <dd className="mt-0.5 text-sm font-semibold">{beer.abv}%</dd>
+          </div>
+          <div>
+            <dt className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+              IBU
+            </dt>
+            <dd className="mt-0.5 text-sm font-semibold">{beer.ibu}</dd>
+          </div>
+        </dl>
+
+        <p className="text-muted-foreground mt-4 leading-relaxed">
           {beer.description}
         </p>
       </div>
 
-      <div className="space-y-3">
-        <h3 className="text-lg font-semibold">Pack:</h3>
-        <div className="flex gap-3">
-          {packOptions.map((pack) => (
-            <Button
-              key={pack.key}
-              variant={selectedPack === pack.key ? "default" : "outline"}
-              size="lg"
-              onClick={() => setSelectedPack(pack.key)}
-              className={
-                selectedPack === pack.key
-                  ? "bg-primary text-primary-foreground"
-                  : ""
-              }
+      <div>
+        <p className="text-sm font-semibold mb-2">Selecciona tu pack</p>
+        <div className="grid grid-cols-3 gap-2">
+          {(Object.keys(PACK_LABELS) as PackSize[]).map((key) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setSelectedPack(key)}
+              className={cn(
+                "rounded-lg border-2 px-3 py-3 text-sm font-medium transition-colors",
+                selectedPack === key
+                  ? "border-brand bg-brand/5 text-foreground"
+                  : "border-border hover:border-brand/50",
+              )}
             >
-              {pack.label}
-            </Button>
+              {PACK_LABELS[key]}
+            </button>
           ))}
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="rounded-xl border bg-secondary/20 p-4">
         <p className="text-sm text-muted-foreground">
           COP ${beer.packs[selectedPack].unitPrice.toLocaleString("es-CO")} por
-          botella de {beer.volume}
+          botella
         </p>
-        <p className="text-3xl font-bold">
+        <p className="text-4xl font-bold mt-1">
           COP ${beer.packs[selectedPack].price.toLocaleString("es-CO")}
         </p>
       </div>
 
-      {beer.available && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <AlertTriangle className="w-4 h-4 text-amber-500" />
-          <span>
-            prohíbase el expendio de bebidas embriagantes a menores de edad
-          </span>
-        </div>
-      )}
-
       {beer.available ? (
-        <Button asChild className="w-full bg-brand hover:bg-brand/90">
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-            Quiero comprar
+        <Button asChild size="lg" className="w-full bg-brand hover:bg-brand/90">
+          <a
+            href={buildWhatsAppUrl(buyMessage)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <MessageCircle className="size-5" />
+            Comprar por WhatsApp
           </a>
         </Button>
       ) : (
-        <Button disabled className="w-full bg-brand hover:bg-brand/90">
+        <Button size="lg" disabled className="w-full bg-brand">
           Próximamente disponible
         </Button>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-5">
-        <div className="flex items-center gap-2.5 px-3 sm:px-4 lg:px-5 py-2.5 rounded-lg bg-secondary/20 min-w-0">
-          <div className="flex-shrink-0">
-            <Beer className="w-5 h-5 text-brand" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-xs text-muted-foreground truncate">Volumen</p>
-            <p className="text-sm font-semibold truncate">{beer.volume}</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2.5 px-3 sm:px-4 lg:px-5 py-2.5 rounded-lg bg-secondary/20 min-w-0">
-          <div className="flex-shrink-0">
-            <Flame className="w-5 h-5 text-brand" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-xs text-muted-foreground truncate">Alcohol</p>
-            <p className="text-sm font-semibold truncate">{beer.abv}% ABV</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2.5 px-3 sm:px-4 lg:px-5 py-2.5 rounded-lg bg-secondary/20 min-w-0">
-          <div className="flex-shrink-0">
-            <Droplet className="w-5 h-5 text-brand" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-xs text-muted-foreground truncate">Amargor</p>
-            <p className="text-sm font-semibold truncate">{beer.ibu} IBU</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2.5 px-3 sm:px-4 lg:px-5 py-2.5 rounded-lg bg-secondary/20 min-w-0">
-          <div className="flex-shrink-0">
-            <Award className="w-5 h-5 text-brand" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-xs text-muted-foreground truncate">Estilo</p>
-            <p className="text-sm font-semibold truncate">{beer.style}</p>
-          </div>
-        </div>
-      </div>
+      {beer.available && (
+        <p className="flex items-center gap-2 text-xs text-muted-foreground">
+          <AlertTriangle className="size-3.5 shrink-0 text-amber-500" />
+          Prohíbase el expendio a menores de edad
+        </p>
+      )}
     </div>
   );
 }

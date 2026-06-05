@@ -63,14 +63,14 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
   const result = await getBeerBySlug(beerId);
   if (!result) notFound();
 
-  const { Component, beer } = result;
+  const { beer } = result;
   const galleryThumbnails = beer.images.map((img) => img.src);
 
   return (
     <>
-      <section className="py-8 lg:py-12">
+      <section className="py-6 lg:py-10 border-b">
         <div className="container mx-auto px-4">
-          <Breadcrumb className="mb-6">
+          <Breadcrumb className="mb-8">
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
@@ -90,92 +90,67 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
             </BreadcrumbList>
           </Breadcrumb>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-8 lg:gap-16">
-            <BeerProductGallery
-              thumbnails={galleryThumbnails}
-              beerName={beer.title}
-            />
-            <BeerProductInfo beer={toProductInfoData(beer)} />
-          </div>
-        </div>
-      </section>
-
-      <section className="py-8 bg-primary text-primary-foreground overflow-hidden">
-        <div className="animate-marquee">
-          <div className="flex shrink-0">
-            <span className="text-4xl font-bold whitespace-nowrap lg:text-6xl pr-8">
-              #APulsoYFrentera · Cerveza Artesanal · Hecha en Colombia ·
-              #APulsoYFrentera · Craft Your Life · La Máxima Calidad ·
-              #APulsoYFrentera · Lotes Pequeños · Sabor Grande ·
-              #APulsoYFrentera · Cerveza con Alma · Hechas a Mano
-            </span>
-          </div>
-          <div className="flex shrink-0">
-            <span className="text-4xl font-bold whitespace-nowrap lg:text-6xl pr-8">
-              #APulsoYFrentera · Cerveza Artesanal · Hecha en Colombia ·
-              #APulsoYFrentera · Craft Your Life · La Máxima Calidad ·
-              #APulsoYFrentera · Lotes Pequeños · Sabor Grande ·
-              #APulsoYFrentera · Cerveza con Alma · Hechas a Mano
-            </span>
-          </div>
-        </div>
-      </section>
-
-      <article className="py-12 lg:py-20">
-        <div className="container mx-auto px-4">
-          <div className="prose prose-lg max-w-3xl mx-auto dark:prose-invert">
-            <h2 className="text-3xl font-bold mb-6">
-              Experiencia {beer.title}
-            </h2>
-            <Component />
-          </div>
-        </div>
-      </article>
-
-      <section className="pb-12 lg:pb-20">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            <div>
-              <h3 className="text-lg font-semibold mb-3">Ingredientes</h3>
-              <div className="space-y-2 text-sm">
-                <p>
-                  <strong>Maltas:</strong>{" "}
-                  <span className="text-muted-foreground">
-                    {beer.ingredients.malts.join(", ")}
-                  </span>
-                </p>
-                <p>
-                  <strong>Lúpulos:</strong>{" "}
-                  <span className="text-muted-foreground">
-                    {beer.ingredients.hops.join(", ")}
-                  </span>
-                </p>
-                {beer.ingredients.yeast && (
-                  <p>
-                    <strong>Levadura:</strong>{" "}
-                    <span className="text-muted-foreground">
-                      {beer.ingredients.yeast}
-                    </span>
-                  </p>
-                )}
-              </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+            <div className="lg:sticky lg:top-24 lg:self-start">
+              <BeerProductGallery
+                thumbnails={galleryThumbnails}
+                beerName={beer.title}
+              />
             </div>
+            <div className="lg:sticky lg:top-24 lg:self-start">
+              <BeerProductInfo beer={toProductInfoData(beer)} />
+            </div>
+          </div>
+        </div>
+      </section>
 
-            {beer.pairing.length > 0 && (
+      <section className="py-16 bg-secondary/30">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div>
+              <h3 className="text-sm uppercase tracking-widest text-muted-foreground mb-3">
+                Maltas
+              </h3>
+              <p className="text-lg font-medium">
+                {beer.ingredients.malts.join(", ")}
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm uppercase tracking-widest text-muted-foreground mb-3">
+                Lúpulos
+              </h3>
+              <p className="text-lg font-medium">
+                {beer.ingredients.hops.join(", ")}
+              </p>
+            </div>
+            {beer.ingredients.yeast && (
               <div>
-                <h3 className="text-lg font-semibold mb-3">
-                  Maridaje Recomendado
+                <h3 className="text-sm uppercase tracking-widest text-muted-foreground mb-3">
+                  Levadura
                 </h3>
-                <div className="flex flex-wrap gap-2">
-                  {beer.pairing.map((item) => (
-                    <Badge key={item} variant="secondary">
-                      {item}
-                    </Badge>
-                  ))}
-                </div>
+                <p className="text-lg font-medium">{beer.ingredients.yeast}</p>
               </div>
             )}
           </div>
+
+          {beer.pairing.length > 0 && (
+            <div className="mt-12 pt-12 border-t">
+              <h3 className="text-sm uppercase tracking-widest text-muted-foreground mb-4">
+                Maridaje recomendado
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {beer.pairing.map((item) => (
+                  <Badge
+                    key={item}
+                    variant="secondary"
+                    className="text-base px-4 py-1"
+                  >
+                    {item}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

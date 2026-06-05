@@ -19,6 +19,7 @@ export const BeerImageSchema = z.object({
 
 export const BeerFrontmatterSchema = z.object({
   title: z.string(),
+  description: z.string(),
   style: z.string(),
   volume: z.string().default("330ml"),
   abv: z.number().min(0).max(20),

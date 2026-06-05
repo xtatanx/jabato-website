@@ -43,7 +43,6 @@ export type PackKey = "6-bottles" | "12-bottles" | "24-bottles";
 
 export type BeerData = BeerFrontmatter & {
   slug: string;
-  description: string;
   packsByKey: Record<PackKey, { price: number; unitPrice: number }>;
 };
 
@@ -78,7 +77,6 @@ function toBeerData(slug: string, fm: BeerFrontmatter): BeerData {
   return {
     ...fm,
     slug,
-    description: fm.seo.description,
     packsByKey: buildPacksByKey(fm.pricePerBottle, fm.packs),
   };
 }
