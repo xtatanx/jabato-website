@@ -1,11 +1,15 @@
 import { site } from "@content/site";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
+import { AgeGate } from "@/components/age-gate";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import { isAgeVerified } from "@/lib/age-gate-server";
 import { getSiteUrl } from "@/lib/site-url";
+import { cn } from "@/lib/utils";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,20 +52,34 @@ export const metadata: Metadata = {
       : { index: true, follow: true },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const isVerified = isAgeVerified(cookieStore);
+
   return (
     <html lang="es-CO">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
+        className={cn(
+          geistSans.variable,
+          geistMono.variable,
+          "antialiased min-h-screen",
+          !isVerified && "overflow-hidden",
+        )}
       >
         <NuqsAdapter>
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          <div
+            className={cn(!isVerified && "pointer-events-none select-none")}
+            aria-hidden={!isVerified}
+          >
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </div>
+          {!isVerified && <AgeGate />}
         </NuqsAdapter>
       </body>
     </html>

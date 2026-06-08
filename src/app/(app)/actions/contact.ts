@@ -1,6 +1,7 @@
 "use server";
 
 import { Resend } from "resend";
+import { requireAgeVerified } from "@/lib/age-gate-server";
 import {
   type ContactFormData,
   type ContactFormState,
@@ -53,6 +54,15 @@ export async function submitContactForm(
   prevState: ContactFormState | null,
   formData: FormData,
 ): Promise<ContactFormState> {
+  try {
+    await requireAgeVerified();
+  } catch {
+    return {
+      success: false,
+      message: "Debes verificar tu edad para enviar el formulario.",
+    };
+  }
+
   try {
     // Extract form data
     const rawData = {
