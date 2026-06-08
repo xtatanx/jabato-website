@@ -24,6 +24,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [],
   },
+  async rewrites() {
+    return [{ source: "/sitemap.xml", destination: "/sitemap" }];
+  },
 };
 
 export default withMDX(nextConfig);

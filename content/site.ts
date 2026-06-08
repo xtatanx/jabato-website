@@ -1,6 +1,5 @@
 export const site = {
   name: "Jabato",
-  baseUrl: "https://jabatocerveceria.com",
   tagline:
     "Cerveza artesanal de principio a fin, sin atajos. Compartimos nuestra pasión por la cerveza con el mundo, creando experiencias únicas en cada sorbo.",
   nav: [
@@ -19,7 +18,7 @@ export const site = {
     whatsapp: "573337058517",
     whatsappDisplay: "+57 333 7058517",
   },
-  defaultOgImage: undefined as string | undefined,
+  defaultOgImage: "/gente-conversando-en-un-pub-tomando-cerveza-jabato.png",
 } as const;
 
 export type Site = typeof site;
