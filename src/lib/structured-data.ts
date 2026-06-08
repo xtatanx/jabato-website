@@ -179,15 +179,16 @@ export function getHistoriaPageSchema(
   };
 }
 
-export function getContactPageSchema(): WithContext<ContactPage> {
+export function getContactPageSchema(
+  description: string,
+): WithContext<ContactPage> {
   const siteUrl = getSiteUrl();
 
   return {
     "@context": "https://schema.org",
     "@type": "ContactPage",
     name: "Contacto - Jabato Cervecería",
-    description:
-      "Ponte en contacto con Jabato Cervecería. Consultas sobre distribución, colaboraciones y más.",
+    description,
     url: `${siteUrl}/contacto`,
     breadcrumb: {
       "@type": "BreadcrumbList",

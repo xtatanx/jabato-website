@@ -9,12 +9,14 @@ export type ContactSectionItem = {
 export type ContactSectionProps = {
   title: string;
   highlight?: string;
+  formIntro?: string;
   sections: ContactSectionItem[];
 };
 
 export function ContactSection({
   title,
   highlight,
+  formIntro,
   sections,
 }: ContactSectionProps) {
   return (
@@ -39,6 +41,9 @@ export function ContactSection({
             </div>
           </div>
           <div className="bg-card p-8 sm:p-10 rounded-lg">
+            {formIntro ? (
+              <p className="text-muted-foreground mb-6">{formIntro}</p>
+            ) : null}
             <ContactForm />
           </div>
         </div>

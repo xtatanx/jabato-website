@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getPage } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/metadata";
 import {
   getContactPageSchema,
   getOrganizationSchema,
@@ -7,19 +8,18 @@ import {
 
 export async function generateMetadata(): Promise<Metadata> {
   const { frontmatter } = await getPage("contacto");
-  return {
+  return buildPageMetadata({
+    path: "/contacto",
     title: frontmatter.seo.title ?? frontmatter.title,
     description: frontmatter.seo.description,
-    openGraph: frontmatter.seo.ogImage
-      ? { images: [{ url: frontmatter.seo.ogImage }] }
-      : undefined,
-  };
+    ogImage: frontmatter.seo.ogImage,
+  });
 }
 
 export default async function ContactoPage() {
-  const { Component } = await getPage("contacto");
+  const { frontmatter, Component } = await getPage("contacto");
   const organizationSchema = getOrganizationSchema();
-  const pageSchema = getContactPageSchema();
+  const pageSchema = getContactPageSchema(frontmatter.seo.description);
 
   return (
     <>
