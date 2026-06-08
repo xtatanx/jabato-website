@@ -145,24 +145,19 @@ export function getCervezasItemListSchema(
   };
 }
 
-export function getHistoriaPageSchema(): WithContext<AboutPage> {
+export function getHistoriaPageSchema(
+  description: string,
+): WithContext<AboutPage> {
   const siteUrl = getSiteUrl();
 
   return {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     name: "Nuestra Historia - Jabato Cervecería",
-    description:
-      "Descubre la historia de Jabato, desde nuestros inicios como homebrewers en 2020 hasta convertirnos en una cervecería artesanal reconocida en Colombia.",
+    description,
     url: `${siteUrl}/historia`,
     mainEntity: {
-      "@type": "Organization",
-      name: "Jabato Cervecería",
-      foundingDate: "2022",
-      founder: {
-        "@type": "Person",
-        name: "Jorge González",
-      },
+      "@id": `${siteUrl}/${ORGANIZATION_ID}`,
     },
     breadcrumb: {
       "@type": "BreadcrumbList",

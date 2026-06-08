@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getPage } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/metadata";
 import {
   getHistoriaPageSchema,
   getOrganizationSchema,
@@ -7,19 +8,18 @@ import {
 
 export async function generateMetadata(): Promise<Metadata> {
   const { frontmatter } = await getPage("historia");
-  return {
+  return buildPageMetadata({
+    path: "/historia",
     title: frontmatter.seo.title ?? frontmatter.title,
     description: frontmatter.seo.description,
-    openGraph: frontmatter.seo.ogImage
-      ? { images: [{ url: frontmatter.seo.ogImage }] }
-      : undefined,
-  };
+    ogImage: frontmatter.seo.ogImage,
+  });
 }
 
 export default async function HistoriaPage() {
-  const { Component } = await getPage("historia");
+  const { frontmatter, Component } = await getPage("historia");
   const organizationSchema = getOrganizationSchema();
-  const pageSchema = getHistoriaPageSchema();
+  const pageSchema = getHistoriaPageSchema(frontmatter.seo.description);
 
   return (
     <>
