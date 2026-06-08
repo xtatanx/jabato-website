@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     siteName: "Jabato Cervecería",
     images: [
       {
-        url: "https://jabato.com.co/personas-tomando-jabato-amber-ale.png",
+        url: "https://jabato.com.co/gente-conversando-en-un-pub-tomando-cerveza-jabato.png",
         width: 1200,
         height: 630,
         alt: "Contacto con Jabato Cervecería",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: "Contacto | Jabato Cervecería",
     description:
       "Ponte en contacto con Jabato Cervecería. Consultas sobre distribución, colaboraciones y más.",
-    images: ["https://jabato.com.co/personas-tomando-jabato-amber-ale.png"],
+    images: ["https://jabato.com.co/gente-conversando-en-un-pub-tomando-cerveza-jabato.png"],
   },
 };
 

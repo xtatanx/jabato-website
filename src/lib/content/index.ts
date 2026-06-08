@@ -113,7 +113,12 @@ export async function getAllBeers(): Promise<BeerData[]> {
       return toBeerData(slug, frontmatter);
     }),
   );
-  return beers.sort((a, b) => a.title.localeCompare(b.title));
+  return beers.sort((a, b) => {
+    if (a.available !== b.available) {
+      return a.available ? -1 : 1;
+    }
+    return a.title.localeCompare(b.title);
+  });
 }
 
 export type PostMeta = PostFrontmatter & { slug: string };
