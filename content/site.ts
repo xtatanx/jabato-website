@@ -6,7 +6,6 @@ export const site = {
   nav: [
     { href: "/cervezas", label: "Cervezas" },
     { href: "/historia", label: "Historia" },
-    { href: "/blog", label: "Blog" },
     { href: "/contacto", label: "Contacto" },
   ],
   socials: {
