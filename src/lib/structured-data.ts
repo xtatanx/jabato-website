@@ -1,9 +1,11 @@
 import { site } from "@content/site";
 import type {
   AboutPage,
+  BreadcrumbList,
   ContactPage,
   ItemList,
   Organization,
+  Product,
   WebSite,
   WithContext,
 } from "schema-dts";
@@ -64,6 +66,62 @@ export function getWebSiteSchema(): WithContext<WebSite> {
     publisher: {
       "@id": `${siteUrl}/${ORGANIZATION_ID}`,
     },
+  };
+}
+
+export function getBeerProductSchema(beer: BeerData): WithContext<Product> {
+  const siteUrl = getSiteUrl();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: beer.title,
+    description: beer.seo.description,
+    image: beer.images.map((img) => `${siteUrl}${img.src}`),
+    brand: {
+      "@type": "Brand",
+      name: "Jabato Cervecería",
+    },
+    offers: {
+      "@type": "Offer",
+      url: `${siteUrl}/cervezas/${beer.slug}`,
+      priceCurrency: "COP",
+      price: beer.pricePerBottle,
+      availability: beer.available
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+    },
+  };
+}
+
+export function getBeerBreadcrumbSchema(
+  beer: BeerData,
+): WithContext<BreadcrumbList> {
+  const siteUrl = getSiteUrl();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Nuestras cervezas",
+        item: `${siteUrl}/cervezas`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: beer.title,
+        item: `${siteUrl}/cervezas/${beer.slug}`,
+      },
+    ],
   };
 }
 

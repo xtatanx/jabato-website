@@ -8,6 +8,7 @@ import {
 } from "@/components/beer-product-info";
 import { BusinessCtaSection } from "@/components/business-cta-section";
 import { Testimonials } from "@/components/content/testimonials";
+import { RelatedBeersSection } from "@/components/related-beers-section";
 import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
@@ -18,6 +19,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { type BeerData, getBeerBySlug, getBeerSlugs } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/metadata";
+import {
+  getBeerBreadcrumbSchema,
+  getBeerProductSchema,
+} from "@/lib/structured-data";
 
 interface BeerDetailPageProps {
   params: Promise<{ beerId: string }>;
@@ -36,13 +42,12 @@ export async function generateMetadata({
     return { title: "Cerveza no encontrada" };
   }
   const { beer } = result;
-  return {
+  return buildPageMetadata({
+    path: `/cervezas/${beerId}`,
     title: beer.seo.title ?? beer.title,
     description: beer.seo.description,
-    openGraph: beer.seo.ogImage
-      ? { images: [{ url: beer.seo.ogImage }] }
-      : undefined,
-  };
+    ogImage: beer.seo.ogImage ?? beer.images[0]?.src,
+  });
 }
 
 function toProductInfoData(beer: BeerData): BeerProductInfoData {
@@ -64,10 +69,24 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
   if (!result) notFound();
 
   const { beer } = result;
-  const galleryThumbnails = beer.images.map((img) => img.src);
+  const productSchema = getBeerProductSchema(beer);
+  const breadcrumbSchema = getBeerBreadcrumbSchema(beer);
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
       <section className="py-6 lg:py-10 border-b">
         <div className="container mx-auto px-4">
           <Breadcrumb className="mb-8">
@@ -92,10 +111,7 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             <div className="lg:sticky lg:top-24 lg:self-start">
-              <BeerProductGallery
-                thumbnails={galleryThumbnails}
-                beerName={beer.title}
-              />
+              <BeerProductGallery images={beer.images} beerName={beer.title} />
             </div>
             <div className="lg:sticky lg:top-24 lg:self-start">
               <BeerProductInfo beer={toProductInfoData(beer)} />
@@ -106,6 +122,9 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
 
       <section className="py-16 bg-secondary/30">
         <div className="container mx-auto px-4 max-w-6xl">
+          <h2 className="text-sm uppercase tracking-widest text-muted-foreground mb-8">
+            Ingredientes
+          </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-sm uppercase tracking-widest text-muted-foreground mb-3">
@@ -135,9 +154,9 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
 
           {beer.pairing.length > 0 && (
             <div className="mt-12 pt-12 border-t">
-              <h3 className="text-sm uppercase tracking-widest text-muted-foreground mb-4">
+              <h2 className="text-sm uppercase tracking-widest text-muted-foreground mb-4">
                 Maridaje recomendado
-              </h3>
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {beer.pairing.map((item) => (
                   <Badge
@@ -154,6 +173,8 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
         </div>
       </section>
 
+      <RelatedBeersSection currentSlug={beer.slug} />
+
       {beer.testimonialIds.length > 0 && (
         <Testimonials
           ids={beer.testimonialIds}
@@ -162,7 +183,10 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
         />
       )}
 
-      <BusinessCtaSection />
+      <BusinessCtaSection
+        title="¿Quieres vender Jabato en tu bar o restaurante?"
+        description="Lleva Jabato al parche de tus clientes. Escríbenos por WhatsApp para distribución y mayoristas."
+      />
     </>
   );
 }
