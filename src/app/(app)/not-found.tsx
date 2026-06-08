@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "404 - Página No Encontrada",
   description:
     "La página que buscas no existe. Vuelve al inicio para explorar nuestras cervezas artesanales.",
+  robots: { index: false, follow: false },
 };
 
 export default function NotFound() {

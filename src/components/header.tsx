@@ -1,6 +1,7 @@
 import { site } from "@content/site";
 import Image from "next/image";
 import Link from "next/link";
+import { MobileNav } from "@/components/mobile-nav";
 
 export default function Header() {
   return (
@@ -16,7 +17,7 @@ export default function Header() {
             priority
           />
         </Link>
-        <nav>
+        <nav className="hidden md:block">
           <ul className="flex items-center">
             {site.nav.map((item) => (
               <li key={item.href}>
@@ -30,6 +31,9 @@ export default function Header() {
             ))}
           </ul>
         </nav>
+        <div className="ml-auto md:ml-0">
+          <MobileNav />
+        </div>
       </div>
     </header>
   );

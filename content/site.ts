@@ -1,7 +1,7 @@
 export const site = {
   name: "Jabato",
   tagline:
-    "Cerveza artesanal de principio a fin, sin atajos. Compartimos nuestra pasión por la cerveza con el mundo, creando experiencias únicas en cada sorbo.",
+    "A cada parche le llega su Jabato. Cervezas artesanales hechas en Colombia, elaboradas en lotes pequeños.",
   nav: [
     { href: "/cervezas", label: "Cervezas" },
     { href: "/historia", label: "Historia" },
