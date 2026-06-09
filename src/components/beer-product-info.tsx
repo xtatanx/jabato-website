@@ -130,12 +130,18 @@ export function BeerProductInfo({ beer }: BeerProductInfoProps) {
         </Button>
       )}
 
-      {beer.available && (
-        <p className="flex items-center gap-2 text-xs text-muted-foreground">
-          <AlertTriangle className="size-3.5 shrink-0 text-amber-500" />
-          Prohíbase el expendio a menores de edad
+      <div
+        role="note"
+        className="rounded-lg border border-amber-500/50 bg-amber-500/10 px-4 py-3"
+      >
+        <p className="flex items-start gap-2.5 text-sm font-semibold leading-snug text-foreground">
+          <AlertTriangle className="size-4 shrink-0 text-amber-600 mt-0.5" />
+          <span>
+            Prohíbase el expendio de bebidas embriagantes a menores de edad. El
+            exceso de alcohol es perjudicial para la salud.
+          </span>
         </p>
-      )}
+      </div>
     </div>
   );
 }
