@@ -13,7 +13,7 @@ import type { BeerData } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
 
 const CERVEZAS_ITEM_LIST_DESCRIPTION =
-  "A cada parche le llega su Jabato. Cervezas artesanales hechas en Colombia: IPA, porter, amber y blond para cada momento.";
+  "A cada parche le llega su Jabato. Cervezas artesanales hechas en Colombia: IPA, porter, amber y blond. Encuentra tu estilo.";
 
 const ORGANIZATION_ID = "#organization";
 
