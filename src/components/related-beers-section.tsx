@@ -24,8 +24,8 @@ export async function RelatedBeersSection({
           Otros parches, otras Jabatos
         </h2>
         <p className="text-muted-foreground mb-10 max-w-2xl">
-          A cada parche le llega su Jabato — elige otra cerveza para otro
-          momento.
+          ¿Este no es tu parche? Explora otras cervezas Jabato para otros
+          momentos.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {beers.map((beer) => (
