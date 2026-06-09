@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | Jabato Cervecería",
   },
   description:
-    "Cervezas artesanales hechas en Colombia. ¡Somos la cervecería que nació grande desde pequeña!",
+    "A cada parche le llega su Jabato. Cervezas artesanales hechas en Colombia, elaboradas en lotes pequeños. Descubre tu estilo.",
   openGraph: {
     siteName: "Jabato Cervecería",
     locale: "es_CO",

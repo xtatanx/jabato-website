@@ -25,8 +25,9 @@ export function getOrganizationSchema(): WithContext<Organization> {
     "@type": "Organization",
     "@id": `${siteUrl}/${ORGANIZATION_ID}`,
     name: "Jabato Cervecería",
+    slogan: "A cada parche le llega su Jabato",
     description:
-      "Cervecería artesanal colombiana especializada en cervezas de alta calidad elaboradas en lotes pequeños.",
+      "Cervecería artesanal colombiana. Elaboramos cervezas de alta calidad en lotes pequeños para cada ocasión.",
     url: siteUrl,
     logo: `${siteUrl}/jabato-horizontal-logo.svg`,
     foundingDate: "2021",
