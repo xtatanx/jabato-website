@@ -5,9 +5,12 @@ import { cookies } from "next/headers";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 import { AgeGate } from "@/components/age-gate";
+import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import Footer from "@/components/footer";
+import { GoogleAnalyticsLoader } from "@/components/google-analytics-loader";
 import Header from "@/components/header";
 import { isAgeVerified } from "@/lib/age-gate-server";
+import { isAnalyticsEnvironment } from "@/lib/analytics-env";
 import { getSiteUrl } from "@/lib/site-url";
 import { cn } from "@/lib/utils";
 
@@ -80,6 +83,13 @@ export default async function RootLayout({
             <Footer />
           </div>
           {!isVerified && <AgeGate />}
+          <CookieConsentBanner isAgeVerified={isVerified} />
+          {isAnalyticsEnvironment() &&
+            process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+              <GoogleAnalyticsLoader
+                gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
+              />
+            )}
         </NuqsAdapter>
       </body>
     </html>

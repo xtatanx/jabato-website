@@ -114,7 +114,10 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
               <BeerProductGallery images={beer.images} beerName={beer.title} />
             </div>
             <div className="lg:sticky lg:top-24 lg:self-start">
-              <BeerProductInfo beer={toProductInfoData(beer)} />
+              <BeerProductInfo
+                beer={toProductInfoData(beer)}
+                slug={beer.slug}
+              />
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ const STATIC_ROUTES = [
   { path: "/cervezas", priority: 0.8 },
   { path: "/historia", priority: 0.8 },
   { path: "/contacto", priority: 0.8 },
+  { path: "/politica-de-privacidad", priority: 0.3 },
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

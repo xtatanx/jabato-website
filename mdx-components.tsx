@@ -12,6 +12,7 @@ import {
   Testimonials,
   Timeline,
 } from "@/components/content";
+import { RevokeConsentButton } from "@/components/revoke-consent-button";
 
 const contentComponents = {
   Hero,
@@ -25,6 +26,7 @@ const contentComponents = {
   BeerGrid,
   PostGrid,
   Timeline,
+  RevokeConsentButton,
 } satisfies MDXComponents;
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {

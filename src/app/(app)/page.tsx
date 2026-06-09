@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { getPage } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/metadata";
-import {
-  getOrganizationSchema,
-  getWebSiteSchema,
-} from "@/lib/structured-data";
+import { getOrganizationSchema, getWebSiteSchema } from "@/lib/structured-data";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { frontmatter } = await getPage("home");

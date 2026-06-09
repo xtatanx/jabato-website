@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 
 const socialLinks = [
   { href: site.socials.instagram, label: "Instagram", Icon: Instagram },
@@ -94,14 +95,16 @@ export default function Footer() {
                 <MessageCircle className="w-5 h-5 mt-1 flex-shrink-0" />
                 <div>
                   <p className="font-medium">WhatsApp</p>
-                  <a
+                  <TrackedWhatsAppLink
                     href={`https://wa.me/${site.contact.whatsapp}`}
+                    intent="general"
+                    location="footer"
                     className="hover:text-brand transition-colors"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {site.contact.whatsappDisplay}
-                  </a>
+                  </TrackedWhatsAppLink>
                 </div>
               </div>
             </div>
@@ -111,7 +114,13 @@ export default function Footer() {
         <div className="border-t border-primary-foreground/20 mt-12 pt-8">
           <p className="text-primary-foreground/60 text-sm text-center">
             © {new Date().getFullYear()} {site.name}. Todos los derechos
-            reservados.
+            reservados.{" "}
+            <Link
+              href="/politica-de-privacidad"
+              className="underline hover:text-brand"
+            >
+              Privacidad
+            </Link>
           </p>
         </div>
       </div>

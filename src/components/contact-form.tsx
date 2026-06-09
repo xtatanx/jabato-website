@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
+import { trackContactFormSubmit } from "@/lib/analytics";
 import { useFormStatus } from "react-dom";
 import {
   GoogleReCaptchaProvider,
@@ -70,6 +71,19 @@ function ContactFormInner() {
 
     return await submitContactForm(prevState, formData);
   }, null);
+
+  const trackedSubjectRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (
+      state?.success &&
+      state.data?.subject &&
+      trackedSubjectRef.current !== state.data.subject
+    ) {
+      trackedSubjectRef.current = state.data.subject;
+      trackContactFormSubmit(state.data.subject);
+    }
+  }, [state?.success, state?.data?.subject]);
 
   return (
     <div className="w-full">

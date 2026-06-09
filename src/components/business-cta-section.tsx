@@ -1,4 +1,5 @@
 import { site } from "@content/site";
+import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 import { Button } from "@/components/ui/button";
 
 interface BusinessCtaSectionProps {
@@ -32,9 +33,15 @@ export function BusinessCtaSection({
           </h2>
           <p className="text-lg sm:text-xl mb-8">{description}</p>
           <Button asChild className="bg-brand hover:bg-brand/90">
-            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+            <TrackedWhatsAppLink
+              href={whatsappUrl}
+              intent="b2b"
+              location="business_cta"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Contactar por WhatsApp
-            </a>
+            </TrackedWhatsAppLink>
           </Button>
         </div>
       </div>

@@ -211,6 +211,7 @@ export async function submitContactForm(
     return {
       success: true,
       message: "¡Mensaje enviado con éxito! Te responderemos pronto.",
+      data: { subject: data.subject },
     };
   } catch (error) {
     console.error("Error processing contact form:", error);

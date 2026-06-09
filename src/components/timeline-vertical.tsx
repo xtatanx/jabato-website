@@ -16,8 +16,7 @@ interface TimelineVerticalProps {
   milestones: TimelineMilestone[];
 }
 
-const RAIL_POSITION =
-  "left-6 -translate-x-1/2 md:left-1/2 md:-translate-x-1/2";
+const RAIL_POSITION = "left-6 -translate-x-1/2 md:left-1/2 md:-translate-x-1/2";
 
 export default function TimelineVertical({
   milestones,
