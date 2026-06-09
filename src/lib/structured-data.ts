@@ -30,10 +30,10 @@ export function getOrganizationSchema(): WithContext<Organization> {
       "Cervecería artesanal colombiana. Elaboramos cervezas de alta calidad en lotes pequeños para cada ocasión.",
     url: siteUrl,
     logo: `${siteUrl}/jabato-horizontal-logo.svg`,
-    foundingDate: "2021",
+    foundingDate: "2025",
     founder: {
       "@type": "Person",
-      name: "Jorge González",
+      name: "Jhonnatan González",
     },
     address: {
       "@type": "PostalAddress",
