@@ -21,6 +21,14 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import type { ContactFormState } from "@/lib/validations/contact";
 
+function RequiredMark() {
+  return (
+    <span className="text-red-600" aria-hidden="true">
+      *
+    </span>
+  );
+}
+
 function SubmitButton({ isPending }: { isPending: boolean }) {
   const { pending } = useFormStatus();
 
@@ -104,7 +112,9 @@ function ContactFormInner() {
         {/* Name Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">
-            <Label htmlFor="firstName">Nombre *</Label>
+            <Label htmlFor="firstName">
+              Nombre <RequiredMark />
+            </Label>
             <Input
               id="firstName"
               name="firstName"
@@ -121,7 +131,9 @@ function ContactFormInner() {
           </div>
 
           <div className="space-y-3">
-            <Label htmlFor="lastName">Apellido *</Label>
+            <Label htmlFor="lastName">
+              Apellido <RequiredMark />
+            </Label>
             <Input
               id="lastName"
               name="lastName"
@@ -138,7 +150,9 @@ function ContactFormInner() {
 
         {/* Email Field */}
         <div className="space-y-2">
-          <Label htmlFor="email">Email *</Label>
+          <Label htmlFor="email">
+            Email <RequiredMark />
+          </Label>
           <Input
             id="email"
             name="email"
@@ -179,7 +193,9 @@ function ContactFormInner() {
 
         {/* Subject Field */}
         <div className="space-y-2">
-          <Label htmlFor="subject">Asunto *</Label>
+          <Label htmlFor="subject">
+            Asunto <RequiredMark />
+          </Label>
           <Select
             name="subject"
             disabled={isPending}
@@ -204,7 +220,9 @@ function ContactFormInner() {
 
         {/* Message Field */}
         <div className="space-y-2">
-          <Label htmlFor="message">Mensaje *</Label>
+          <Label htmlFor="message">
+            Mensaje <RequiredMark />
+          </Label>
           <Textarea
             id="message"
             name="message"
