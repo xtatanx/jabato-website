@@ -8,10 +8,10 @@ export const site = {
     { href: "/contacto", label: "Contacto" },
   ],
   socials: {
-    instagram: "https://instagram.com/jabato",
-    facebook: "https://facebook.com/jabato",
-    tiktok: "https://tiktok.com/@jabato",
-    untappd: "https://untappd.com/jabato",
+    instagram: "https://www.instagram.com/jabato.cerveceria/",
+    facebook: "https://www.facebook.com/jabato.cerveceria/",
+    tiktok: "https://www.tiktok.com/@jabato.cervecera/",
+    untappd: "https://www.untappd.com/jabato_cerveceria/",
   },
   contact: {
     email: "jabatocerveceria@gmail.com",
