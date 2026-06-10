@@ -11,7 +11,7 @@ export const site = {
     instagram: "https://www.instagram.com/jabato.cerveceria/",
     facebook: "https://www.facebook.com/jabato.cerveceria/",
     tiktok: "https://www.tiktok.com/@jabato.cervecera/",
-    untappd: "https://untappd.com/jabato_cerveceria/",
+    untappd: "https://www.untappd.com/jabato_cerveceria/",
   },
   contact: {
     email: "jabatocerveceria@gmail.com",
