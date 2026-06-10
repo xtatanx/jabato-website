@@ -1,3 +1,4 @@
+import { site } from "@content/site";
 import Image from "next/image";
 import { getQuotesByIds } from "@/lib/content";
 
@@ -6,6 +7,8 @@ export type QuoteProps = {
 };
 
 export function Quote({ id }: QuoteProps) {
+  if (!site.showQuotes) return null;
+
   const [quote] = getQuotesByIds([id]);
   if (!quote) return null;
 
@@ -21,6 +24,7 @@ export function Quote({ id }: QuoteProps) {
               src={quote.author.avatar}
               alt={quote.author.name}
               fill
+              loading="lazy"
               className="object-cover"
             />
           </div>

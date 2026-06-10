@@ -85,8 +85,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               src={post.featuredImage.src}
               alt={post.featuredImage.alt}
               fill
+              loading="lazy"
               className="object-cover"
-              priority
             />
           </div>
 

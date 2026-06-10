@@ -35,6 +35,7 @@ export default function Footer() {
                   alt={`${site.name} Logo`}
                   width={200}
                   height={60}
+                  loading="lazy"
                 />
               </Link>
               <p className="text-lg text-primary-foreground/80 max-w-md">

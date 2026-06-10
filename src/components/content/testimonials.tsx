@@ -1,3 +1,4 @@
+import { site } from "@content/site";
 import {
   type Testimonial,
   TestimonialsSection,
@@ -11,6 +12,8 @@ export type TestimonialsProps = {
 };
 
 export function Testimonials({ ids, title, highlight }: TestimonialsProps) {
+  if (!site.showQuotes) return null;
+
   const quotes = getQuotesByIds(ids);
   if (quotes.length === 0) return null;
 

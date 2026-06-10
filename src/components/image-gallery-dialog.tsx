@@ -113,8 +113,8 @@ export function ImageGalleryDialog({
                             src={image}
                             alt={`${alt} - Vista ${index + 1}`}
                             fill
+                            loading="lazy"
                             className="object-contain"
-                            priority={index === currentIndex}
                             sizes="100vw"
                           />
                         </div>
@@ -150,6 +150,7 @@ export function ImageGalleryDialog({
                         src={image}
                         alt={`${alt} - Miniatura ${index + 1}`}
                         fill
+                        loading="lazy"
                         className="object-cover"
                         sizes="64px"
                       />

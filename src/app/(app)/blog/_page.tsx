@@ -94,8 +94,8 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                     src={featuredPost.featuredImage.src}
                     alt={featuredPost.featuredImage.alt}
                     fill
+                    loading="lazy"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    priority
                   />
                 </div>
                 <div className="flex flex-col justify-center gap-6 lg:gap-8">

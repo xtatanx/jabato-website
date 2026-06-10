@@ -53,6 +53,7 @@ export function Hero({
         alt={imageAlt}
         fill
         priority={priority}
+        loading={priority ? "eager" : "lazy"}
       />
       <div className="absolute inset-0 bg-black/30 z-0" />
 

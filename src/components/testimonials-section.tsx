@@ -60,6 +60,7 @@ export function TestimonialsSection({
                               }
                               alt={testimonial.author}
                               fill
+                              loading="lazy"
                               className="object-cover"
                             />
                           </div>

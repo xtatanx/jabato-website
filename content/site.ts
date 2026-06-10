@@ -19,6 +19,7 @@ export const site = {
     whatsappDisplay: "+57 333 7058517",
   },
   defaultOgImage: "/gente-conversando-en-un-pub-tomando-cerveza-jabato.png",
+  showQuotes: false,
 } as const;
 
 export type Site = typeof site;

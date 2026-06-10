@@ -40,8 +40,8 @@ export function BeerProductGallery({
             src={galleryImages[currentImageIndex]}
             alt={currentAlt}
             fill
+            loading="lazy"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
-            priority
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-2 text-sm font-medium text-gray-900">
@@ -73,6 +73,7 @@ export function BeerProductGallery({
                 src={image.src}
                 alt={thumbnailAlt}
                 fill
+                loading="lazy"
                 className="object-cover"
                 sizes="(max-width: 768px) 25vw, (max-width: 1200px) 20vw, 15vw"
               />
