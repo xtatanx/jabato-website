@@ -18,7 +18,7 @@ export const site = {
     whatsapp: "573337058517",
     whatsappDisplay: "+57 333 7058517",
   },
-  defaultOgImage: "/gente-conversando-en-un-pub-tomando-cerveza-jabato.jpg",
+  defaultOgImage: "/american-amber-ale-hero.jpg",
   showQuotes: false,
 } as const;
 

@@ -10,6 +10,10 @@ export interface PageMetadataInput {
   noIndex?: boolean;
 }
 
+export function getBeerOgImage(slug: string, ogImage?: string): string {
+  return ogImage ?? `/jabato-${slug}-botella-330ml.jpg`;
+}
+
 function toAbsoluteUrl(path: string): string {
   if (path.startsWith("http://") || path.startsWith("https://")) {
     return path;
