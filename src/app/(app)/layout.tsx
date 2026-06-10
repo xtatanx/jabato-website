@@ -11,6 +11,7 @@ import { GoogleAnalyticsLoader } from "@/components/google-analytics-loader";
 import Header from "@/components/header";
 import { isAgeVerified } from "@/lib/age-gate-server";
 import { isAnalyticsEnvironment } from "@/lib/analytics-env";
+import { DEFAULT_SITE_TITLE, SITE_NAME } from "@/lib/metadata";
 import { getSiteUrl } from "@/lib/site-url";
 import { cn } from "@/lib/utils";
 
@@ -29,13 +30,13 @@ const defaultOgImage = new URL(site.defaultOgImage, getSiteUrl()).toString();
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "Cerveza Artesanal | Jabato Cervecería",
-    template: "%s | Jabato Cervecería",
+    default: DEFAULT_SITE_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
   description:
     "A cada parche le llega su Jabato. Cervezas artesanales hechas en Colombia, elaboradas en lotes pequeños. Descubre tu estilo.",
   openGraph: {
-    siteName: "Jabato Cervecería",
+    siteName: SITE_NAME,
     locale: "es_CO",
     type: "website",
     images: [

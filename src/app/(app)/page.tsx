@@ -10,6 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: frontmatter.seo.title ?? frontmatter.title,
     description: frontmatter.seo.description,
     ogImage: frontmatter.seo.ogImage,
+    useLayoutDefaultTitle: true,
   });
 }
 

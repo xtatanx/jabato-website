@@ -19,7 +19,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { type BeerData, getBeerBySlug, getBeerSlugs } from "@/lib/content";
-import { buildPageMetadata } from "@/lib/metadata";
+import { buildPageMetadata, getBeerOgImage } from "@/lib/metadata";
 import {
   getBeerBreadcrumbSchema,
   getBeerProductSchema,
@@ -46,7 +46,7 @@ export async function generateMetadata({
     path: `/cervezas/${beerId}`,
     title: beer.seo.title ?? beer.title,
     description: beer.seo.description,
-    ogImage: beer.seo.ogImage ?? beer.images[0]?.src,
+    ogImage: getBeerOgImage(beerId, beer.seo.ogImage),
   });
 }
 
