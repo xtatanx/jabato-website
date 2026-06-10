@@ -2,12 +2,21 @@ import { site } from "@content/site";
 import type { Metadata } from "next";
 import { getSiteUrl } from "@/lib/site-url";
 
+export const SITE_NAME = "Jabato Cervecería";
+export const HOME_TITLE = "Cerveza Artesanal";
+export const DEFAULT_SITE_TITLE = `${HOME_TITLE} | ${SITE_NAME}`;
+
+export function formatPageTitle(segmentTitle: string): string {
+  return `${segmentTitle} | ${SITE_NAME}`;
+}
+
 export interface PageMetadataInput {
   path: string;
   title: string;
   description: string;
   ogImage?: string;
   noIndex?: boolean;
+  useLayoutDefaultTitle?: boolean;
 }
 
 export function getBeerOgImage(slug: string, ogImage?: string): string {
@@ -35,33 +44,35 @@ export function buildPageMetadata({
   description,
   ogImage,
   noIndex,
+  useLayoutDefaultTitle,
 }: PageMetadataInput): Metadata {
   const canonical = toAbsoluteUrl(path);
   const imageUrl = toAbsoluteUrl(ogImage ?? site.defaultOgImage);
+  const fullTitle = formatPageTitle(title);
 
   return {
-    title,
+    ...(useLayoutDefaultTitle ? {} : { title }),
     description,
     alternates: {
       canonical,
     },
     openGraph: {
-      title,
+      title: fullTitle,
       description,
       url: canonical,
-      siteName: "Jabato Cervecería",
+      siteName: SITE_NAME,
       locale: "es_CO",
       type: "website",
       images: [
         {
           url: imageUrl,
-          alt: title,
+          alt: fullTitle,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: fullTitle,
       description,
       images: [imageUrl],
     },
