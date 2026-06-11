@@ -1,7 +1,7 @@
 export const site = {
   name: "Jabato",
   tagline:
-    "A cada parche le llega su Jabato. Cervezas artesanales hechas en Colombia, elaboradas en lotes pequeños.",
+    "A cada parche le llega su Jabato. Cervezas artesanales colombianas con carácter.",
   nav: [
     { href: "/cervezas", label: "Cervezas" },
     { href: "/historia", label: "Historia" },
