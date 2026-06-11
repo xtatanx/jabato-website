@@ -119,7 +119,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       <section className="pb-12 lg:pb-20">
         <div className="container mx-auto px-4">
-          <article className="prose prose-lg sm:prose-xl lg:prose-2xl mx-auto prose-headings:font-extrabold prose-headings:text-secondary-foreground prose-p:text-secondary-foreground/80 prose-p:leading-relaxed prose-a:text-brand prose-a:no-underline hover:prose-a:underline prose-strong:text-secondary-foreground prose-ul:text-secondary-foreground/80 prose-ol:text-secondary-foreground/80">
+          <article className="prose prose-lg sm:prose-xl lg:prose-2xl mx-auto prose-headings:font-heading prose-headings:font-extrabold prose-headings:text-secondary-foreground prose-p:text-secondary-foreground/80 prose-p:leading-relaxed prose-a:text-brand prose-a:no-underline hover:prose-a:underline prose-strong:text-secondary-foreground prose-ul:text-secondary-foreground/80 prose-ol:text-secondary-foreground/80">
             <Component />
           </article>
         </div>

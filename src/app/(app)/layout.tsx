@@ -1,6 +1,6 @@
 import { site } from "@content/site";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bebas_Neue, Montserrat } from "next/font/google";
 import { cookies } from "next/headers";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
@@ -15,13 +15,14 @@ import { DEFAULT_SITE_TITLE, SITE_NAME } from "@/lib/metadata";
 import { getSiteUrl } from "@/lib/site-url";
 import { cn } from "@/lib/utils";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bebasNeue = Bebas_Neue({
+  weight: "400",
+  variable: "--font-bebas-neue",
   subsets: ["latin"],
 });
 
@@ -33,8 +34,7 @@ export const metadata: Metadata = {
     default: DEFAULT_SITE_TITLE,
     template: `%s | ${SITE_NAME}`,
   },
-  description:
-    "A cada parche le llega su Jabato. Cervezas artesanales hechas en Colombia, elaboradas en lotes pequeños. Descubre tu estilo.",
+  description: site.tagline,
   openGraph: {
     siteName: SITE_NAME,
     locale: "es_CO",
@@ -68,8 +68,8 @@ export default async function RootLayout({
     <html lang="es-CO">
       <body
         className={cn(
-          geistSans.variable,
-          geistMono.variable,
+          montserrat.variable,
+          bebasNeue.variable,
           "antialiased min-h-screen",
           !isVerified && "overflow-hidden",
         )}

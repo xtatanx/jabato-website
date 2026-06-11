@@ -13,7 +13,7 @@ import type { BeerData } from "@/lib/content";
 import { getSiteUrl } from "@/lib/site-url";
 
 const CERVEZAS_ITEM_LIST_DESCRIPTION =
-  "A cada parche le llega su Jabato. Cervezas artesanales hechas en Colombia: IPA, porter, amber y blond. Encuentra tu estilo.";
+  "A cada parche le llega su Jabato. Cervezas artesanales colombianas: American Amber Ale, West Coast IPA, Porter y Belgian Blond Ale. Encuentra tu Jabato.";
 
 const ORGANIZATION_ID = "#organization";
 
@@ -26,8 +26,7 @@ export function getOrganizationSchema(): WithContext<Organization> {
     "@id": `${siteUrl}/${ORGANIZATION_ID}`,
     name: "Jabato Cervecería",
     slogan: "A cada parche le llega su Jabato",
-    description:
-      "Cervecería artesanal colombiana. Elaboramos cervezas de alta calidad en lotes pequeños para cada ocasión.",
+    description: site.tagline,
     url: siteUrl,
     logo: `${siteUrl}/jabato-horizontal-logo.svg`,
     foundingDate: "2025",
