@@ -124,8 +124,15 @@ export async function submitContactForm(
       }
     }
 
-    // Get contact email from environment or use default
-    const contactEmail = process.env.CONTACT_EMAIL || "jhonnatanhxc@gmail.com";
+    const contactEmail = process.env.CONTACT_EMAIL;
+    if (!contactEmail) {
+      console.error("CONTACT_EMAIL is not configured");
+      return {
+        success: false,
+        message: "Error interno del servidor. Por favor, inténtalo de nuevo.",
+        data: data,
+      };
+    }
 
     // Create email content
     const emailHtml = `
