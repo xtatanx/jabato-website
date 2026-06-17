@@ -50,6 +50,7 @@ export function FeatureRow({
             alt={imageAlt}
             loading="lazy"
             fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
           />
           {caption ? (
             <figcaption className="text-sm sm:text-lg lg:text-xl xl:bg-secondary xl:text-secondary-foreground absolute top-[calc(100%)] xl:bottom-0 xl:right-0 xl:top-auto p-2 sm:p-4 xl:translate-x-1/2 xl:translate-y-1/2 xl:max-w-[80%]">

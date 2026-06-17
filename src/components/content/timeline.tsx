@@ -16,7 +16,7 @@ export type TimelineProps = {
 
 export function Timeline({ milestones, title, highlight }: TimelineProps) {
   return (
-    <section className="bg-primary py-12 lg:py-20">
+    <section className="relative bg-primary py-12 lg:py-20">
       <div className="container mx-auto px-4">
         {title ? (
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground text-center mb-12 lg:mb-20 uppercase">

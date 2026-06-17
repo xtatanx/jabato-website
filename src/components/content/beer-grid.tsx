@@ -40,6 +40,7 @@ export async function BeerGrid({ onlyAvailable = false }: BeerGridProps = {}) {
                     alt={beer.images[0].alt}
                     fill
                     loading="lazy"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform group-hover:scale-105"
                   />
                   {!beer.available && (

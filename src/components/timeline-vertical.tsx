@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Beer, Sparkles } from "lucide-react";
-import { useRef } from "react";
+import { useLayoutEffect, useRef, useState, type RefObject } from "react";
 import { cn } from "@/lib/utils";
 
 interface TimelineMilestone {
@@ -18,14 +18,13 @@ interface TimelineVerticalProps {
 
 const RAIL_POSITION = "left-6 -translate-x-1/2 md:left-1/2 md:-translate-x-1/2";
 
-export default function TimelineVertical({
-  milestones,
-}: TimelineVerticalProps) {
-  const timelineRef = useRef<HTMLDivElement>(null);
-  const lastIndex = milestones.length - 1;
-
+function TimelineProgressRail({
+  target,
+}: {
+  target: RefObject<HTMLDivElement | null>;
+}) {
   const { scrollYProgress } = useScroll({
-    target: timelineRef,
+    target,
     offset: ["start center", "end center"],
   });
 
@@ -38,7 +37,7 @@ export default function TimelineVertical({
   const heightPercentage = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <div ref={timelineRef} className="relative">
+    <>
       <div
         className={cn(
           "absolute top-0 bottom-0 w-0.5 bg-brand/20",
@@ -52,7 +51,33 @@ export default function TimelineVertical({
         )}
         style={{ height: heightPercentage }}
       />
+    </>
+  );
+}
 
+export default function TimelineVertical({
+  milestones,
+}: TimelineVerticalProps) {
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const [isReady, setIsReady] = useState(false);
+  const lastIndex = milestones.length - 1;
+
+  useLayoutEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  return (
+    <div ref={timelineRef} className="relative">
+      {isReady ? (
+        <TimelineProgressRail target={timelineRef} />
+      ) : (
+        <div
+          className={cn(
+            "absolute top-0 bottom-0 w-0.5 bg-brand/20",
+            RAIL_POSITION,
+          )}
+        />
+      )}
       <div className="mx-auto max-w-5xl space-y-12 sm:space-y-14 md:space-y-20">
         {milestones.map((milestone, index) => {
           const isLeft = index % 2 === 0;

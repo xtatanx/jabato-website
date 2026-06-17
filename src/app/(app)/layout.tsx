@@ -65,12 +65,12 @@ export default async function RootLayout({
   const isVerified = isAgeVerified(cookieStore);
 
   return (
-    <html lang="es-CO">
+    <html lang="es-CO" className="relative">
       <body
         className={cn(
           montserrat.variable,
           bebasNeue.variable,
-          "antialiased min-h-screen",
+          "relative antialiased min-h-screen",
           !isVerified && "overflow-hidden",
         )}
       >
