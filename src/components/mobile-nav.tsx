@@ -44,7 +44,7 @@ export function MobileNav() {
             </Link>
           </SheetClose>
         </div>
-        <nav className="flex flex-col px-4 py-8">
+        <nav aria-label="Navegación principal" className="flex flex-col px-4 py-8">
           {site.nav.map((item) => (
             <SheetClose asChild key={item.href}>
               <Link

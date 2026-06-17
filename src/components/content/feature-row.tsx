@@ -17,6 +17,15 @@ export type FeatureRowProps = {
   caption?: ReactNode;
 };
 
+function toHeadingId(title: string): string {
+  return title
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 export function FeatureRow({
   image,
   imageAlt,
@@ -29,9 +38,11 @@ export function FeatureRow({
   caption,
 }: FeatureRowProps) {
   const isDark = tone === "light";
+  const headingId = toHeadingId(title);
 
   return (
     <section
+      aria-labelledby={headingId}
       className={cn(
         "py-12 lg:py-20",
         isDark ? "bg-primary text-primary-foreground" : "",
@@ -60,6 +71,7 @@ export function FeatureRow({
         </figure>
         <div className="w-full lg:w-1/2 flex flex-col justify-center">
           <h2
+            id={headingId}
             className={cn(
               "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold uppercase my-4 lg:my-8",
               isDark ? "text-primary-foreground" : "text-secondary-foreground",
