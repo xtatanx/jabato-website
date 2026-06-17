@@ -1,20 +1,18 @@
 import { site } from "@content/site";
-import {
-  Beer,
-  Facebook,
-  Instagram,
-  Mail,
-  MessageCircle,
-  Music,
-} from "lucide-react";
+import { Beer, Mail, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  TikTokIcon,
+} from "@/components/brand-icons";
 import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 
 const socialLinks = [
-  { href: site.socials.instagram, label: "Instagram", Icon: Instagram },
-  { href: site.socials.facebook, label: "Facebook", Icon: Facebook },
-  { href: site.socials.tiktok, label: "TikTok", Icon: Music },
+  { href: site.socials.instagram, label: "Instagram", Icon: InstagramIcon },
+  { href: site.socials.facebook, label: "Facebook", Icon: FacebookIcon },
+  { href: site.socials.tiktok, label: "TikTok", Icon: TikTokIcon },
   { href: site.socials.untappd, label: "Untappd", Icon: Beer },
 ];
 
