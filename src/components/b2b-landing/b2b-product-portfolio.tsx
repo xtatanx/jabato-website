@@ -1,6 +1,7 @@
 import { site } from "@content/site";
 import { b2bLandingCopy } from "@content/data/b2b-landing";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
 import type { BeerData } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -59,9 +60,24 @@ export function B2BProductPortfolio({ beers }: B2BProductPortfolioProps) {
                   <p className="mt-4 text-xl leading-relaxed lg:text-2xl">
                     {beer.description}
                   </p>
-                  <p className="mt-4 text-lg font-medium lg:text-xl">
-                    Marida con: {beer.pairing.join(", ")}
-                  </p>
+                  {beer.pairing.length > 0 && (
+                    <div className="mt-10 border-t border-border pt-8">
+                      <h4 className="mb-5 text-base font-semibold uppercase tracking-wide text-foreground lg:text-lg">
+                        Maridaje recomendado
+                      </h4>
+                      <div className="flex flex-wrap gap-3">
+                        {beer.pairing.map((item) => (
+                          <Badge
+                            key={item}
+                            variant="secondary"
+                            className="px-5 py-2 text-base font-medium lg:text-lg"
+                          >
+                            {item}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </article>
             );
