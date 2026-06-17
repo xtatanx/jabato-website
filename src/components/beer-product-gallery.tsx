@@ -40,7 +40,8 @@ export function BeerProductGallery({
             src={galleryImages[currentImageIndex]}
             alt={currentAlt}
             fill
-            loading="lazy"
+            priority
+            sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">

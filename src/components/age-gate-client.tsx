@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { submitVerifyAge } from "@/app/(app)/actions/age-gate";
+import { submitVerifyAge } from "@/lib/actions/age-gate";
 import {
   COLOMBIA_FOOTNOTE,
   DENIED_MESSAGE,
