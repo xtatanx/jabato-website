@@ -60,7 +60,7 @@ export function B2BProductPortfolio({ beers }: B2BProductPortfolioProps) {
                     {beer.description}
                   </p>
                   <p className="mt-4 text-lg font-medium lg:text-xl">
-                    Ideal para: {beer.pairing.join(", ")}
+                    Marida con: {beer.pairing.join(", ")}
                   </p>
                 </div>
               </article>

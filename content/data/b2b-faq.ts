@@ -5,25 +5,18 @@ export interface B2bFaqItem {
 
 export const b2bFaqItems: B2bFaqItem[] = [
   {
-    question:
-      "¿Cuál es la cantidad mínima de pedido (MOQ) para entrega gratis?",
-    answer:
-      "[Placeholder] MOQ sujeto a zona — confirmaremos al recibir tu solicitud.",
+    question: "¿Cuál es el pedido mínimo para envío gratis?",
+    answer: "A partir de una caja de 24 unidades.",
   },
   {
-    question: "¿Qué días entregan en las diferentes zonas de Bogotá?",
+    question: "¿Qué días entregan en Bogotá?",
     answer:
-      "[Placeholder] Entregas de lunes a viernes según ruta — te confirmamos al agendar.",
+      "Los jueves y sábados. Si necesitas otra fecha, escríbenos y buscamos la mejor opción para ti.",
   },
   {
     question:
       "¿Proveen o facilitan equipos de barril o sistemas de enfriamiento?",
     answer:
-      "[Placeholder] Evaluamos equipos según volumen y formato — contáctanos.",
-  },
-  {
-    question: "¿Cuáles son las condiciones de pago para socios mayoristas?",
-    answer:
-      "[Placeholder] Condiciones flexibles para socios recurrentes — detalle en catálogo.",
+      "¡Sí! Según tu volumen de compra, podemos instalar un chiller en tu bar o restaurante.",
   },
 ];

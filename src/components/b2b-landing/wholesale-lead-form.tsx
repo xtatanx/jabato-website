@@ -93,7 +93,7 @@ function WholesaleLeadFormInner({ className }: WholesaleLeadFormProps) {
         <CardContent className="p-8 text-green-900">
           <p className="text-xl font-semibold">{state.message}</p>
           <p className="mt-2 text-base lg:text-lg">
-            Revisaremos tu solicitud y te contactaremos por teléfono o WhatsApp.
+            Te respondemos en menos de 24 horas por teléfono o WhatsApp.
           </p>
         </CardContent>
       </Card>
@@ -134,7 +134,7 @@ function WholesaleLeadFormInner({ className }: WholesaleLeadFormProps) {
                 state?.errors?.fullName && "border-red-500",
               )}
               disabled={isPending}
-              placeholder="Juan Pérez"
+              placeholder="Tu nombre"
             />
             {state?.errors?.fullName && (
               <p className="text-base text-red-600">{state.errors.fullName[0]}</p>
@@ -156,7 +156,7 @@ function WholesaleLeadFormInner({ className }: WholesaleLeadFormProps) {
                 state?.errors?.phone && "border-red-500",
               )}
               disabled={isPending}
-              placeholder="+57 300 000 0000"
+              placeholder="Tu teléfono"
             />
             {state?.errors?.phone && (
               <p className="text-base text-red-600">{state.errors.phone[0]}</p>
@@ -177,7 +177,7 @@ function WholesaleLeadFormInner({ className }: WholesaleLeadFormProps) {
                 state?.errors?.venueName && "border-red-500",
               )}
               disabled={isPending}
-              placeholder="Bar El Parche"
+              placeholder="El nombre de tu establecimiento"
             />
             {state?.errors?.venueName && (
               <p className="text-base text-red-600">

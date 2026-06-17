@@ -157,7 +157,7 @@ export async function submitWholesaleLeadForm(
     return {
       success: true,
       message:
-        "¡Solicitud enviada! Te contactaremos pronto con el catálogo y precios mayoristas.",
+        "¡Listo! Te contactaremos pronto con el portafolio y precios mayoristas.",
       data,
     };
   } catch (error) {
