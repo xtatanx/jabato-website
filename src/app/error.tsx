@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
+import { SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
@@ -26,7 +27,8 @@ export default function ErrorPage({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <div className="container mx-auto px-4 py-16 flex-1 flex items-center justify-center">
+    <SiteShell>
+      <div className="container mx-auto px-4 py-16 flex-1 flex items-center justify-center">
       <Empty>
         <EmptyHeader>
           <EmptyMedia>
@@ -40,8 +42,8 @@ export default function ErrorPage({ error, reset }: ErrorProps) {
           </EmptyMedia>
           <EmptyTitle>Algo salió mal</EmptyTitle>
           <EmptyDescription>
-            Tuvimos un problema al cargar esta página. Puedes reintentar o volver
-            al inicio mientras lo resolvemos.
+            Tuvimos un problema al cargar esta página. Puedes reintentar o
+            volver al inicio mientras lo resolvemos.
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
@@ -58,6 +60,7 @@ export default function ErrorPage({ error, reset }: ErrorProps) {
           </Button>
         </EmptyContent>
       </Empty>
-    </div>
+      </div>
+    </SiteShell>
   );
 }

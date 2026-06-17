@@ -6,9 +6,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 import { AgeGate } from "@/components/age-gate";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
-import Footer from "@/components/footer";
 import { GoogleAnalyticsLoader } from "@/components/google-analytics-loader";
-import Header from "@/components/header";
 import { isAgeVerified } from "@/lib/age-gate-server";
 import { isAnalyticsEnvironment } from "@/lib/analytics-env";
 import { DEFAULT_SITE_TITLE, SITE_NAME } from "@/lib/metadata";
@@ -79,9 +77,7 @@ export default async function RootLayout({
             className={cn(!isVerified && "pointer-events-none select-none")}
             aria-hidden={!isVerified}
           >
-            <Header />
-            <main>{children}</main>
-            <Footer />
+            {children}
           </div>
           {!isVerified && <AgeGate />}
           <CookieConsentBanner isAgeVerified={isVerified} />
