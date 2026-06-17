@@ -2,42 +2,33 @@ import type { Quote } from "@/lib/content/schemas";
 
 export const quotes: readonly Quote[] = [
   {
-    id: "pedro-amber",
+    id: "javier-gold-pub",
+    type: "general",
+    quote:
+      "Para Gold Pub es fundamental brindar experiencias a nuestros clientes, y sí que lo estamos logrando con ustedes, ¡Jabato! Queremos tomarnos un momento para brindar por ustedes y agradecerles por ser el motor detrás de cada copa llena y cada cliente feliz en nuestro negocio. ¡Salud, Jabato!",
+    author: {
+      name: "Javier",
+      position: "Gold Pub",
+    },
+  },
+  {
+    id: "paula-el-cafe",
     type: "american amber ale",
     quote:
-      "La American Amber Ale de Jabato me sorprendió: balance perfecto entre maltas y lúpulos. Desde que la probé, no la quito de la nevera.",
+      "En lo personal, mi preferida es la Amber Ale. Es una cerveza que tiene cuerpo y fuerza; sus sabores resaltan en el paladar y, además, con carnes rojas combina muy bien. También en tertulia con amigos es una cerveza que puedes tomar y tomar: no te embriaga, no te da dolor de cabeza. Esa es mi experiencia con tu cerveza roja.",
     author: {
-      name: "Pedro Restrepo",
-      position: "Cervecero aficionado",
+      name: "Paula",
+      position: "El Café de Paula",
     },
   },
   {
-    id: "lucia-ipa",
-    type: "west coast ipa",
+    id: "jonathan-las-alas",
+    type: "american amber ale",
     quote:
-      "Una IPA con carácter, amargor justo y un final cítrico que invita a la siguiente. La mejor que he probado en Bogotá.",
+      "La Amber Ale es muy rica, con mucho porte, sabor irresistible y con muchísimo estilo. La disposición de los chicos y su constante seguimiento a los comentarios de los clientes hacen un match más que perfecto. 100/10.",
     author: {
-      name: "Lucía Vélez",
-      position: "Bartender",
-    },
-  },
-  {
-    id: "andres-blond",
-    type: "belgian blond ale",
-    quote:
-      "La Blond es elegante y muy fácil de tomar. Perfecta para arrancar la noche con buen sabor.",
-    author: {
-      name: "Andrés Caro",
-      position: "Beergeek",
-    },
-  },
-  {
-    id: "mariana-general",
-    type: "general",
-    quote: "Cada Jabato cuenta una historia. Se nota la pasión en cada lote.",
-    author: {
-      name: "Mariana López",
-      position: "Cliente fiel",
+      name: "Jonathan",
+      position: "Las Alas DC",
     },
   },
 ] as const;

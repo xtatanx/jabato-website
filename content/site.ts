@@ -19,7 +19,7 @@ export const site = {
     whatsappDisplay: "+57 333 7058517",
   },
   defaultOgImage: "/american-amber-ale-hero.jpg",
-  showQuotes: false,
+  showQuotes: true,
 } as const;
 
 export type Site = typeof site;
