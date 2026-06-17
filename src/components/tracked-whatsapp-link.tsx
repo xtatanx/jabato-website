@@ -5,7 +5,7 @@ import { trackWhatsAppClick } from "@/lib/analytics";
 
 interface TrackedWhatsAppLinkProps extends ComponentProps<"a"> {
   intent: "b2b" | "b2c" | "general";
-  location: "footer" | "business_cta" | "beer_pdp";
+  location: "footer" | "business_cta" | "beer_pdp" | "landing_b2b";
   beerSlug?: string;
 }
 

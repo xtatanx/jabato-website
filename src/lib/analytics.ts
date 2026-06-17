@@ -3,6 +3,9 @@
 import { sendGAEvent } from "@next/third-parties/google";
 import { isAnalyticsEnvironment } from "@/lib/analytics-env";
 import { hasAnalyticsConsent } from "@/lib/cookie-consent";
+import { getUtmAttribution } from "@/lib/utm-attribution";
+
+const B2B_LANDING_PATH = "/distribucion";
 
 function isEnabled(): boolean {
   return (
@@ -10,6 +13,23 @@ function isEnabled(): boolean {
     !!process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID &&
     hasAnalyticsConsent()
   );
+}
+
+function getB2BLandingConversionParams() {
+  return {
+    page_path: B2B_LANDING_PATH,
+    ...getUtmAttribution(),
+  };
+}
+
+export function trackWholesaleLeadSubmit() {
+  if (!isEnabled()) return;
+  sendGAEvent("event", "generate_lead", {
+    form_name: "wholesale_lead",
+    subject: "distribucion",
+    lead_type: "form",
+    ...getB2BLandingConversionParams(),
+  });
 }
 
 export function trackContactFormSubmit(subject: string) {
@@ -67,13 +87,25 @@ export function trackBeerBuyClick(params: {
 
 export function trackWhatsAppClick(params: {
   intent: "b2b" | "b2c" | "general";
-  location: "footer" | "business_cta" | "beer_pdp";
+  location: "footer" | "business_cta" | "beer_pdp" | "landing_b2b";
   beerSlug?: string;
 }) {
   if (!isEnabled()) return;
-  sendGAEvent("event", "whatsapp_click", {
+
+  const eventParams = {
     whatsapp_intent: params.intent,
     click_location: params.location,
     ...(params.beerSlug ? { item_id: params.beerSlug } : {}),
-  });
+  };
+
+  sendGAEvent("event", "whatsapp_click", eventParams);
+
+  if (params.location === "landing_b2b" && params.intent === "b2b") {
+    sendGAEvent("event", "generate_lead", {
+      form_name: "whatsapp_b2b",
+      subject: "distribucion",
+      lead_type: "whatsapp",
+      ...getB2BLandingConversionParams(),
+    });
+  }
 }
