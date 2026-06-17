@@ -1,63 +1,98 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { submitVerifyAge } from "@/app/(app)/actions/age-gate";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   COLOMBIA_FOOTNOTE,
   DENIED_MESSAGE,
   DENIED_TITLE,
-  LEGAL_DISCLAIMER,
   MIN_AGE,
 } from "@/lib/age-gate";
-import type { AgeGateFormState } from "@/lib/validations/age-gate";
 import { cn } from "@/lib/utils";
+import type { AgeGateFormState } from "@/lib/validations/age-gate";
 
-const MONTHS = [
-  "Enero",
-  "Febrero",
-  "Marzo",
-  "Abril",
-  "Mayo",
-  "Junio",
-  "Julio",
-  "Agosto",
-  "Septiembre",
-  "Octubre",
-  "Noviembre",
-  "Diciembre",
-];
-
-const currentYear = new Date().getFullYear();
-const YEARS = Array.from({ length: 100 }, (_, i) => currentYear - i);
-const DAYS = Array.from({ length: 31 }, (_, i) => i + 1);
+function NumericField({
+  id,
+  name,
+  label,
+  placeholder,
+  defaultValue,
+  min,
+  max,
+  error,
+}: {
+  id: string;
+  name: string;
+  label: string;
+  placeholder: string;
+  defaultValue?: string;
+  min: number;
+  max: number;
+  error?: string;
+}) {
+  return (
+    <div className="space-y-1">
+      <label htmlFor={id} className="sr-only">
+        {label}
+      </label>
+      <input
+        id={id}
+        name={name}
+        type="number"
+        inputMode="numeric"
+        min={min}
+        max={max}
+        defaultValue={defaultValue}
+        placeholder={placeholder}
+        required
+        aria-invalid={Boolean(error)}
+        className={cn(
+          "h-14 w-full border-2 border-black bg-white px-2 text-center text-xl font-bold tabular-nums outline-none transition-colors placeholder:text-black/30 focus:border-brand",
+          error && "border-destructive focus:border-destructive",
+        )}
+      />
+      {error && <p className="text-xs text-destructive">{error}</p>}
+    </div>
+  );
+}
 
 function SubmitButton() {
   const { pending } = useFormStatus();
 
   return (
-    <Button
+    <button
       type="submit"
-      size="lg"
       disabled={pending}
-      className="w-full bg-brand hover:bg-brand/90"
+      className="h-14 w-full bg-black text-lg font-bold uppercase tracking-wider text-white transition-colors hover:bg-black/85 disabled:opacity-70"
     >
-      {pending ? "Verificando..." : `Entrar — soy mayor de ${MIN_AGE} años`}
-    </Button>
+      {pending ? "Verificando..." : "Entrar"}
+    </button>
   );
 }
 
-function AgeGateForm({ onMinorExit }: { onMinorExit: () => void }) {
+function AgeGateLogo() {
+  return (
+    <Image
+      src="/jabato-horizontal-logo.svg"
+      alt="Jabato Cervecería"
+      width={180}
+      height={54}
+      className="mx-auto"
+      priority
+    />
+  );
+}
+
+function AgeGateForm({
+  onMinorExit,
+  onDeniedRetry,
+}: {
+  onMinorExit: () => void;
+  onDeniedRetry: () => void;
+}) {
   const router = useRouter();
   const [state, formAction] = useActionState<AgeGateFormState | null, FormData>(
     submitVerifyAge,
@@ -72,121 +107,82 @@ function AgeGateForm({ onMinorExit }: { onMinorExit: () => void }) {
 
   if (state?.denied) {
     return (
-      <div className="space-y-4 py-4 text-center">
-        <h1 id="age-gate-title" className="text-2xl font-bold sm:text-3xl">
+      <div className="w-full max-w-lg space-y-8 text-center">
+        <AgeGateLogo />
+        <h1
+          id="age-gate-title"
+          className="font-heading text-4xl uppercase tracking-wide sm:text-5xl"
+        >
           {DENIED_TITLE}
         </h1>
         <p id="age-gate-denied-description" className="text-muted-foreground">
           {DENIED_MESSAGE}
         </p>
+        <button
+          type="button"
+          onClick={onDeniedRetry}
+          className="text-sm underline-offset-4 hover:underline"
+        >
+          Intentar de nuevo
+        </button>
       </div>
     );
   }
 
   return (
-    <>
-      <div className="space-y-3 text-center">
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <h1 id="age-gate-title" className="text-2xl font-bold sm:text-3xl">
-            Verificación de edad
-          </h1>
-          <span className="rounded-full bg-brand px-3 py-1 text-sm font-bold text-white">
-            18+
-          </span>
-        </div>
-        <p id="age-gate-description" className="text-sm text-muted-foreground">
-          {LEGAL_DISCLAIMER}
+    <div className="w-full max-w-lg space-y-8 text-center">
+      <AgeGateLogo />
+
+      <div className="space-y-2">
+        <h1
+          id="age-gate-title"
+          className="font-heading text-4xl uppercase leading-none sm:text-6xl"
+        >
+          ¿Tienes {MIN_AGE} años o más?
+        </h1>
+        <p id="age-gate-description" className="text-sm font-medium text-brand">
+          (debes ser mayor de {MIN_AGE} para entrar)
         </p>
       </div>
 
       <form
         action={formAction}
-        className="space-y-4"
+        className="space-y-6"
         key={`${state?.data?.day ?? ""}-${state?.data?.month ?? ""}-${state?.data?.year ?? ""}`}
       >
-        <fieldset className="space-y-3">
-          <legend className="text-sm font-medium">
-            Ingresa tu fecha de nacimiento
-          </legend>
+        <fieldset>
+          <legend className="sr-only">Fecha de nacimiento</legend>
           <div className="grid grid-cols-3 gap-3">
-            <div className="space-y-1.5">
-              <Label htmlFor="age-gate-day">Día</Label>
-              <Select name="day" defaultValue={state?.data?.day} required>
-                <SelectTrigger
-                  id="age-gate-day"
-                  className={cn(
-                    "h-12 w-full text-base",
-                    state?.errors?.day && "border-destructive",
-                  )}
-                >
-                  <SelectValue placeholder="DD" />
-                </SelectTrigger>
-                <SelectContent className="z-[120]">
-                  {DAYS.map((d) => (
-                    <SelectItem key={d} value={String(d)}>
-                      {d}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {state?.errors?.day && (
-                <p className="text-sm text-destructive">
-                  {state.errors.day[0]}
-                </p>
-              )}
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="age-gate-month">Mes</Label>
-              <Select name="month" defaultValue={state?.data?.month} required>
-                <SelectTrigger
-                  id="age-gate-month"
-                  className={cn(
-                    "h-12 w-full text-base",
-                    state?.errors?.month && "border-destructive",
-                  )}
-                >
-                  <SelectValue placeholder="MM" />
-                </SelectTrigger>
-                <SelectContent className="z-[120]">
-                  {MONTHS.map((name, index) => (
-                    <SelectItem key={name} value={String(index + 1)}>
-                      {name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {state?.errors?.month && (
-                <p className="text-sm text-destructive">
-                  {state.errors.month[0]}
-                </p>
-              )}
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="age-gate-year">Año</Label>
-              <Select name="year" defaultValue={state?.data?.year} required>
-                <SelectTrigger
-                  id="age-gate-year"
-                  className={cn(
-                    "h-12 w-full text-base",
-                    state?.errors?.year && "border-destructive",
-                  )}
-                >
-                  <SelectValue placeholder="AAAA" />
-                </SelectTrigger>
-                <SelectContent className="z-[120] max-h-48">
-                  {YEARS.map((y) => (
-                    <SelectItem key={y} value={String(y)}>
-                      {y}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {state?.errors?.year && (
-                <p className="text-sm text-destructive">
-                  {state.errors.year[0]}
-                </p>
-              )}
-            </div>
+            <NumericField
+              id="age-gate-day"
+              name="day"
+              label="Día"
+              placeholder="DD"
+              defaultValue={state?.data?.day}
+              min={1}
+              max={31}
+              error={state?.errors?.day?.[0]}
+            />
+            <NumericField
+              id="age-gate-month"
+              name="month"
+              label="Mes"
+              placeholder="MM"
+              defaultValue={state?.data?.month}
+              min={1}
+              max={12}
+              error={state?.errors?.month?.[0]}
+            />
+            <NumericField
+              id="age-gate-year"
+              name="year"
+              label="Año"
+              placeholder="AAAA"
+              defaultValue={state?.data?.year}
+              min={1900}
+              max={new Date().getFullYear()}
+              error={state?.errors?.year?.[0]}
+            />
           </div>
         </fieldset>
 
@@ -199,30 +195,31 @@ function AgeGateForm({ onMinorExit }: { onMinorExit: () => void }) {
         <SubmitButton />
       </form>
 
-      <p className="text-center text-sm text-muted-foreground">
-        {COLOMBIA_FOOTNOTE}
-      </p>
+      <p className="text-xs text-muted-foreground">{COLOMBIA_FOOTNOTE}</p>
 
-      <p className="text-center">
-        <button
-          type="button"
-          onClick={onMinorExit}
-          className="text-sm text-muted-foreground underline-offset-4 hover:underline"
-        >
-          No soy mayor de edad
-        </button>
-      </p>
-    </>
+      <button
+        type="button"
+        onClick={onMinorExit}
+        className="text-sm text-muted-foreground underline-offset-4 hover:underline"
+      >
+        No soy mayor de edad
+      </button>
+    </div>
   );
 }
 
 export function AgeGateClient() {
+  const [formKey, setFormKey] = useState(0);
   const [showMinorExit, setShowMinorExit] = useState(false);
 
   if (showMinorExit) {
     return (
-      <div className="space-y-4 py-4 text-center">
-        <h1 id="age-gate-title" className="text-2xl font-bold sm:text-3xl">
+      <div className="w-full max-w-lg space-y-8 text-center">
+        <AgeGateLogo />
+        <h1
+          id="age-gate-title"
+          className="font-heading text-4xl uppercase tracking-wide sm:text-5xl"
+        >
           {DENIED_TITLE}
         </h1>
         <p id="age-gate-denied-description" className="text-muted-foreground">
@@ -232,5 +229,11 @@ export function AgeGateClient() {
     );
   }
 
-  return <AgeGateForm onMinorExit={() => setShowMinorExit(true)} />;
+  return (
+    <AgeGateForm
+      key={formKey}
+      onMinorExit={() => setShowMinorExit(true)}
+      onDeniedRetry={() => setFormKey((key) => key + 1)}
+    />
+  );
 }
