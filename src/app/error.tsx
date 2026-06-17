@@ -38,11 +38,10 @@ export default function ErrorPage({ error, reset }: ErrorProps) {
               priority
             />
           </EmptyMedia>
-          <EmptyTitle>¡Ups! No encontramos esta página</EmptyTitle>
+          <EmptyTitle>Algo salió mal</EmptyTitle>
           <EmptyDescription>
-            La buscamos por todo el cuarto de fermentación y nada — se escapó
-            como un barril mal etiquetado. Mientras la rastreamos, puedes volver
-            al inicio o echarle un ojo a nuestras cervezas.
+            Tuvimos un problema al cargar esta página. Puedes reintentar o volver
+            al inicio mientras lo resolvemos.
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
