@@ -181,8 +181,8 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
       {beer.testimonialIds.length > 0 && (
         <Testimonials
           ids={beer.testimonialIds}
-          title="Lo que dicen nuestros bebedores"
-          highlight="bebedores"
+          title="Lo que dicen nuestros clientes"
+          highlight="clientes"
         />
       )}
 

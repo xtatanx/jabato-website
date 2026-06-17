@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { renderHighlight } from "@/components/content/highlight";
 import { Button } from "@/components/ui/button";
+import { unwrapBlockElement } from "@/lib/unwrap-block-element";
 import { cn } from "@/lib/utils";
 
 export type HeroProps = {
@@ -55,7 +56,7 @@ export function Hero({
         priority={priority}
         loading={priority ? "eager" : "lazy"}
       />
-      <div className="absolute inset-0 bg-black/30 z-0" />
+      <div className="absolute inset-0 bg-black/30 z-0" aria-hidden="true" />
 
       <div
         className={cn(
@@ -80,7 +81,7 @@ export function Hero({
                   : "text-secondary-foreground",
               )}
             >
-              {children}
+              {unwrapBlockElement(children)}
             </h1>
           ) : title ? (
             <h1

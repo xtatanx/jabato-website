@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { unwrapBlockElement } from "@/lib/unwrap-block-element";
 import { cn } from "@/lib/utils";
 
 export type LedeProps = {
@@ -6,6 +7,9 @@ export type LedeProps = {
   tone?: "light" | "dark";
   variant?: "display" | "body";
 };
+
+const displayClasses =
+  "mx-auto text-center font-heading text-2xl font-extrabold uppercase leading-tight text-foreground sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl";
 
 export function Lede({
   children,
@@ -34,9 +38,7 @@ export function Lede({
   return (
     <section className="bg-white pb-12 lg:pb-20">
       <div className="container mx-auto px-4">
-        <div className="mx-auto text-center font-heading text-2xl font-extrabold uppercase leading-tight text-foreground sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
-          {children}
-        </div>
+        <p className={displayClasses}>{unwrapBlockElement(children)}</p>
       </div>
     </section>
   );

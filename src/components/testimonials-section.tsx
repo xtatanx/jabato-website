@@ -52,19 +52,19 @@ export function TestimonialsSection({
                         &ldquo;{testimonial.quote}&rdquo;
                       </p>
                       <footer className="flex items-center justify-center gap-4 mt-4">
-                        <div className="w-16 h-16 flex-shrink-0">
-                          <div className="relative w-full h-full rounded-full overflow-hidden">
-                            <Image
-                              src={
-                                testimonial.avatar || "/placeholder-avatar.jpg"
-                              }
-                              alt={testimonial.author}
-                              fill
-                              loading="lazy"
-                              className="object-cover"
-                            />
+                        {testimonial.avatar ? (
+                          <div className="w-16 h-16 flex-shrink-0">
+                            <div className="relative w-full h-full rounded-full overflow-hidden">
+                              <Image
+                                src={testimonial.avatar}
+                                alt={testimonial.author}
+                                fill
+                                loading="lazy"
+                                className="object-cover"
+                              />
+                            </div>
                           </div>
-                        </div>
+                        ) : null}
                         <cite className="not-italic text-left">
                           <span className="block font-bold text-lg">
                             {testimonial.author}
