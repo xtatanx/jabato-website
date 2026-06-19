@@ -1,11 +1,14 @@
 "use client";
 
 import type { ComponentProps } from "react";
-import { trackWhatsAppClick } from "@/lib/analytics";
+import {
+  trackWhatsAppClick,
+  type WhatsAppClickLocation,
+} from "@/lib/analytics";
 
 interface TrackedWhatsAppLinkProps extends ComponentProps<"a"> {
   intent: "b2b" | "b2c" | "general";
-  location: "footer" | "business_cta" | "beer_pdp" | "landing_b2b";
+  location: WhatsAppClickLocation;
   beerSlug?: string;
 }
 

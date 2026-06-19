@@ -16,7 +16,9 @@ export function B2BValueProps() {
             return (
               <div key={item.title}>
                 <Icon className="mb-4 size-10 text-brand" />
-                <h3 className="font-heading text-2xl uppercase">{item.title}</h3>
+                <h3 className="font-heading text-2xl uppercase">
+                  {item.title}
+                </h3>
                 <p className="mt-3 text-base leading-relaxed text-muted-foreground lg:text-lg">
                   {item.description}
                 </p>

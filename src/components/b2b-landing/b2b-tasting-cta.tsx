@@ -1,5 +1,5 @@
-import { site } from "@content/site";
 import { b2bLandingCopy } from "@content/data/b2b-landing";
+import { site } from "@content/site";
 import { WhatsAppIcon } from "@/components/brand-icons";
 import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,12 @@ export function B2BTastingCta() {
           {b2bLandingCopy.tastingCopy}
         </p>
         <div className="mt-10 flex justify-center">
-          <Button asChild variant="secondary" size="lg" className="h-14 px-8 text-lg">
+          <Button
+            asChild
+            variant="secondary"
+            size="lg"
+            className="h-14 px-8 text-lg"
+          >
             <TrackedWhatsAppLink
               href={whatsappUrl}
               intent="b2b"
