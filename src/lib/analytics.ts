@@ -3,9 +3,17 @@
 import { sendGAEvent } from "@next/third-parties/google";
 import { isAnalyticsEnvironment } from "@/lib/analytics-env";
 import { hasAnalyticsConsent } from "@/lib/cookie-consent";
-import { getUtmAttribution } from "@/lib/utm-attribution";
+import { getUtmAttribution, type UtmAttribution } from "@/lib/utm-attribution";
 
 const B2B_LANDING_PATH = "/distribucion";
+
+type WhatsAppClickLocation =
+  | "footer"
+  | "business_cta"
+  | "beer_pdp"
+  | "landing_b2b"
+  | "landing_b2b_hero"
+  | "landing_b2b_sticky";
 
 function isEnabled(): boolean {
   return (
@@ -20,6 +28,43 @@ function getB2BLandingConversionParams() {
     page_path: B2B_LANDING_PATH,
     ...getUtmAttribution(),
   };
+}
+
+function isB2BLandingLeadLocation(location: WhatsAppClickLocation): boolean {
+  return (
+    location === "landing_b2b" ||
+    location === "landing_b2b_hero" ||
+    location === "landing_b2b_sticky"
+  );
+}
+
+export function trackAgeGateView() {
+  if (!isEnabled()) return;
+  sendGAEvent("event", "age_gate_view", {
+    page_path: window.location.pathname,
+  });
+}
+
+export function trackAgeGateComplete() {
+  if (!isEnabled()) return;
+  sendGAEvent("event", "age_gate_complete", {
+    page_path: window.location.pathname,
+  });
+}
+
+export function trackWholesaleFormStart() {
+  if (!isEnabled()) return;
+  sendGAEvent("event", "form_start", {
+    form_name: "wholesale_lead",
+    ...getB2BLandingConversionParams(),
+  });
+}
+
+export function trackB2BLandingScrollDepth(depth: 75) {
+  if (!isEnabled()) return;
+  sendGAEvent("event", `scroll_${depth}`, {
+    page_path: B2B_LANDING_PATH,
+  });
 }
 
 export function trackWholesaleLeadSubmit() {
@@ -87,7 +132,7 @@ export function trackBeerBuyClick(params: {
 
 export function trackWhatsAppClick(params: {
   intent: "b2b" | "b2c" | "general";
-  location: "footer" | "business_cta" | "beer_pdp" | "landing_b2b";
+  location: WhatsAppClickLocation;
   beerSlug?: string;
 }) {
   if (!isEnabled()) return;
@@ -100,12 +145,15 @@ export function trackWhatsAppClick(params: {
 
   sendGAEvent("event", "whatsapp_click", eventParams);
 
-  if (params.location === "landing_b2b" && params.intent === "b2b") {
+  if (params.intent === "b2b" && isB2BLandingLeadLocation(params.location)) {
     sendGAEvent("event", "generate_lead", {
       form_name: "whatsapp_b2b",
       subject: "distribucion",
       lead_type: "whatsapp",
+      click_location: params.location,
       ...getB2BLandingConversionParams(),
     });
   }
 }
+
+export type { UtmAttribution, WhatsAppClickLocation };

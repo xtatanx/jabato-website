@@ -12,9 +12,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { submitWholesaleLeadForm } from "@/lib/actions/wholesale-lead";
-import { trackWholesaleLeadSubmit } from "@/lib/analytics";
-import type { WholesaleLeadFormState } from "@/lib/validations/wholesale-lead";
+import {
+  trackWholesaleFormStart,
+  trackWholesaleLeadSubmit,
+} from "@/lib/analytics";
 import { cn } from "@/lib/utils";
+import { getUtmAttribution, UTM_PARAM_KEYS } from "@/lib/utm-attribution";
+import type { WholesaleLeadFormState } from "@/lib/validations/wholesale-lead";
 
 interface WholesaleLeadFormProps {
   className?: string;
@@ -43,13 +47,27 @@ function SubmitButton({ isPending }: { isPending: boolean }) {
   );
 }
 
+function attachAttributionToFormData(formData: FormData) {
+  const attribution = getUtmAttribution();
+
+  for (const key of UTM_PARAM_KEYS) {
+    const value = attribution[key];
+    if (value) {
+      formData.set(key, value);
+    }
+  }
+}
+
 function WholesaleLeadFormInner({ className }: WholesaleLeadFormProps) {
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const hasTrackedFormStartRef = useRef(false);
   const [state, formAction, isPending] = useActionState<
     WholesaleLeadFormState | null,
     FormData
   >(async (prevState, formData) => {
     const isDevelopment = process.env.NODE_ENV === "development";
+
+    attachAttributionToFormData(formData);
 
     if (!isDevelopment) {
       if (!executeRecaptcha) {
@@ -87,9 +105,20 @@ function WholesaleLeadFormInner({ className }: WholesaleLeadFormProps) {
     }
   }, [state?.success]);
 
+  const handleFormStart = () => {
+    if (hasTrackedFormStartRef.current) {
+      return;
+    }
+
+    hasTrackedFormStartRef.current = true;
+    trackWholesaleFormStart();
+  };
+
   if (state?.success) {
     return (
-      <Card className={cn("border-green-200 bg-green-50 shadow-2xl", className)}>
+      <Card
+        className={cn("border-green-200 bg-green-50 shadow-2xl", className)}
+      >
         <CardContent className="p-8 text-green-900">
           <p className="text-xl font-semibold">{state.message}</p>
           <p className="mt-2 text-base lg:text-lg">
@@ -135,9 +164,12 @@ function WholesaleLeadFormInner({ className }: WholesaleLeadFormProps) {
               )}
               disabled={isPending}
               placeholder="Tu nombre"
+              onFocus={handleFormStart}
             />
             {state?.errors?.fullName && (
-              <p className="text-base text-red-600">{state.errors.fullName[0]}</p>
+              <p className="text-base text-red-600">
+                {state.errors.fullName[0]}
+              </p>
             )}
           </div>
 
@@ -157,6 +189,7 @@ function WholesaleLeadFormInner({ className }: WholesaleLeadFormProps) {
               )}
               disabled={isPending}
               placeholder="Tu teléfono"
+              onFocus={handleFormStart}
             />
             {state?.errors?.phone && (
               <p className="text-base text-red-600">{state.errors.phone[0]}</p>
@@ -178,6 +211,7 @@ function WholesaleLeadFormInner({ className }: WholesaleLeadFormProps) {
               )}
               disabled={isPending}
               placeholder="El nombre de tu establecimiento"
+              onFocus={handleFormStart}
             />
             {state?.errors?.venueName && (
               <p className="text-base text-red-600">

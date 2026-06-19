@@ -7,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 
 export interface Testimonial {
   quote: string;
@@ -18,12 +19,14 @@ export interface Testimonial {
 interface TestimonialsSectionProps {
   title?: string;
   highlight?: string;
+  titleClassName?: string;
   testimonials: Testimonial[];
 }
 
 export function TestimonialsSection({
   title,
   highlight,
+  titleClassName,
   testimonials,
 }: TestimonialsSectionProps) {
   if (testimonials.length === 0) {
@@ -34,7 +37,12 @@ export function TestimonialsSection({
     <section className="pb-12 lg:pb-20 bg-primary text-primary-foreground">
       <div className="container mx-auto px-4">
         {title ? (
-          <h2 className="text-3xl font-extrabold text-center mb-8 sm:text-4xl lg:text-5xl pt-12 lg:pt-20 uppercase text-shadow-xs">
+          <h2
+            className={cn(
+              "text-3xl font-extrabold text-center mb-8 sm:text-4xl lg:text-5xl pt-12 lg:pt-20 uppercase text-shadow-xs",
+              titleClassName,
+            )}
+          >
             {renderHighlight(title, highlight)}
           </h2>
         ) : null}

@@ -2,6 +2,7 @@
 
 import { Resend } from "resend";
 import { requireAgeVerified } from "@/lib/age-gate-server";
+import { UTM_PARAM_KEYS, type UtmAttribution } from "@/lib/utm-attribution";
 import {
   type WholesaleLeadData,
   type WholesaleLeadFormState,
@@ -38,6 +39,40 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
   }
 }
 
+function getAttributionFromFormData(formData: FormData): UtmAttribution {
+  const attribution: UtmAttribution = {};
+
+  for (const key of UTM_PARAM_KEYS) {
+    const value = formData.get(key);
+    if (typeof value === "string" && value.length > 0) {
+      attribution[key] = value;
+    }
+  }
+
+  return attribution;
+}
+
+function buildAttributionEmailRows(attribution: UtmAttribution): string {
+  const entries = Object.entries(attribution);
+  if (entries.length === 0) {
+    return `
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Atribución:</td>
+              <td style="padding: 8px 0; color: #333;">Sin datos UTM/gclid</td>
+            </tr>`;
+  }
+
+  return entries
+    .map(
+      ([key, value]) => `
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">${key}:</td>
+              <td style="padding: 8px 0; color: #333;">${value}</td>
+            </tr>`,
+    )
+    .join("");
+}
+
 export async function submitWholesaleLeadForm(
   prevState: WholesaleLeadFormState | null,
   formData: FormData,
@@ -52,6 +87,7 @@ export async function submitWholesaleLeadForm(
   }
 
   try {
+    const attribution = getAttributionFromFormData(formData);
     const rawData = {
       fullName: formData.get("fullName") as string,
       phone: formData.get("phone") as string,
@@ -133,6 +169,7 @@ export async function submitWholesaleLeadForm(
               <td style="padding: 8px 0; font-weight: bold; color: #555;">Establecimiento:</td>
               <td style="padding: 8px 0; color: #333;">${data.venueName}</td>
             </tr>
+            ${buildAttributionEmailRows(attribution)}
           </table>
         </div>
       </div>

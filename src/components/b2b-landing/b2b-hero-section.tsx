@@ -1,5 +1,6 @@
 import { b2bLandingCopy } from "@content/data/b2b-landing";
 import Image from "next/image";
+import { B2BHeroWhatsAppCta } from "@/components/b2b-landing/b2b-hero-whatsapp-cta";
 import { WholesaleLeadForm } from "@/components/b2b-landing/wholesale-lead-form";
 
 export function B2BHeroSection() {
@@ -26,10 +27,22 @@ export function B2BHeroSection() {
             <p className="mt-4 max-w-2xl text-xl text-primary-foreground/90 sm:text-2xl lg:mt-6">
               {b2bLandingCopy.subheadline}
             </p>
+            <ul className="mt-6 flex flex-col gap-2 text-base sm:text-lg lg:mt-8">
+              {b2bLandingCopy.heroBullets.map((bullet) => (
+                <li key={bullet} className="flex items-center gap-2">
+                  <span
+                    className="size-2 shrink-0 rounded-full bg-brand"
+                    aria-hidden="true"
+                  />
+                  {bullet}
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="flex w-full justify-center">
+          <div id="cotizar" className="flex w-full flex-col gap-4">
             <WholesaleLeadForm className="w-full max-w-lg lg:max-w-none" />
+            <B2BHeroWhatsAppCta />
           </div>
         </div>
       </div>

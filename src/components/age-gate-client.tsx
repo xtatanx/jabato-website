@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { submitVerifyAge } from "@/lib/actions/age-gate";
 import {
@@ -11,6 +11,7 @@ import {
   DENIED_TITLE,
   MIN_AGE,
 } from "@/lib/age-gate";
+import { trackAgeGateComplete, trackAgeGateView } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import type { AgeGateFormState } from "@/lib/validations/age-gate";
 
@@ -89,18 +90,23 @@ function AgeGateLogo() {
 function AgeGateForm({
   onMinorExit,
   onDeniedRetry,
+  isB2BLanding,
 }: {
   onMinorExit: () => void;
   onDeniedRetry: () => void;
+  isB2BLanding: boolean;
 }) {
   const router = useRouter();
+  const hasTrackedCompleteRef = useRef(false);
   const [state, formAction] = useActionState<AgeGateFormState | null, FormData>(
     submitVerifyAge,
     null,
   );
 
   useEffect(() => {
-    if (state?.success) {
+    if (state?.success && !hasTrackedCompleteRef.current) {
+      hasTrackedCompleteRef.current = true;
+      trackAgeGateComplete();
       router.refresh();
     }
   }, [state?.success, router]);
@@ -143,6 +149,11 @@ function AgeGateForm({
         <p id="age-gate-description" className="text-sm font-medium text-brand">
           (debes ser mayor de {MIN_AGE} para entrar)
         </p>
+        {isB2BLanding ? (
+          <p className="text-sm text-muted-foreground">
+            Contenido comercial para mayores de edad.
+          </p>
+        ) : null}
       </div>
 
       <form
@@ -209,8 +220,20 @@ function AgeGateForm({
 }
 
 export function AgeGateClient() {
+  const pathname = usePathname();
+  const isB2BLanding = pathname === "/distribucion";
+  const hasTrackedViewRef = useRef(false);
   const [formKey, setFormKey] = useState(0);
   const [showMinorExit, setShowMinorExit] = useState(false);
+
+  useEffect(() => {
+    if (hasTrackedViewRef.current) {
+      return;
+    }
+
+    hasTrackedViewRef.current = true;
+    trackAgeGateView();
+  }, []);
 
   if (showMinorExit) {
     return (
@@ -232,6 +255,7 @@ export function AgeGateClient() {
   return (
     <AgeGateForm
       key={formKey}
+      isB2BLanding={isB2BLanding}
       onMinorExit={() => setShowMinorExit(true)}
       onDeniedRetry={() => setFormKey((key) => key + 1)}
     />

@@ -1,5 +1,5 @@
-import { site } from "@content/site";
 import { b2bLandingCopy } from "@content/data/b2b-landing";
+import { site } from "@content/site";
 import Image from "next/image";
 import Link from "next/link";
 

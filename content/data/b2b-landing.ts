@@ -1,20 +1,37 @@
 export const b2bLandingCopy = {
-  headline: "Tu socio estratégico en cerveza artesanal",
+  headline:
+    "Proveedor de cerveza artesanal para bares y restaurantes en Bogotá",
   subheadline:
-    "Aumenta el ticket promedio de tu local y fideliza a tus clientes con cerveza artesanal Jabato.",
+    "Botellas 330 ml y barriles con entrega local. Te enviamos portafolio y precios mayoristas en menos de 24 h.",
   heroEyebrow: "Para bares y restaurantes",
-  formTitle: "Solicita nuestro portafolio",
-  formCta: "Obtener portafolio",
+  heroBullets: [
+    "Barriles + botellas",
+    "Entrega jueves y sábados",
+    "Chiller disponible según volumen",
+  ] as const,
+  formTitle: "Solicita precios mayoristas",
+  formCta: "Recibir portafolio y precios",
+  formFooterTitle: "¿Listo para cotizar?",
   whatsappCta: "Agendar degustación gratis",
+  whatsappHeroLabel: "¿Prefieres WhatsApp? Cotiza en 2 minutos",
+  whatsappHeroCta: "Cotizar por WhatsApp",
+  whatsappStickyCta: "WhatsApp",
   whatsappMessage:
-    "Hola, me interesa agendar una degustación comercial de Jabato para mi restaurante.",
+    "Hola, tengo un bar/restaurante en Bogotá y quiero cotizar cerveza artesanal Jabato (botellas y/o barril).",
   tastingCopy:
     "Prueba la calidad de Jabato en tu propio local. Si tienes un bar o restaurante en Bogotá, coordinamos una visita y llevamos muestras sin costo.",
   portfolioTitle: "Cervezas para tu carta",
   valuePropsTitle: "¿Por qué vender Jabato?",
+  testimonialsTitle: "Bares que ya sirven Jabato",
   faqTitle: "Preguntas frecuentes",
   alcoholWarning: "El exceso de alcohol es perjudicial para la salud.",
 } as const;
+
+export const b2bTestimonialIds = [
+  "javier-gold-pub",
+  "paula-el-cafe",
+  "jonathan-las-alas",
+] as const;
 
 export const b2bValueProps = [
   {
@@ -33,8 +50,8 @@ export const b2bValueProps = [
       "Copas de marca, habladores y difusión en nuestros canales para atraer más clientes a tu local.",
   },
   {
-    title: "Formatos flexibles",
+    title: "Barriles y botellas 330 ml",
     description:
-      "Botellas y barriles adaptados a tu sistema de grifos o nevera.",
+      "Botellas de 330 ml y barriles para grifo, adaptados a tu nevera o sistema de dispensado.",
   },
 ] as const;

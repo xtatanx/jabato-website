@@ -1,6 +1,6 @@
 const UTM_STORAGE_KEY = "jabato_utm_attribution";
 
-const UTM_PARAM_KEYS = [
+export const UTM_PARAM_KEYS = [
   "utm_source",
   "utm_medium",
   "utm_campaign",
