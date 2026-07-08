@@ -53,6 +53,8 @@ export function Hero({
         className="object-cover z-0"
         alt={imageAlt}
         fill
+        sizes="100vw"
+        quality={70}
         priority={priority}
         loading={priority ? "eager" : "lazy"}
       />
