@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
     remotePatterns: [],
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 31536000,
+  },
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
   },
   async rewrites() {
     return [{ source: "/sitemap.xml", destination: "/sitemap" }];
