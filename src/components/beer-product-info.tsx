@@ -1,15 +1,17 @@
 "use client";
 
 import { site } from "@content/site";
-import { AlertTriangle, MessageCircle } from "lucide-react";
+import { AlertTriangle, MapPin, MessageCircle } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   trackBeerBuyClick,
   trackBeerPackSelect,
+  trackFindBeerClick,
   trackWhatsAppClick,
 } from "@/lib/analytics";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export type BeerProductInfoData = {
@@ -129,29 +131,46 @@ export function BeerProductInfo({ beer, slug }: BeerProductInfoProps) {
       </div>
 
       {beer.available ? (
-        <Button asChild size="lg" className="w-full bg-brand hover:bg-brand/90">
-          <a
-            href={buildWhatsAppUrl(buyMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-              trackBeerBuyClick({
-                beerSlug: slug,
-                beerName: beer.name,
-                packSize: selectedPack,
-                price: beer.packs[selectedPack].price,
-              });
-              trackWhatsAppClick({
-                intent: "b2c",
-                location: "beer_pdp",
-                beerSlug: slug,
-              });
-            }}
+        <div className="space-y-3">
+          <Button
+            asChild
+            size="lg"
+            className="w-full bg-brand hover:bg-brand/90"
           >
-            <MessageCircle className="size-5" />
-            Comprar por WhatsApp
-          </a>
-        </Button>
+            <a
+              href={buildWhatsAppUrl(buyMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                trackBeerBuyClick({
+                  beerSlug: slug,
+                  beerName: beer.name,
+                  packSize: selectedPack,
+                  price: beer.packs[selectedPack].price,
+                });
+                trackWhatsAppClick({
+                  intent: "b2c",
+                  location: "beer_pdp",
+                  beerSlug: slug,
+                });
+              }}
+            >
+              <MessageCircle className="size-5" />
+              Comprar por WhatsApp
+            </a>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="w-full">
+            <Link
+              href={`/donde-comprar?estilo=${encodeURIComponent(beer.style)}`}
+              onClick={() =>
+                trackFindBeerClick({ beerSlug: slug, style: beer.style })
+              }
+            >
+              <MapPin className="size-5" />
+              Dónde comprar
+            </Link>
+          </Button>
+        </div>
       ) : (
         <Button size="lg" disabled className="w-full bg-brand">
           Próximamente disponible

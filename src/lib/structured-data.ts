@@ -1,6 +1,7 @@
 import { site } from "@content/site";
 import type {
   AboutPage,
+  BarOrPub,
   BreadcrumbList,
   ContactPage,
   FAQPage,
@@ -12,6 +13,7 @@ import type {
   WithContext,
 } from "schema-dts";
 import type { BeerData } from "@/lib/content";
+import { buildLocationSlug, type Location } from "@/lib/jabato-api";
 import { getSiteUrl } from "@/lib/site-url";
 
 const CERVEZAS_ITEM_LIST_DESCRIPTION =
@@ -215,6 +217,88 @@ export function getContactPageSchema(
       email: "jabatocerveceria@gmail.com",
       url: siteUrl,
     },
+  };
+}
+
+const DONDE_COMPRAR_ITEM_LIST_DESCRIPTION =
+  "Encuentra bares y restaurantes en Bogotá y alrededores donde puedes disfrutar cerveza artesanal Jabato.";
+
+export function getDondeComprarItemListSchema(
+  locations: Location[],
+): WithContext<ItemList> {
+  const siteUrl = getSiteUrl();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Puntos de venta Jabato",
+    description: DONDE_COMPRAR_ITEM_LIST_DESCRIPTION,
+    numberOfItems: locations.length,
+    itemListElement: locations.map((loc, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: loc.name,
+      url: `${siteUrl}/donde-comprar/${buildLocationSlug(loc.id, loc.name)}`,
+    })),
+  };
+}
+
+export function getLocationBusinessSchema(
+  loc: Location,
+): WithContext<BarOrPub> {
+  const siteUrl = getSiteUrl();
+  const slug = buildLocationSlug(loc.id, loc.name);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BarOrPub",
+    name: loc.name,
+    description: loc.description ?? undefined,
+    url: `${siteUrl}/donde-comprar/${slug}`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: loc.location.address,
+      addressLocality: loc.location.city,
+      addressRegion: loc.location.district,
+      addressCountry: "CO",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: loc.location.coordinates.lat,
+      longitude: loc.location.coordinates.lng,
+    },
+  };
+}
+
+export function getLocationBreadcrumbSchema(
+  loc: Location,
+): WithContext<BreadcrumbList> {
+  const siteUrl = getSiteUrl();
+  const slug = buildLocationSlug(loc.id, loc.name);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Dónde comprar",
+        item: `${siteUrl}/donde-comprar`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: loc.name,
+        item: `${siteUrl}/donde-comprar/${slug}`,
+      },
+    ],
   };
 }
 
