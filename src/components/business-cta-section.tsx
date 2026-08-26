@@ -1,4 +1,5 @@
 import { site } from "@content/site";
+import Link from "next/link";
 import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 import { Button } from "@/components/ui/button";
 
@@ -6,12 +7,16 @@ interface BusinessCtaSectionProps {
   title?: string;
   description?: string;
   whatsappMessage?: string;
+  href?: string;
+  ctaLabel?: string;
 }
 
 export function BusinessCtaSection({
   title = "¿Quieres vender Jabato en tu negocio?",
   description = "Únete a nuestra red de distribuidores y ofrece a tus clientes la mejor cerveza artesanal. Contáctanos hoy y descubre las oportunidades que tenemos para tu negocio.",
   whatsappMessage = "Hola, soy dueño de un negocio y estoy interesado en vender Jabato en mi establecimiento. Me gustaría conocer más información.",
+  href,
+  ctaLabel = "Ver distribución",
 }: BusinessCtaSectionProps) {
   const encodedMessage = encodeURIComponent(whatsappMessage);
   const whatsappUrl = `https://wa.me/${site.contact.whatsapp}?text=${encodedMessage}`;
@@ -32,17 +37,28 @@ export function BusinessCtaSection({
             )}
           </h2>
           <p className="text-lg sm:text-xl mb-8">{description}</p>
-          <Button asChild className="bg-brand hover:bg-brand/90">
-            <TrackedWhatsAppLink
-              href={whatsappUrl}
-              intent="b2b"
-              location="business_cta"
-              target="_blank"
-              rel="noopener noreferrer"
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            {href ? (
+              <Button asChild className="bg-brand hover:bg-brand/90">
+                <Link href={href}>{ctaLabel}</Link>
+              </Button>
+            ) : null}
+            <Button
+              asChild
+              variant={href ? "outline" : "default"}
+              className={href ? undefined : "bg-brand hover:bg-brand/90"}
             >
-              Contactar por WhatsApp
-            </TrackedWhatsAppLink>
-          </Button>
+              <TrackedWhatsAppLink
+                href={whatsappUrl}
+                intent="b2b"
+                location="business_cta"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Contactar por WhatsApp
+              </TrackedWhatsAppLink>
+            </Button>
+          </div>
         </div>
       </div>
     </section>

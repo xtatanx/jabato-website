@@ -187,6 +187,8 @@ export default async function BeerDetailPage({ params }: BeerDetailPageProps) {
       )}
 
       <BusinessCtaSection
+        href="/distribucion-cerveza-artesanal"
+        ctaLabel="Ver distribución"
         title="¿Quieres vender Jabato en tu bar o restaurante?"
         description="Lleva Jabato al parche de tus clientes. Escríbenos por WhatsApp para distribución y mayoristas."
       />

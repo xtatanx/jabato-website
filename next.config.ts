@@ -29,6 +29,15 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [{ source: "/sitemap.xml", destination: "/sitemap" }];
   },
+  async redirects() {
+    return [
+      {
+        source: "/distribucion",
+        destination: "/distribucion-cerveza-artesanal",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withMDX(nextConfig);

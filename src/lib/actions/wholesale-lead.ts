@@ -153,7 +153,7 @@ export async function submitWholesaleLeadForm(
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
           <h2 style="color: #333; margin: 0 0 10px 0;">Nueva solicitud mayorista - Jabato Cervecería</h2>
-          <p style="color: #666; margin: 0;">Landing page /distribucion</p>
+          <p style="color: #666; margin: 0;">Página /distribucion-cerveza-artesanal</p>
         </div>
         <div style="background-color: white; padding: 20px; border: 1px solid #e9ecef; border-radius: 8px;">
           <table style="width: 100%; border-collapse: collapse;">
