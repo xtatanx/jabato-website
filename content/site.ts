@@ -4,10 +4,10 @@ export const site = {
     "A cada parche le llega su Jabato. Cervezas artesanales colombianas con carácter.",
   nav: [
     { href: "/cervezas", label: "Cervezas" },
-    { href: "/donde-comprar", label: "Dónde comprar" },
-    { href: "/distribucion-cerveza-artesanal", label: "Distribución" },
     { href: "/historia", label: "Historia" },
+    { href: "/donde-comprar", label: "Dónde comprar" },
     { href: "/contacto", label: "Contacto" },
+    { href: "/distribucion-cerveza-artesanal", label: "Distribución" },
   ],
   socials: {
     instagram: "https://www.instagram.com/jabato.cerveceria/",

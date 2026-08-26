@@ -6,10 +6,10 @@ import { getSiteUrl } from "@/lib/site-url";
 const STATIC_ROUTES = [
   { path: "", priority: 1 },
   { path: "/cervezas", priority: 0.8 },
-  { path: "/donde-comprar", priority: 0.8 },
-  { path: "/distribucion-cerveza-artesanal", priority: 0.9 },
   { path: "/historia", priority: 0.8 },
+  { path: "/donde-comprar", priority: 0.8 },
   { path: "/contacto", priority: 0.8 },
+  { path: "/distribucion-cerveza-artesanal", priority: 0.9 },
   { path: "/politica-de-privacidad", priority: 0.3 },
 ] as const;
 
