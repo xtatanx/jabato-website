@@ -5,7 +5,7 @@ import { isAnalyticsEnvironment } from "@/lib/analytics-env";
 import { hasAnalyticsConsent } from "@/lib/cookie-consent";
 import { getUtmAttribution, type UtmAttribution } from "@/lib/utm-attribution";
 
-const B2B_LANDING_PATH = "/distribucion";
+const B2B_LANDING_PATH = "/distribucion-cerveza-artesanal";
 
 type WhatsAppClickLocation =
   | "footer"
