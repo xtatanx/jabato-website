@@ -4,6 +4,7 @@ export const site = {
     "A cada parche le llega su Jabato. Cervezas artesanales colombianas con carácter.",
   nav: [
     { href: "/cervezas", label: "Cervezas" },
+    { href: "/donde-comprar", label: "Dónde comprar" },
     { href: "/historia", label: "Historia" },
     { href: "/contacto", label: "Contacto" },
   ],

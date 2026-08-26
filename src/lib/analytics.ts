@@ -156,4 +156,16 @@ export function trackWhatsAppClick(params: {
   }
 }
 
+export function trackFindBeerClick(params: {
+  beerSlug: string;
+  style: string;
+}) {
+  if (!isEnabled()) return;
+  sendGAEvent("event", "find_beer_click", {
+    item_id: params.beerSlug,
+    item_category: "beer",
+    beer_style: params.style,
+  });
+}
+
 export type { UtmAttribution, WhatsAppClickLocation };

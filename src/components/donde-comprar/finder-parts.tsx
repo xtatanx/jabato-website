@@ -1,9 +1,6 @@
 "use client";
 
-// PROTOTYPE — throwaway. Small shared inputs/badges the variants compose in
-// different layouts (like sharing a Button — layout stays per-variant).
-
-import { LocateFixed, MapPin, Navigation, Search } from "lucide-react";
+import { LocateFixed, MapPin, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,15 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import {
-  ALL,
-  directionsUrl,
-  type FinderFilters,
   type Location,
   locationPresentations,
   PRESENTATION_LABELS,
-} from "./types";
+} from "@/lib/jabato-api";
+import { cn } from "@/lib/utils";
+
+export const ALL = "__all__";
 
 interface SearchBoxProps {
   value: string;
@@ -110,7 +106,7 @@ export function NearMeButton({
       className={cn(active && "bg-brand hover:bg-brand/90", className)}
     >
       <LocateFixed className={cn("size-4", loading && "animate-pulse")} />
-      {active ? "Cerca de mí" : "Cerca de mí"}
+      Cerca de mí
     </Button>
   );
 }
@@ -119,9 +115,9 @@ export function PresentationBadges({ loc }: { loc: Location }) {
   const presentations = locationPresentations(loc);
   if (presentations.length === 0) return null;
   return (
-    <div className="flex flex-wrap gap-1.5">
+    <div className="flex flex-wrap gap-1">
       {presentations.map((p) => (
-        <Badge key={p} variant="secondary" className="font-medium">
+        <Badge key={p} variant="secondary" className="px-1.5 py-0 text-xs">
           {PRESENTATION_LABELS[p]}
         </Badge>
       ))}
@@ -133,12 +129,12 @@ export function BeerStyleBadges({ loc }: { loc: Location }) {
   const styles = [...new Set(loc.beers.map((b) => b.style))];
   if (styles.length === 0) return null;
   return (
-    <div className="flex flex-wrap gap-1.5">
+    <div className="flex flex-wrap gap-1">
       {styles.map((s) => (
         <Badge
           key={s}
           variant="outline"
-          className="border-brand/40 text-brand font-medium"
+          className="border-brand/40 px-1.5 py-0 text-xs text-brand"
         >
           {s}
         </Badge>
@@ -149,50 +145,11 @@ export function BeerStyleBadges({ loc }: { loc: Location }) {
 
 export function AddressLine({ loc }: { loc: Location }) {
   return (
-    <p className="flex items-start gap-1.5 text-sm text-muted-foreground">
-      <MapPin className="mt-0.5 size-3.5 shrink-0" />
+    <p className="flex items-start gap-1 text-xs text-muted-foreground">
+      <MapPin className="mt-0.5 size-3 shrink-0" />
       <span>
         {loc.location.address} · {loc.location.neighborhood}
       </span>
     </p>
   );
-}
-
-export function DirectionsButton({
-  loc,
-  size = "sm",
-  className,
-}: {
-  loc: Location;
-  size?: "sm" | "default";
-  className?: string;
-}) {
-  return (
-    <Button
-      asChild
-      size={size}
-      variant="outline"
-      className={cn("gap-1.5", className)}
-    >
-      <a href={directionsUrl(loc)} target="_blank" rel="noopener noreferrer">
-        <Navigation className="size-3.5" />
-        Cómo llegar
-      </a>
-    </Button>
-  );
-}
-
-export function activeChips(filters: FinderFilters): string[] {
-  const chips: string[] = [];
-  if (filters.buscar) chips.push(`"${filters.buscar}"`);
-  if (filters.estilo) chips.push(filters.estilo);
-  if (filters.presentacion) {
-    chips.push(
-      PRESENTATION_LABELS[
-        filters.presentacion as keyof typeof PRESENTATION_LABELS
-      ] ?? filters.presentacion,
-    );
-  }
-  if (filters.barrio) chips.push(filters.barrio);
-  return chips;
 }
