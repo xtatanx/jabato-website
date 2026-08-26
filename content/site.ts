@@ -5,6 +5,7 @@ export const site = {
   nav: [
     { href: "/cervezas", label: "Cervezas" },
     { href: "/donde-comprar", label: "Dónde comprar" },
+    { href: "/distribucion-cerveza-artesanal", label: "Distribución" },
     { href: "/historia", label: "Historia" },
     { href: "/contacto", label: "Contacto" },
   ],

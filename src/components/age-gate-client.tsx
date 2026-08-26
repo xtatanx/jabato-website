@@ -221,7 +221,7 @@ function AgeGateForm({
 
 export function AgeGateClient() {
   const pathname = usePathname();
-  const isB2BLanding = pathname === "/distribucion";
+  const isB2BLanding = pathname === "/distribucion-cerveza-artesanal";
   const hasTrackedViewRef = useRef(false);
   const [formKey, setFormKey] = useState(0);
   const [showMinorExit, setShowMinorExit] = useState(false);

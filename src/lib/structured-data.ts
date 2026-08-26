@@ -4,9 +4,11 @@ import type {
   BarOrPub,
   BreadcrumbList,
   ContactPage,
+  FAQPage,
   ItemList,
   Organization,
   Product,
+  Service,
   WebSite,
   WithContext,
 } from "schema-dts";
@@ -295,6 +297,70 @@ export function getLocationBreadcrumbSchema(
         position: 3,
         name: loc.name,
         item: `${siteUrl}/donde-comprar/${slug}`,
+      },
+    ],
+  };
+}
+
+const DISTRIBUCION_PATH = "/distribucion-cerveza-artesanal";
+const DISTRIBUCION_DESCRIPTION =
+  "Distribución de cerveza artesanal Jabato en Bogotá para bares y restaurantes. Barriles y botellas 330 ml con entrega local.";
+
+export function getDistribucionServiceSchema(): WithContext<Service> {
+  const siteUrl = getSiteUrl();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Distribución de cerveza artesanal en Bogotá",
+    serviceType: "Distribución de cerveza artesanal",
+    description: DISTRIBUCION_DESCRIPTION,
+    url: `${siteUrl}${DISTRIBUCION_PATH}`,
+    provider: {
+      "@id": `${siteUrl}/${ORGANIZATION_ID}`,
+    },
+    areaServed: {
+      "@type": "City",
+      name: "Bogotá",
+    },
+  };
+}
+
+export function getDistribucionFaqSchema(
+  items: { question: string; answer: string }[],
+): WithContext<FAQPage> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+export function getDistribucionBreadcrumbSchema(): WithContext<BreadcrumbList> {
+  const siteUrl = getSiteUrl();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Distribución",
+        item: `${siteUrl}${DISTRIBUCION_PATH}`,
       },
     ],
   };

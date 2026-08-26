@@ -1,6 +1,6 @@
 export const b2bLandingCopy = {
   headline:
-    "Proveedor de cerveza artesanal para bares y restaurantes en Bogotá",
+    "Distribución de cerveza artesanal en Bogotá para bares y restaurantes",
   subheadline:
     "Botellas 330 ml y barriles con entrega local. Te enviamos portafolio y precios mayoristas en menos de 24 h.",
   heroEyebrow: "Para bares y restaurantes",
@@ -9,6 +9,14 @@ export const b2bLandingCopy = {
     "Entrega jueves y sábados",
     "Chiller disponible según volumen",
   ] as const,
+  ledeTitle: "Distribuidor de cerveza artesanal en Bogotá",
+  ledeBody:
+    "Jabato Cervecería fabrica cerveza artesanal en Bogotá y la distribuimos directamente a bares y restaurantes, sin intermediarios. Ofrecemos botellas de 330 ml y barriles para grifo, con entrega local, cadena de frío y soporte de mercadeo para que tu carta destaque.",
+  howItWorksTitle: "Cómo funciona",
+  formatsTitle: "Formatos y condiciones mayoristas",
+  coverageTitle: "Cobertura en Bogotá",
+  coverageBody:
+    "Realizamos distribución de cerveza artesanal en toda Bogotá. Coordinamos la ruta de reparto según tu localidad y el volumen de tu pedido.",
   formTitle: "Solicita precios mayoristas",
   formCta: "Recibir portafolio y precios",
   formFooterTitle: "¿Listo para cotizar?",
@@ -54,4 +62,61 @@ export const b2bValueProps = [
     description:
       "Botellas de 330 ml y barriles para grifo, adaptados a tu nevera o sistema de dispensado.",
   },
+] as const;
+
+export const howItWorksSteps = [
+  {
+    title: "Cotiza",
+    description:
+      "Déjanos tus datos en el formulario o escríbenos por WhatsApp. Te enviamos portafolio y precios mayoristas en menos de 24 h.",
+  },
+  {
+    title: "Degustación",
+    description:
+      "Coordinamos una visita a tu bar o restaurante y llevamos muestras sin costo para que pruebes la calidad de Jabato.",
+  },
+  {
+    title: "Pedido",
+    description:
+      "Eliges los estilos y formatos que encajan con tu carta: botellas de 330 ml, barriles o ambos.",
+  },
+  {
+    title: "Entrega",
+    description:
+      "Entregamos en Bogotá los jueves y sábados, con cadena de frío y sin intermediarios.",
+  },
+] as const;
+
+export const formatItems = [
+  {
+    title: "Botellas 330 ml",
+    description:
+      "Ideal para cartas con rotación moderada. Pedido mínimo de 24 unidades para envío sin costo adicional.",
+  },
+  {
+    title: "Barriles para grifo",
+    description:
+      "Para bares con alto volumen. Adaptados a tu nevera o sistema de dispensado.",
+  },
+  {
+    title: "Pedido mínimo",
+    description:
+      "A partir de una caja de 24 unidades. Escríbenos para cotizar según tu volumen.",
+  },
+  {
+    title: "Chiller incluido",
+    description:
+      "Según tu volumen de compra, podemos instalar un chiller en tu bar o restaurante.",
+  },
+] as const;
+
+export const coverageLocalidades = [
+  "Chapinero",
+  "Usaquén",
+  "Teusaquillo",
+  "Suba",
+  "La Candelaria",
+  "Engativá",
+  "Kennedy",
+  "Fontibón",
 ] as const;
