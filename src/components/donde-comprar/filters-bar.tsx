@@ -43,35 +43,41 @@ export function FiltersBar({
   return (
     <div className="mb-6 flex flex-col gap-2 lg:flex-row lg:items-center">
       <SearchBox value={buscar} onChange={onBuscarChange} className="flex-1" />
-      <div className="grid grid-cols-3 gap-2 lg:flex">
+      <div className="grid grid-cols-1 gap-2 min-[560px]:grid-cols-3 lg:flex lg:shrink-0">
         <FilterSelect
           value={estilo}
           onChange={onEstiloChange}
           options={styles}
-          placeholder="Estilo"
-          className="lg:w-40"
+          label="Estilo"
+          allLabel="Todos los estilos"
+          allShort="todos"
+          className="lg:w-44"
         />
         <FilterSelect
           value={presentacion}
           onChange={onPresentacionChange}
           options={PRESENTATIONS}
           optionLabel={(v) => PRESENTATION_LABELS[v as Presentation]}
-          placeholder="Presentación"
-          className="lg:w-40"
+          label="Presentación"
+          allLabel="Todas las presentaciones"
+          allShort="todas"
+          className="lg:w-52"
         />
         <FilterSelect
           value={barrio}
           onChange={onBarrioChange}
           options={neighborhoods}
-          placeholder="Barrio"
-          className="lg:w-40"
+          label="Barrio"
+          allLabel="Todos los barrios"
+          allShort="todos"
+          className="lg:w-44"
         />
       </div>
       <NearMeButton
         active={nearActive}
         loading={nearLoading}
         onClick={onNearMe}
-        className="shrink-0"
+        className="shrink-0 lg:self-center"
       />
     </div>
   );

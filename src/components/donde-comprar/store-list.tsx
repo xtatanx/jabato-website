@@ -9,6 +9,7 @@ interface StoreListProps {
   selectedId: string | null;
   onSelect: (id: string) => void;
   totalCount: number;
+  note?: string;
 }
 
 export function StoreList({
@@ -16,11 +17,13 @@ export function StoreList({
   selectedId,
   onSelect,
   totalCount,
+  note,
 }: StoreListProps) {
   return (
     <div>
       <p className="mb-3 text-sm text-muted-foreground">
         {results.length} de {totalCount} puntos
+        {note ? <span className="text-brand"> · {note}</span> : null}
       </p>
       {results.length === 0 ? (
         <Empty className="border border-dashed">

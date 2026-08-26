@@ -46,7 +46,12 @@ interface FilterSelectProps {
   value: string;
   onChange: (value: string) => void;
   options: string[];
-  placeholder: string;
+  /** Filter category shown as a prefix on the trigger, e.g. "Estilo" */
+  label: string;
+  /** Full label for the "all" option inside the open menu, e.g. "Todos los estilos" */
+  allLabel: string;
+  /** Short word for the "all" state on the trigger, e.g. "todos" / "todas" */
+  allShort: string;
   optionLabel?: (value: string) => string;
   className?: string;
 }
@@ -55,23 +60,30 @@ export function FilterSelect({
   value,
   onChange,
   options,
-  placeholder,
+  label,
+  allLabel,
+  allShort,
   optionLabel,
   className,
 }: FilterSelectProps) {
+  const isAll = !value;
+  const displayValue = isAll ? allShort : (optionLabel?.(value) ?? value);
+
   return (
     <Select
       value={value || ALL}
       onValueChange={(v) => onChange(v === ALL ? "" : v)}
     >
       <SelectTrigger
-        className={cn("w-full", className)}
-        aria-label={placeholder}
+        className={cn("w-full min-w-0", className)}
+        aria-label={`Filtrar por ${label.toLowerCase()}`}
       >
-        <SelectValue placeholder={placeholder} />
+        <SelectValue>
+          <span className="text-muted-foreground">{label}:</span> {displayValue}
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={ALL}>{placeholder}</SelectItem>
+        <SelectItem value={ALL}>{allLabel}</SelectItem>
         {options.map((opt) => (
           <SelectItem key={opt} value={opt}>
             {optionLabel ? optionLabel(opt) : opt}
@@ -103,7 +115,11 @@ export function NearMeButton({
       variant={active ? "default" : variant}
       onClick={onClick}
       disabled={loading}
-      className={cn(active && "bg-brand hover:bg-brand/90", className)}
+      className={cn(
+        "h-9 rounded-md px-3 text-sm has-[>svg]:px-3 [&_svg:not([class*='size-'])]:size-4",
+        active && "bg-brand hover:bg-brand/90",
+        className,
+      )}
     >
       <LocateFixed className={cn("size-4", loading && "animate-pulse")} />
       Cerca de mí

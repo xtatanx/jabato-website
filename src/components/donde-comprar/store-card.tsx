@@ -25,14 +25,14 @@ export function StoreCard({ loc, selected, onSelect }: StoreCardProps) {
   return (
     <article
       className={cn(
-        "rounded-lg border bg-card transition-colors",
+        "cursor-pointer rounded-lg border bg-card transition-colors",
         selected ? "border-brand ring-1 ring-brand" : "hover:border-brand/50",
       )}
     >
       <div className="flex items-start justify-between gap-2 p-3 pb-1">
         <Link
           href={`/donde-comprar/${buildLocationSlug(loc.id, loc.name)}`}
-          className="font-semibold uppercase leading-tight hover:text-brand"
+          className="cursor-pointer font-semibold uppercase leading-tight hover:text-brand"
         >
           {loc.name}
         </Link>
@@ -45,7 +45,7 @@ export function StoreCard({ loc, selected, onSelect }: StoreCardProps) {
       <button
         type="button"
         onClick={() => onSelect(loc.id)}
-        className="w-full px-3 pb-3 pt-1 text-left"
+        className="w-full cursor-pointer px-3 pb-3 pt-1 text-left"
       >
         <AddressLine loc={loc} />
         <div className="mt-2 space-y-1.5">

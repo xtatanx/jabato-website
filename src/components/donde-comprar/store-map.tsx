@@ -18,8 +18,11 @@ function pinHtml(selected: boolean): string {
   const shadow = selected
     ? "filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));"
     : "filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));";
-  return `<div style="width:${size}px;height:${size}px;${shadow}transform:translate(-50%,-100%);transition:all .12s ease;">
-    <svg viewBox="0 0 24 24" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+  // The wrapper fills the icon box exactly; placement is handled solely by
+  // Leaflet's iconAnchor. A CSS transform here would offset the visible tip
+  // from the anchored point, causing the pin to drift while zooming.
+  return `<div style="width:${size}px;height:${size}px;${shadow}display:block;">
+    <svg viewBox="0 0 24 24" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" style="display:block;">
       <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="var(--brand)" stroke="white" stroke-width="1.5"/>
       <circle cx="12" cy="9" r="2.6" fill="white"/>
     </svg>
@@ -28,11 +31,14 @@ function pinHtml(selected: boolean): string {
 
 function createPinIcon(selected: boolean) {
   const size = selected ? 42 : 30;
+  // The teardrop tip sits at ~y=22 of the 24 viewBox, i.e. ~11/12 down the box.
+  const tipY = Math.round((size * 22) / 24);
   return L.divIcon({
     html: pinHtml(selected),
     className: "",
     iconSize: [size, size],
-    iconAnchor: [size / 2, size],
+    iconAnchor: [size / 2, tipY],
+    popupAnchor: [0, -tipY],
   });
 }
 
@@ -49,6 +55,15 @@ function MapController({
 }: MapControllerProps) {
   const map = useMap();
   const boundsKey = locations.map((l) => l.id).join(",");
+
+  useEffect(() => {
+    // Ensure Leaflet knows the true container size once it has laid out; a
+    // stale size leaves tiles and markers offset from their real position.
+    map.invalidateSize();
+    const onResize = () => map.invalidateSize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [map]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: refit only when result set changes
   useEffect(() => {
